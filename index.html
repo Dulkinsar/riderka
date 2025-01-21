@@ -95,62 +95,34 @@
         }
         main {
             padding: 40px;
+        }
+        .dashboard {
+            margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
-        .text-block {
-            background-color: #ffffff;
-            padding: 30px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        .text-block::before {
-            content: '';
-            position: absolute;
-            width: 30%;
-            height: 5px;
-            background: #6B3FA0;
-            top: -10px;
-            left: 10px;
-        }
-        .text-block::after {
-            content: '';
-            position: absolute;
-            width: 20%;
-            height: 5px;
-            background: #FFC700;
-            bottom: -10px;
-            right: 10px;
-        }
-        .text-block h2 {
-            margin: 0 0 15px;
-            font-size: 1.8rem;
-            color: #6B3FA0;
-        }
-        .text-block p {
-            margin: 0 0 15px;
-            line-height: 1.8;
-            color: #555;
-        }
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        .icon-card {
             background-color: #FFC700;
-            color: #6B3FA0;
-            font-weight: bold;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
             cursor: pointer;
         }
-        .buttons button:hover {
-            background-color: #6B3FA0;
-            color: #FFC700;
+        .icon-card:hover {
+            transform: scale(1.05);
+        }
+        .icon-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .icon-card h3 {
+            color: #6B3FA0;
+            font-size: 1.2rem;
+            margin: 0;
         }
     </style>
     <script>
@@ -178,7 +150,7 @@
 
     <div id="main-content" class="hidden">
         <header>
-            <h1>Riderka</h1> 
+            <h1>Riderka</h1>
             <p class="slogan">GC - твой шаг в будущее!</p>
         </header>
         <main>
@@ -260,6 +232,28 @@
                 <div class="buttons">
                     <button>Like</button>
                     <button>Dislike</button>
+                </div>
+            </div>
+            <div class="dashboard">
+                <div class="icon-card">
+                    <img src="icon1.png" alt="Profile Builder">
+                    <h3>Profile Builder</h3>
+                </div>
+                <div class="icon-card">
+                    <img src="icon2.png" alt="Courses">
+                    <h3>Courses</h3>
+                </div>
+                <div class="icon-card">
+                    <img src="icon3.png" alt="Mock Exams">
+                    <h3>Mock Exams</h3>
+                </div>
+                <div class="icon-card">
+                    <img src="icon4.png" alt="Writing Builder">
+                    <h3>Writing Builder</h3>
+                </div>
+                <div class="icon-card">
+                    <img src="icon5.png" alt="Other Services">
+                    <h3>Other Services</h3>
                 </div>
             </div>
         </main>

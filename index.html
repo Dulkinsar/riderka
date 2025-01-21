@@ -1,9 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Simple HTML Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I am Riderka</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6a0dad, #9b30ff);
+            color: white;
+            overflow-x: hidden;
+        }
+        header {
+            text-align: center;
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        header h1 {
+            font-size: 4rem;
+            margin: 0;
+            animation: glow 2s infinite alternate;
+        }
+        header p {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+        .cta {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cta a {
+            text-decoration: none;
+            background: white;
+            color: #6a0dad;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        section {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 50px 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        .card p {
+            font-size: 1rem;
+        }
+        footer {
+            background: #3b0a59;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            }
+            to {
+                text-shadow: 0 0 20px #ffffff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>I am riderka</h1>
+    <header>
+        <h1>I am Riderka</h1>
+        <p>Welcome to my world of creativity and innovation.</p>
+    </header>
+
+    <section>
+        <div class="card">
+            <h3>Who Am I?</h3>
+            <p>A passionate individual driven by innovation and bold ideas. Explore my work and be inspired!</p>
+        </div>
+        <div class="card">
+            <h3>What I Do</h3>
+            <p>I design, create, and inspire. Whether it’s a product, service, or experience, I aim for perfection.</p>
+        </div>
+        <div class="card">
+            <h3>Get in Touch</h3>
+            <p>Want to collaborate or learn more? Contact me today to start your journey.</p>
+        </div>
+    </section>
+
+    <div class="cta">
+        <a href="#">Learn More</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Riderka. All rights reserved.</p>
+    </footer>
 </body>
 </html>

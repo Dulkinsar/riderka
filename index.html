@@ -3,155 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I am Riderka</title>
+    <title>Riderka</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace;
-            background: linear-gradient(135deg, #6a0dad, #9b30ff);
-            color: white;
-            overflow-x: hidden;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
         }
         header {
+            background-color: #f8f3ff;
+            padding: 20px;
             text-align: center;
-            padding: 100px 20px;
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 5px solid #fce5d8;
         }
         header h1 {
-            font-size: 4rem;
             margin: 0;
-            animation: neon-glow 2s infinite alternate;
+            font-size: 2.5rem;
+            color: #6a0dad;
         }
         header p {
+            margin: 10px 0 0;
             font-size: 1.2rem;
-            margin: 20px 0;
-            text-shadow: 0 0 5px #ffffff, 0 0 10px #ff00ff;
+            color: #f4a261;
         }
-        header img {
-            margin-top: 20px;
-            max-width: 150px;
-        }
-        section {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 50px 20px;
-            flex-wrap: wrap;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.1);
+        main {
             padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        .text-block {
+            background-color: #fff9f1;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .card h3 {
-            margin-bottom: 10px;
+        .text-block h2 {
+            margin: 0 0 10px;
             font-size: 1.5rem;
-        }
-        .card p {
-            font-size: 1rem;
-        }
-        .badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff00ff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            color: white;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        footer {
-            background: #3b0a59;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-            font-size: 0.9rem;
-        }
-        .cta {
-            text-align: center;
-            margin-top: 50px;
-        }
-        .cta a {
-            text-decoration: none;
-            background: white;
             color: #6a0dad;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .cta a:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        .sci-quote {
-            margin: 50px 0;
-            text-align: center;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: #ddd;
-            text-shadow: 0 0 5px #ffffff, 0 0 10px #ff00ff;
-        }
-        @keyframes neon-glow {
-            from {
-                text-shadow: 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-            }
-            to {
-                text-shadow: 0 0 20px #ffffff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff;
-            }
+        .text-block p {
+            margin: 0;
+            line-height: 1.6;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>I am Riderka</h1>
-        <p>Exploring the universe, one line of code at a time.</p>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/DNA_double_helix_vertical.png" alt="DNA Illustration">
+        <h1>Riderka</h1>
+        <p>"Where curiosity meets academia and exploration begins."</p>
     </header>
-
-    <section>
-        <div class="card">
-            <span class="badge">Quantum Enthusiast</span>
-            <h3>Who Am I?</h3>
-            <p>A cosmic explorer who loves to merge science, creativity, and geeky ideas. Welcome to my lab!</p>
+    <main>
+        <div class="text-block">
+            <h2>Text 1</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div class="card">
-            <span class="badge">Code Nerd</span>
-            <h3>What I Do</h3>
-            <p>I design, innovate, and experiment with futuristic ideas. Science fiction meets reality here!</p>
+        <div class="text-block">
+            <h2>Text 2</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div class="card">
-            <span class="badge">Stargazer</span>
-            <h3>Fun Fact</h3>
-            <p>Did you know? The DNA in your body could stretch from the Sun to Pluto and back — 17 times!</p>
+        <div class="text-block">
+            <h2>Text 3</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-    </section>
-
-    <div class="sci-quote">
-        "Somewhere, something incredible is waiting to be known." – Carl Sagan
-    </div>
-
-    <div class="cta">
-        <a href="#">Explore More</a>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Riderka. Made with 💻 and 🚀.</p>
-    </footer>
+        <div class="text-block">
+            <h2>Text 4</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 5</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 6</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 7</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 8</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 9</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="text-block">
+            <h2>Text 10</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+    </main>
 </body>
 </html>
+

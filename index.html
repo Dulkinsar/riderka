@@ -93,6 +93,38 @@
             color: #6B3FA0;
             font-weight: bold;
         }
+        .icon-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .icon-card {
+            background-color: #FFC700;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+            width: 150px;
+        }
+        .icon-card:hover {
+            transform: scale(1.05);
+        }
+        .icon-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .icon-card h3 {
+            color: #6B3FA0;
+            font-size: 1.2rem;
+            margin: 0;
+        }
         main {
             padding: 40px;
             display: grid;
@@ -152,34 +184,6 @@
             background-color: #6B3FA0;
             color: #FFC700;
         }
-        .dashboard {
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .icon-card {
-            background-color: #FFC700;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .icon-card:hover {
-            transform: scale(1.05);
-        }
-        .icon-card img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
-        }
-        .icon-card h3 {
-            color: #6B3FA0;
-            font-size: 1.2rem;
-            margin: 0;
-        }
     </style>
     <script>
         function validateLogin() {
@@ -209,6 +213,28 @@
             <h1>Riderka</h1>
             <p class="slogan">GC - твой шаг в будущее!</p>
         </header>
+        <div class="icon-row">
+            <div class="icon-card">
+                <img src="icon1.png" alt="Profile Builder">
+                <h3>Profile Builder</h3>
+            </div>
+            <div class="icon-card">
+                <img src="icon2.png" alt="Courses">
+                <h3>Courses</h3>
+            </div>
+            <div class="icon-card">
+                <img src="icon3.png" alt="Mock Exams">
+                <h3>Mock Exams</h3>
+            </div>
+            <div class="icon-card">
+                <img src="icon4.png" alt="Writing Builder">
+                <h3>Writing Builder</h3>
+            </div>
+            <div class="icon-card">
+                <img src="icon5.png" alt="Other Services">
+                <h3>Other Services</h3>
+            </div>
+        </div>
         <main>
             <div class="text-block">
                 <h2>Text 1</h2>
@@ -288,28 +314,6 @@
                 <div class="buttons">
                     <button>Like</button>
                     <button>Dislike</button>
-                </div>
-            </div>
-            <div class="dashboard">
-                <div class="icon-card">
-                    <img src="icon1.png" alt="Profile Builder">
-                    <h3>Profile Builder</h3>
-                </div>
-                <div class="icon-card">
-                    <img src="icon2.png" alt="Courses">
-                    <h3>Courses</h3>
-                </div>
-                <div class="icon-card">
-                    <img src="icon3.png" alt="Mock Exams">
-                    <h3>Mock Exams</h3>
-                </div>
-                <div class="icon-card">
-                    <img src="icon4.png" alt="Writing Builder">
-                    <h3>Writing Builder</h3>
-                </div>
-                <div class="icon-card">
-                    <img src="icon5.png" alt="Other Services">
-                    <h3>Other Services</h3>
                 </div>
             </div>
         </main>

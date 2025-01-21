@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riderka</title>
     <style>
+        @font-face {
+            font-family: 'Stapel';
+            src: url('https://example.com/fonts/stapel.woff2') format('woff2'); /* Replace with actual font URL */
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Stapel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #ffffff;
@@ -16,7 +20,7 @@
             background-color: #ffffff;
             padding: 20px;
             text-align: center;
-            border-bottom: 5px solid #f4a261;
+            border-bottom: 5px solid #FFC700; /* Pantone 116c */
             position: relative;
         }
         header::after {
@@ -24,19 +28,19 @@
             position: absolute;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, #f4a261, #6a0dad);
+            background: linear-gradient(to right, #FFC700, #6B3FA0); /* Pantone 116c and Pantone 2665c */
             bottom: 0;
             left: 0;
         }
         header h1 {
             margin: 0;
             font-size: 2.5rem;
-            color: #6a0dad;
+            color: #6B3FA0; /* Pantone 2665c */
         }
         header p {
             margin: 10px 0 0;
             font-size: 1.2rem;
-            color: #f4a261;
+            color: #FFC700; /* Pantone 116c */
         }
         main {
             padding: 40px;
@@ -57,7 +61,7 @@
             position: absolute;
             width: 30%;
             height: 5px;
-            background: #6a0dad;
+            background: #6B3FA0; /* Pantone 2665c */
             top: -10px;
             left: 10px;
         }
@@ -66,14 +70,14 @@
             position: absolute;
             width: 20%;
             height: 5px;
-            background: #f4a261;
+            background: #FFC700; /* Pantone 116c */
             bottom: -10px;
             right: 10px;
         }
         .text-block h2 {
             margin: 0 0 15px;
             font-size: 1.6rem;
-            color: #6a0dad;
+            color: #6B3FA0; /* Pantone 2665c */
         }
         .text-block p {
             margin: 0;

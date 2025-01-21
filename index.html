@@ -13,10 +13,20 @@
             color: #333;
         }
         header {
-            background-color: #f8f3ff;
+            background-color: #ffffff;
             padding: 20px;
             text-align: center;
-            border-bottom: 5px solid #fce5d8;
+            border-bottom: 5px solid #f4a261;
+            position: relative;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #f4a261, #6a0dad);
+            bottom: 0;
+            left: 0;
         }
         header h1 {
             margin: 0;
@@ -35,11 +45,30 @@
             gap: 40px;
         }
         .text-block {
-            background-color: #fffdf8;
+            background-color: #ffffff;
             padding: 30px;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .text-block::before {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 5px;
+            background: #6a0dad;
+            top: -10px;
+            left: 10px;
+        }
+        .text-block::after {
+            content: '';
+            position: absolute;
+            width: 20%;
+            height: 5px;
+            background: #f4a261;
+            bottom: -10px;
+            right: 10px;
         }
         .text-block h2 {
             margin: 0 0 15px;

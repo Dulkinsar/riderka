@@ -95,9 +95,65 @@
         }
         main {
             padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .text-block {
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .text-block::before {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 5px;
+            background: #6B3FA0;
+            top: -10px;
+            left: 10px;
+        }
+        .text-block::after {
+            content: '';
+            position: absolute;
+            width: 20%;
+            height: 5px;
+            background: #FFC700;
+            bottom: -10px;
+            right: 10px;
+        }
+        .text-block h2 {
+            margin: 0 0 15px;
+            font-size: 1.8rem;
+            color: #6B3FA0;
+        }
+        .text-block p {
+            margin: 0 0 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #FFC700;
+            color: #6B3FA0;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .buttons button:hover {
+            background-color: #6B3FA0;
+            color: #FFC700;
         }
         .dashboard {
-            margin-top: 20px;
+            margin-top: 40px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;

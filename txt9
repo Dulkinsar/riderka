@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text 9</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #6B3FA0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text 9</h1>
+  <p>Riderka is more than a platform—it’s a movement. Together, we can redefine success and create a world where everyone has the opportunity to thrive. Join us in building a future where dreams are not just imagined but realized!</p>
+  <a href="index.html">Back to Home</a>
+</body>
+</html>

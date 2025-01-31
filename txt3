@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text 3</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #6B3FA0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text 3</h1>
+  <p>Unlock your true potential with Riderka. We believe in creating opportunities for everyone, regardless of their background or goals. Dive into a wealth of resources, from educational content to networking opportunities, all designed to help you succeed. Your aspirations are our inspiration!</p>
+  <a href="index.html">Back to Home</a>
+</body>
+</html>

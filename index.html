@@ -181,9 +181,11 @@
       -webkit-box-orient: vertical;
       transition: all 0.3s ease;
     }
+    /* When expanded, show the full text */
     .text-block.expanded p {
       -webkit-line-clamp: unset;
     }
+    /* Toggle button styling */
     .toggle-btn {
       background: none;
       border: none;
@@ -193,11 +195,17 @@
       text-decoration: underline;
       padding: 0;
     }
-    .buttons {
+    /* Reaction Buttons: hidden by default and visible when expanded */
+    .reaction-buttons {
+      display: none;
+      margin-top: 10px;
+    }
+    .text-block.expanded .reaction-buttons {
       display: flex;
       gap: 10px;
     }
-    .buttons button {
+    /* Like/Dislike button styling */
+    .reaction-buttons button {
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -206,7 +214,7 @@
       font-weight: bold;
       cursor: pointer;
     }
-    .buttons button:hover {
+    .reaction-buttons button:hover {
       background-color: #6B3FA0;
       color: #FFC700;
     }
@@ -286,6 +294,10 @@
           Рекордсмен по количеству матчей, сыгранных за национальную сборную, лучший бомбардир в истории футбола по данным МФФИИС и четвёртый по данным RSSSF[англ.], самый результативный футболист на уровне сборных[13]. Признан Португальской футбольной федерацией лучшим игроком в истории португальского футбола[14]. Первый футболист в истории, которому удалось выиграть английскую Премьер-лигу, испанскую Примеру и итальянскую Серию A[15]. Признавался лучшим игроком и бомбардиром сезона в каждом из этих турниров.
         </p>
         <button class="toggle-btn" onclick="toggleText('text1', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 2 -->
@@ -295,6 +307,10 @@
           At Riderka, innovation meets inspiration. Our mission is to empower individuals by providing them with tools, insights, and a supportive community to thrive in today's dynamic world. Start your journey with us and experience the difference we make together. Growth starts here!
         </p>
         <button class="toggle-btn" onclick="toggleText('text2', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 3 -->
@@ -304,6 +320,10 @@
           Unlock your true potential with Riderka. We believe in creating opportunities for everyone, regardless of their background or goals. Dive into a wealth of resources, from educational content to networking opportunities, all designed to help you succeed. Your aspirations are our inspiration!
         </p>
         <button class="toggle-btn" onclick="toggleText('text3', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 4 -->
@@ -313,6 +333,10 @@
           Discover a world of possibilities with Riderka. Our platform offers unparalleled support and resources to help you navigate your personal and professional journeys. With Riderka, growth is not just a goal—it’s a way of life. Let’s build a brighter future together!
         </p>
         <button class="toggle-btn" onclick="toggleText('text4', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 5 -->
@@ -322,6 +346,10 @@
           Riderka is your partner in progress. Whether you're an innovator, learner, or dreamer, our tools and community are here to help you succeed. Join us to share your story, learn from others, and create lasting impact. Together, we rise!
         </p>
         <button class="toggle-btn" onclick="toggleText('text5', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 6 -->
@@ -331,6 +359,10 @@
           At Riderka, every journey matters. Our mission is to provide you with the guidance and resources needed to achieve greatness. Explore our comprehensive tools and join a community of passionate individuals working towards their dreams. Start today and transform your tomorrow!
         </p>
         <button class="toggle-btn" onclick="toggleText('text6', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 7 -->
@@ -340,6 +372,10 @@
           Step into the future with Riderka. We’re here to empower you with knowledge, insights, and a network of supportive peers. Together, let’s break barriers, redefine success, and achieve the extraordinary. Your journey to greatness starts here!
         </p>
         <button class="toggle-btn" onclick="toggleText('text7', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 8 -->
@@ -349,6 +385,10 @@
           Join the Riderka community and unlock a treasure trove of opportunities. From learning new skills to building connections, we’re dedicated to helping you grow. Embrace the power of collaboration and take the first step towards a brighter future with us!
         </p>
         <button class="toggle-btn" onclick="toggleText('text8', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 9 -->
@@ -358,6 +398,10 @@
           Riderka is more than a platform—it’s a movement. Together, we can redefine success and create a world where everyone has the opportunity to thrive. Join us in building a future where dreams are not just imagined but realized!
         </p>
         <button class="toggle-btn" onclick="toggleText('text9', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
       <!-- Text Block 10 -->
@@ -367,6 +411,10 @@
           Welcome to a community that believes in you. At Riderka, we celebrate every milestone and support you through every challenge. Together, we can turn your ambitions into achievements. The path to success begins with a single step—take it with Riderka!
         </p>
         <button class="toggle-btn" onclick="toggleText('text10', this)">Read More</button>
+        <div class="reaction-buttons">
+          <button>Like</button>
+          <button>Dislike</button>
+        </div>
       </div>
       
     </main>

@@ -1,364 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riderka</title>
-  <style>
-    /* Font & Global Styles */
-    @font-face {
-      font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    }
-    body {
-      font-family: 'Stapel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #333;
-    }
-    
-    /* Login Container Styles */
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f0f0;
-    }
-    .login-box {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 300px;
-    }
-    .login-box h2 {
-      margin-bottom: 20px;
-      color: #6B3FA0;
-    }
-    .login-box input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .login-box button {
-      width: 100%;
-      padding: 10px;
-      background-color: #FFC700;
-      border: none;
-      border-radius: 5px;
-      color: #6B3FA0;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .login-box button:hover {
-      background-color: #6B3FA0;
-      color: #FFC700;
-    }
-    .hidden {
-      display: none;
-    }
-    
-    /* Header Styles */
-    header {
-      background-color: #ffffff;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 5px solid #FFC700;
-      position: relative;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, #FFC700, #6B3FA0);
-      bottom: 0;
-      left: 0;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 3rem;
-      color: #6B3FA0;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    header p {
-      margin: 10px 0 0;
-      font-size: 1.2rem;
-      color: #FFC700;
-    }
-    .slogan {
-      margin-top: 20px;
-      font-size: 2rem;
-      color: #6B3FA0;
-      font-weight: bold;
-    }
-    
-    /* Icon Row Styles */
-    .icon-row {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
-      padding: 20px;
-      background-color: #f9f9ff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .icon-card {
-      background-color: #FFC700;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-      cursor: pointer;
-      width: 150px;
-    }
-    .icon-card:hover {
-      transform: scale(1.05);
-    }
-    .icon-card img {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 10px;
-    }
-    .icon-card h3 {
-      color: #6B3FA0;
-      font-size: 1.2rem;
-      margin: 0;
-    }
-    
-    /* Main Content & Text Blocks */
-    main {
-      padding: 40px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 40px;
-      align-items: start;  /* Prevents grid items from stretching to the tallest item */
-    }
-    .text-block {
-      background-color: #ffffff;
-      padding: 30px;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .text-block::before {
-      content: '';
-      position: absolute;
-      width: 30%;
-      height: 5px;
-      background: #6B3FA0;
-      top: -10px;
-      left: 10px;
-    }
-    .text-block::after {
-      content: '';
-      position: absolute;
-      width: 20%;
-      height: 5px;
-      background: #FFC700;
-      bottom: -10px;
-      right: 10px;
-    }
-    .text-block h2 {
-      margin: 0 0 15px;
-      font-size: 1.8rem;
-      color: #6B3FA0;
-    }
-    .text-block p {
-      margin: 0 0 15px;
-      line-height: 1.8;
-      color: #555;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      transition: all 0.3s ease;
-    }
-    /* When expanded, show the full text */
-    .text-block.expanded p {
-      -webkit-line-clamp: unset;
-    }
-    /* Toggle button styling */
-    .toggle-btn {
-      background: none;
-      border: none;
-      color: #0066cc;
-      cursor: pointer;
-      font-size: 1em;
-      text-decoration: underline;
-      padding: 0;
-    }
-    /* Reaction Buttons: hidden by default and visible when expanded */
-    .reaction-buttons {
-      display: none;
-      margin-top: 10px;
-    }
-    .text-block.expanded .reaction-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    /* Like/Dislike button styling */
-    .reaction-buttons button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #FFC700;
-      color: #6B3FA0;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .reaction-buttons button:hover {
-      background-color: #6B3FA0;
-      color: #FFC700;
-    }
-  </style>
-  <!-- Main Content Section -->
-  <div id="main-content" class="hidden">
-    <header>
-      <h1>Riderka</h1>
-      <p class="slogan">GC - твой шаг в будущее!</p>
-    </header>
-    
-    <main>
-      <!-- Text Block 1 -->
-      <div class="text-block" id="text1">
-        <h2>Text 1</h2>
-        <p>
-          Рекордсмен по количеству матчей, сыгранных за национальную сборную, лучший бомбардир в истории футбола по данным МФФИИС и четвёртый по данным RSSSF[англ.], самый результативный футболист на уровне сборных[13]. Признан Португальской футбольной федерацией лучшим игроком в истории португальского футбола[14]. Первый футболист в истории, которому удалось выиграть английскую Премьер-лигу, испанскую Примеру и итальянскую Серию A[15]. Признавался лучшим игроком и бомбардиром сезона в каждом из этих турниров.
-        </p>
-        <a href="/texts/txt1.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .text-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview {
+            flex-grow: 1;
+            padding: 0 10px;
+        }
+        .link {
+            color: blue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Text</h1>
+        
+        <div class="text-box">
+            <span>Test 1</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 2 -->
-      <div class="text-block" id="text2">
-        <h2>Text 2</h2>
-        <p>
-          At Riderka, innovation meets inspiration. Our mission is to empower individuals by providing them with tools, insights, and a supportive community to thrive in today's dynamic world. Start your journey with us and experience the difference we make together. Growth starts here!
-        </p>
-         <a href="/texts/txt2.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 2</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 3 -->
-      <div class="text-block" id="text3">
-        <h2>Text 3</h2>
-        <p>
-          Unlock your true potential with Riderka. We believe in creating opportunities for everyone, regardless of their background or goals. Dive into a wealth of resources, from educational content to networking opportunities, all designed to help you succeed. Your aspirations are our inspiration!
-        </p>
-        <a href="/texts/txt3.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 3</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 4 -->
-      <div class="text-block" id="text4">
-        <h2>Text 4</h2>
-        <p>
-          Discover a world of possibilities with Riderka. Our platform offers unparalleled support and resources to help you navigate your personal and professional journeys. With Riderka, growth is not just a goal—it’s a way of life. Let’s build a brighter future together!
-        </p>
-        <a href="/texts/txt4.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 4</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 5 -->
-      <div class="text-block" id="text5">
-        <h2>Text 5</h2>
-        <p>
-          Riderka is your partner in progress. Whether you're an innovator, learner, or dreamer, our tools and community are here to help you succeed. Join us to share your story, learn from others, and create lasting impact. Together, we rise!
-        </p>
-        <a href="/texts/txt5.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 5</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 6 -->
-      <div class="text-block" id="text6">
-        <h2>Text 6</h2>
-        <p>
-          At Riderka, every journey matters. Our mission is to provide you with the guidance and resources needed to achieve greatness. Explore our comprehensive tools and join a community of passionate individuals working towards their dreams. Start today and transform your tomorrow!
-        </p>
-        <a href="/texts/txt6.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 6</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 7 -->
-      <div class="text-block" id="text7">
-        <h2>Text 7</h2>
-        <p>
-          Step into the future with Riderka. We’re here to empower you with knowledge, insights, and a network of supportive peers. Together, let’s break barriers, redefine success, and achieve the extraordinary. Your journey to greatness starts here!
-        </p>
-       <a href="/texts/txt1.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 7</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 8 -->
-      <div class="text-block" id="text8">
-        <h2>Text 8</h2>
-        <p>
-          Join the Riderka community and unlock a treasure trove of opportunities. From learning new skills to building connections, we’re dedicated to helping you grow. Embrace the power of collaboration and take the first step towards a brighter future with us!
-        </p>
-        <a href="/texts/txt8.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 8</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 9 -->
-      <div class="text-block" id="text9">
-        <h2>Text 9</h2>
-        <p>
-          Riderka is more than a platform—it’s a movement. Together, we can redefine success and create a world where everyone has the opportunity to thrive. Join us in building a future where dreams are not just imagined but realized!
-        </p>
-         <a href="/texts/txt9.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 9</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-      <!-- Text Block 10 -->
-      <div class="text-block" id="text10">
-        <h2>Text 10</h2>
-        <p>
-          Welcome to a community that believes in you. At Riderka, we celebrate every milestone and support you through every challenge. Together, we can turn your ambitions into achievements. The path to success begins with a single step—take it with Riderka!
-        </p>
-          <a href="/texts/txt10.html"> link </a>
-        <div class="reaction-buttons">
-          <button>Like</button>
-          <button>Dislike</button>
+        <div class="text-box">
+            <span>Test 10</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
         </div>
-      </div>
-      
-    </main>
-  </div>
+    </div>
 </body>
 </html>

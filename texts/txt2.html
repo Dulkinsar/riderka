@@ -1,61 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text 1</title>
-  <style>
-    body {
-      font-family: 'SF Pro Display', sans-serif;
-      margin: 0;
-      padding: 40px;
-      background-color: #FAFAFA;
-      color: #1D1D1F;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      height: 100vh;
-      justify-content: center;
-    }
-    h1 {
-      color: #6B3FA0;
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    p {
-      max-width: 600px;
-      font-size: 1.2rem;
-      line-height: 1.8;
-      color: #333;
-      opacity: 0.9;
-    }
-    a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 40px;
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      background: linear-gradient(90deg, #FFC107, #FF9800);
-      text-decoration: none;
-      border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
-      transition: all 0.3s ease;
-    }
-    a:hover {
-      background: linear-gradient(90deg, #FFB300, #FF8F00);
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(255, 193, 7, 0.4);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Text</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+        }
+        h1 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .text-box {
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f5f5f7;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .text-box:hover {
+            background-color: #e5e5ea;
+        }
+        .preview {
+            flex-grow: 1;
+            padding: 0 15px;
+            font-weight: 500;
+        }
+        .link {
+            color: #6b59ff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .link:hover {
+            color: #ffcc00;
+        }
+    </style>
 </head>
 <body>
-  <h1>Text 1</h1>
-  <p>We emerged in 1885 from a place of tragedy and hope. Leland and Jane Stanford founded us in memory of their son, who passed away at a young age. They envisioned us as a university that would educate future generations to contribute to society. Nestled in California’s Silicon Valley, we became a cradle of innovation, giving rise to world-changing companies and ideas. Our entrepreneurial spirit and academic excellence define us, making us a beacon of progress.</p>
-  <a href="index.html">Back to Home</a>
+    <div class="container">
+        <h1>Choose Text</h1>
+        
+        <div class="text-box">
+            <span>Test 1</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 2</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 3</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 4</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 5</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 6</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 7</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 8</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 9</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+        <div class="text-box">
+            <span>Test 10</span>
+            <span class="preview">Lorem ipsum dolor...</span>
+            <span class="link">Link</span>
+        </div>
+    </div>
 </body>
 </html>

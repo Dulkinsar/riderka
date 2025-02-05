@@ -163,7 +163,7 @@
                     word.addEventListener("mouseenter", function(event) {
                         tooltip.style.display = "block";
                         tooltip.innerHTML = `<strong>${this.textContent}</strong><br><span style='color:gray'>(Definition here)</span>`;
-                        tooltip.style.left = event.pageX + "px";
+                        tooltip.style.left = (event.pageX + 30) + "px";
                         tooltip.style.top = (event.pageY - 30) + "px";
                     });
                     word.addEventListener("mouseleave", function() {

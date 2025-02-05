@@ -75,19 +75,6 @@
             font-size: 12px;
             border-radius: 5px;
         }
-          .half {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 50%;
-            transition: background-color 0.3s ease;
-        }
-        .left-half { left: 0; }
-        .right-half { right: 0; }
-        .like { background-color: #4CAF50; color: white; }
-        .dislike { background-color: #f44336; color: white; }
-        .clear { background-color: #2196F3; color: white; }
-        .unclear { background-color: #FF9800; color: white; }
         .wordbank {
             background: white;
             padding: 20px;
@@ -202,19 +189,6 @@
             
             addTooltipEffect("quote1");
             addTooltipEffect("quote2");
-        });
-    </script>
-     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".buttons-container").forEach(container => {
-                const leftHalf = container.querySelector(".left-half");
-                const rightHalf = container.querySelector(".right-half");
-                
-                container.querySelector(".like").addEventListener("click", () => leftHalf.style.backgroundColor = "#4CAF50");
-                container.querySelector(".dislike").addEventListener("click", () => leftHalf.style.backgroundColor = "#f44336");
-                container.querySelector(".clear").addEventListener("click", () => rightHalf.style.backgroundColor = "#2196F3");
-                container.querySelector(".unclear").addEventListener("click", () => rightHalf.style.backgroundColor = "#FF9800");
-            });
         });
     </script>
 </body>

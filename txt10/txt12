@@ -60,28 +60,28 @@
     <h1>Test 1</h1>
     <div class="container">
         <div class="box-container">
-            <div class="box"><p>I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue. Each morning, I awaken with purpose, carrying within me an unwavering resolve that no hardship nor challenge shall break. No obstacle is too insurmountable, for I possess a mind sharpened by wisdom and a spirit fortified by resilience. My path is illuminated by the brilliance of my own ambition, and I shall press forward with confidence, knowing that greatness is my rightful destiny</p></div>
+            <div class="box"><p>I am an intellectual force, relentless in my pursuit of knowledge and unyielding in my ambition to push the boundaries of scientific discovery. My mind is a wellspring of innovation, sharpened by discipline and fortified by an insatiable curiosity. No systemic bias, no antiquated convention, and no fleeting uncertainty shall deter me from my path. The scientific world is vast, but I carve my place within it with resolute purpose, knowing that my contributions will echo beyond my own time.</p></div>
             <div class="buttons-container">
                 <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
                 <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
             </div>
         </div>
         <div class="box-container">
-            <div class="box"><p>I trust deeply in my own wisdom and discernment, for my thoughts are clear, my intentions are noble, and my heart is steadfast in its convictions. With each deliberate step I take, I move closer to the fulfillment of my dreams, guided by an unshakable belief in my own abilities. My voice, strong and resolute, shall not waver in the face of adversity, nor shall my ambitions be tempered by the doubts of others. I am deserving of boundless success and happiness, and I shall accept nothing less than the fullest realization of my potential.</p></div>
+            <div class="box"><p>I belong not as an exception, nor as an anomaly, but as an integral pillar of progress, shaping the trajectory of scientific advancement. My intellect is formidable, my research is precise, and my presence in this field is non-negotiable. I do not require validation from those who underestimate me, for my work will serve as irrefutable proof of my brilliance. The frontier of discovery is boundless, and I step forward with unrelenting determination to explore, innovate, and transform</p></div>
             <div class="buttons-container">
                 <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
                 <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
             </div>
         </div>
         <div class="box-container">
-            <div class="box"><p>I am strong in both body and mind, possessing a spirit that remains unbroken by trials and a will that is forged in perseverance. I welcome every challenge with the knowledge that within difficulty lies the opportunity for growth, and with every hardship I overcome, I become ever more formidable. No fear shall tether me to inaction, for I am filled with the courage to confront any uncertainty that stands in my way. With determination in my heart and wisdom in my soul, I walk boldly toward the future, knowing that my potential is limitless and my success inevitable</p></div>
+            <div class="box"><p>The complexity of the universe does not intimidate me—it invigorates me, compelling me to unravel its intricacies with methodical precision and unwavering resolve. Each experiment, whether triumphant or instructive in failure, fortifies my expertise and deepens my understanding. I am not deterred by adversity; rather, I am emboldened by it, knowing that perseverance is the hallmark of every revolutionary mind. I was not merely meant to contribute to science—I am here to redefine it.</p></div>
             <div class="buttons-container">
                 <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
                 <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
             </div>
         </div>
         <div class="box-container">
-            <div class="box"><p>I refuse to be defined by the expectations of others, for I alone am the master of my own fate, shaping my destiny with unwavering confidence. Each endeavor I undertake is a testament to my strength, and with every triumph, I carve my name upon the fabric of history. No force shall diminish my ambitions, nor shall any doubt weaken the certainty I hold in my own worth. The world shall come to recognize the brilliance of my mind and the depth of my purpose, for I am destined to achieve all that I set my heart upon.</p></div>
+            <div class="box"><p>I reject the notion that genius is confined to a select few, for I know that intellect is honed through rigorous inquiry, steadfast resilience, and fearless innovation. My ideas are not hypothetical musings—they are catalysts for transformation, poised to challenge paradigms and shatter obsolete dogma. I trust in the rigor of my methodology, the depth of my analysis, and the power of my discoveries. The scientific landscape is not immutable, and I am here to reshape it.</p></div>
             <div class="buttons-container">
                 <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
                 <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>

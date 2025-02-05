@@ -37,7 +37,7 @@
             position: absolute;
             background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 10px 20px;
+            padding: 5px 10px;
             border-radius: 5px;
             font-size: 14px;
             display: none;
@@ -66,6 +66,15 @@
         .dislike { background-color: #f44336; color: white; }
         .clear { background-color: #2196F3; color: white; }
         .unclear { background-color: #FF9800; color: white; }
+        .wordbank {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin-top: 20px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -73,37 +82,21 @@
     <div class="container">
         <div class="box-container">
             <div class="box">
-                <p id="quote1">I am intelligenttttttttttttttttttttttttttt beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue.</p>
+                <p id="quote1">I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue.</p>
                 <div class="tooltip" id="tooltip"></div>
-            </div>
-            <div class="buttons-container">
-                <div class="buttons">
-                    <button class="like">Like</button>
-                    <button class="dislike">Dislike</button>
-                </div>
-                <div class="buttons">
-                    <button class="clear">Clear</button>
-                    <button class="unclear">Unclear</button>
-                </div>
             </div>
         </div>
 
         <div class="box-container">
             <div class="box">
                 <p id="quote2">Success is not final, failure is not fatal: it is the courage to continue that counts.</p>
-                <div class="tooltip" id="tooltip"></div>
-            </div>
-            <div class="buttons-container">
-                <div class="buttons">
-                    <button class="like">Like</button>
-                    <button class="dislike">Dislike</button>
-                </div>
-                <div class="buttons">
-                    <button class="clear">Clear</button>
-                    <button class="unclear">Unclear</button>
-                </div>
             </div>
         </div>
+    </div>
+
+    <div class="wordbank" id="wordbank">
+        <h3>Word Bank</h3>
+        <ul id="wordList"></ul>
     </div>
 
     <script>
@@ -113,8 +106,9 @@
                 quoteBox.innerHTML = quoteBox.textContent.split(" ").map(word => `<span class='word'>${word}</span>`).join(" ");
                 
                 const tooltip = document.getElementById("tooltip");
+                const wordList = document.getElementById("wordList");
                 
-                document.querySelectorAll(".word").forEach(word => {
+                document.querySelectorAll(`#${quoteId} .word`).forEach(word => {
                     word.addEventListener("mouseenter", function(event) {
                         tooltip.style.display = "block";
                         tooltip.innerHTML = `<strong>${this.textContent}</strong><br><span style='color:gray'>(Definition here)</span>`;
@@ -123,6 +117,13 @@
                     });
                     word.addEventListener("mouseleave", function() {
                         tooltip.style.display = "none";
+                    });
+                    word.addEventListener("click", function() {
+                        if (![...wordList.children].some(li => li.textContent === this.textContent)) {
+                            const newWord = document.createElement("li");
+                            newWord.textContent = this.textContent;
+                            wordList.appendChild(newWord);
+                        }
                     });
                 });
             }

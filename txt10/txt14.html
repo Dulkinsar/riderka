@@ -10,7 +10,7 @@
             text-align: center;
             background-color: #f4f4f4;
             padding: 50px;
-            line-height: 2; /* Double spacing */
+            line-height: 2;
         }
         .container {
             display: flex;
@@ -56,6 +56,29 @@
             font-size: 14px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            background: #ddd;
+            padding: 15px;
+            border-radius: 0 0 10px 10px;
+            width: 100%;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+        .like { background-color: #4CAF50; color: white; }
+        .dislike { background-color: #f44336; color: white; }
+        .clear { background-color: #2196F3; color: white; }
+        .unclear { background-color: #FF9800; color: white; }
         .wordbank {
             background: white;
             padding: 20px;
@@ -75,17 +98,15 @@
             <div class="box">
                 <p id="quote1">I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue.</p>
             </div>
-        </div>
-
-        <div class="box-container">
-            <div class="box">
-                <p id="quote2">Success is not final, failure is not fatal: it is the courage to continue that counts.</p>
-            </div>
-        </div>
-
-        <div class="box-container">
-            <div class="box">
-                <p id="quote3">Perseverance and dedication turn dreams into reality. Hard work never goes unnoticed, and those who remain steadfast in their pursuit shall reap the rewards of their efforts.</p>
+            <div class="buttons-container">
+                <div class="buttons">
+                    <button class="like">Like</button>
+                    <button class="dislike">Dislike</button>
+                </div>
+                <div class="buttons">
+                    <button class="clear">Clear</button>
+                    <button class="unclear">Unclear</button>
+                </div>
             </div>
         </div>
     </div>
@@ -104,16 +125,16 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            let selectedWord = "";
+            const tooltip = document.getElementById("tooltip");
+            const confirmation = document.getElementById("confirmation");
+            const confirmYes = document.getElementById("confirmYes");
+            const confirmNo = document.getElementById("confirmNo");
+            const wordList = document.getElementById("wordList");
+            
             function addTooltipEffect(quoteId) {
                 const quoteBox = document.getElementById(quoteId);
                 quoteBox.innerHTML = quoteBox.textContent.split(" ").map(word => `<span class='word'>${word}</span>`).join(" ");
-                
-                const tooltip = document.getElementById("tooltip");
-                const confirmation = document.getElementById("confirmation");
-                const confirmYes = document.getElementById("confirmYes");
-                const confirmNo = document.getElementById("confirmNo");
-                const wordList = document.getElementById("wordList");
-                let selectedWord = "";
                 
                 document.querySelectorAll(`#${quoteId} .word`).forEach(word => {
                     word.addEventListener("mouseenter", function(event) {
@@ -127,31 +148,27 @@
                     });
                     word.addEventListener("click", function(event) {
                         selectedWord = this.textContent.trim();
-                        if (selectedWord !== "") {
-                            confirmation.style.display = "block";
-                            confirmation.style.left = event.pageX + "px";
-                            confirmation.style.top = (event.pageY - 50) + "px";
-                        }
+                        confirmation.style.display = "block";
+                        confirmation.style.left = event.pageX + "px";
+                        confirmation.style.top = (event.pageY - 50) + "px";
                     });
-                });
-                
-                confirmYes.addEventListener("click", function() {
-                    if (selectedWord !== "" && ![...wordList.children].some(li => li.textContent === selectedWord)) {
-                        const newWord = document.createElement("li");
-                        newWord.textContent = selectedWord;
-                        wordList.appendChild(newWord);
-                    }
-                    confirmation.style.display = "none";
-                });
-                
-                confirmNo.addEventListener("click", function() {
-                    confirmation.style.display = "none";
                 });
             }
             
+            confirmYes.addEventListener("click", function() {
+                if (selectedWord !== "" && ![...wordList.children].some(li => li.textContent === selectedWord)) {
+                    const newWord = document.createElement("li");
+                    newWord.textContent = selectedWord;
+                    wordList.appendChild(newWord);
+                }
+                confirmation.style.display = "none";
+            });
+            
+            confirmNo.addEventListener("click", function() {
+                confirmation.style.display = "none";
+            });
+            
             addTooltipEffect("quote1");
-            addTooltipEffect("quote2");
-            addTooltipEffect("quote3");
         });
     </script>
 </body>

@@ -10,19 +10,20 @@
             text-align: center;
             background-color: #f4f4f4;
             padding: 50px;
+            line-height: 2; /* Double spacing */
         }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 50px;
+            gap: 70px;
         }
         .box-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 70%;
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
         .box {
             background: white;
@@ -32,6 +33,7 @@
             text-align: left;
             width: 100%;
             position: relative;
+            line-height: 2;
         }
         .tooltip {
             position: absolute;
@@ -50,33 +52,10 @@
             border: 1px solid black;
             border-radius: 5px;
             display: none;
-            z-index: 10;
+            z-index: 11;
             font-size: 14px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
-        .buttons-container {
-            display: flex;
-            justify-content: space-between;
-            background: #ddd;
-            padding: 15px;
-            border-radius: 0 0 10px 10px;
-            width: 100%;
-        }
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            border-radius: 5px;
-        }
-        .like { background-color: #4CAF50; color: white; }
-        .dislike { background-color: #f44336; color: white; }
-        .clear { background-color: #2196F3; color: white; }
-        .unclear { background-color: #FF9800; color: white; }
         .wordbank {
             background: white;
             padding: 20px;
@@ -85,6 +64,7 @@
             width: 50%;
             margin-top: 20px;
             text-align: left;
+            line-height: 2;
         }
     </style>
 </head>
@@ -94,12 +74,18 @@
         <div class="box-container">
             <div class="box">
                 <p id="quote1">I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue.</p>
-                <div class="tooltip" id="tooltip"></div>
-                <div class="confirmation" id="confirmation">
-                    <p>Add to Word Bank?</p>
-                    <button id="confirmYes">Yes</button>
-                    <button id="confirmNo">No</button>
-                </div>
+            </div>
+        </div>
+
+        <div class="box-container">
+            <div class="box">
+                <p id="quote2">Success is not final, failure is not fatal: it is the courage to continue that counts.</p>
+            </div>
+        </div>
+
+        <div class="box-container">
+            <div class="box">
+                <p id="quote3">Perseverance and dedication turn dreams into reality. Hard work never goes unnoticed, and those who remain steadfast in their pursuit shall reap the rewards of their efforts.</p>
             </div>
         </div>
     </div>
@@ -107,6 +93,13 @@
     <div class="wordbank" id="wordbank">
         <h3>Word Bank</h3>
         <ul id="wordList"></ul>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+    <div class="confirmation" id="confirmation">
+        <p>Add to Word Bank?</p>
+        <button id="confirmYes">Yes</button>
+        <button id="confirmNo">No</button>
     </div>
 
     <script>
@@ -133,15 +126,17 @@
                         tooltip.style.display = "none";
                     });
                     word.addEventListener("click", function(event) {
-                        selectedWord = this.textContent;
-                        confirmation.style.display = "block";
-                        confirmation.style.left = event.pageX + "px";
-                        confirmation.style.top = (event.pageY - 50) + "px"; // Adjusted to appear above the word
+                        selectedWord = this.textContent.trim();
+                        if (selectedWord !== "") {
+                            confirmation.style.display = "block";
+                            confirmation.style.left = event.pageX + "px";
+                            confirmation.style.top = (event.pageY - 50) + "px";
+                        }
                     });
                 });
                 
                 confirmYes.addEventListener("click", function() {
-                    if (![...wordList.children].some(li => li.textContent === selectedWord)) {
+                    if (selectedWord !== "" && ![...wordList.children].some(li => li.textContent === selectedWord)) {
                         const newWord = document.createElement("li");
                         newWord.textContent = selectedWord;
                         wordList.appendChild(newWord);
@@ -155,6 +150,8 @@
             }
             
             addTooltipEffect("quote1");
+            addTooltipEffect("quote2");
+            addTooltipEffect("quote3");
         });
     </script>
 </body>

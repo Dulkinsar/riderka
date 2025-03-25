@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title> Test 1 </title>
+  <title>Dulat the Great's Quotes</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -87,7 +87,7 @@
   </style>
 </head>
 <body>
-  <h1>Test 1</h1>
+  <h1>Dulat the Great's Legendary Words</h1>
   <div class="container" id="quoteContainer"></div>
 
   <script>
@@ -112,7 +112,7 @@
 
       const words = text.split(' ').map(word => {
         const cleanWord = word.replace(/[.,]/g, '');
-        return `<span class="word">${word}<div class="cloud"><p><strong>${cleanWord}</strong></p><p>Definition</p></div></span>`;
+        return `<span class="word" data-word="${cleanWord}">${word}<div class="cloud"><p><strong>${cleanWord}</strong></p><p class="definition">Definition</p></div></span>`;
       });
 
       box.innerHTML = words.join(' ');
@@ -134,16 +134,29 @@
       container.appendChild(boxContainer);
     });
 
-    // Activate popup on word click
-    document.addEventListener('click', (e) => {
+    // Activate popup on word click and fetch definition
+    document.addEventListener('click', async (e) => {
+      const allWords = document.querySelectorAll('.word');
       if (e.target.classList.contains('word') || e.target.closest('.word')) {
         const word = e.target.closest('.word');
-        document.querySelectorAll('.word').forEach(el => {
+        allWords.forEach(el => {
           if (el !== word) el.classList.remove('active');
         });
         word.classList.toggle('active');
+
+        const wordText = word.getAttribute('data-word').toLowerCase();
+        const defElement = word.querySelector('.definition');
+
+        try {
+          const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordText}`);
+          const data = await res.json();
+          const meaning = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definition not found';
+          defElement.textContent = meaning;
+        } catch (err) {
+          defElement.textContent = 'Definition not found';
+        }
       } else {
-        document.querySelectorAll('.word').forEach(el => el.classList.remove('active'));
+        allWords.forEach(el => el.classList.remove('active'));
       }
     });
   </script>

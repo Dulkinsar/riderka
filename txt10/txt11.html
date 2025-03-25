@@ -1,113 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inspirational Quotes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-        .box-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 70%;
-        }
-        .box {
-            background: white;
-            padding: 40px;
-            border-radius: 10px 10px 0 0;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            width: 100%;
-        }
-        .buttons-container {
-            display: flex;
-            justify-content: space-between;
-            background: #ddd;
-            padding: 15px;
-            border-radius: 0 0 10px 10px;
-            width: 100%;
-        }
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            border-radius: 5px;
-        }
-        .like { background-color: #4CAF50; color: white; }
-        .dislike { background-color: #f44336; color: white; }
-        .clear { background-color: #2196F3; color: white; }
-        .unclear { background-color: #FF9800; color: white; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dulat the Great's Quotes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 50px;
+    }
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      width: 70%;
+      margin: auto;
+      position: relative;
+    }
+    .word {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      margin: 0 3px;
+    }
+    .cloud {
+      display: none;
+      position: absolute;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      z-index: 10;
+      min-width: 150px;
+    }
+    .cloud p {
+      margin: 5px 0;
+    }
+    .word.active .cloud {
+      display: block;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+    .box-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      background: #ddd;
+      padding: 15px;
+      border-radius: 0 0 10px 10px;
+      width: 70%;
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+    .like { background-color: #4CAF50; color: white; }
+    .dislike { background-color: #f44336; color: white; }
+    .clear { background-color: #2196F3; color: white; }
+    .unclear { background-color: #FF9800; color: white; }
+  </style>
 </head>
 <body>
-    <h1>Test 1</h1>
-    <div class="container">
-        <div class="box-container">
-            <div class="box"><p>I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue. Each morning, I awaken with purpose, carrying within me an unwavering resolve that no hardship nor challenge shall break. No obstacle is too insurmountable, for I possess a mind sharpened by wisdom and a spirit fortified by resilience. My path is illuminated by the brilliance of my own ambition, and I shall press forward with confidence, knowing that greatness is my rightful destiny</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
+  <h1>Dulat the Great's Legendary Words</h1>
+  <div class="container" id="quoteContainer"></div>
+
+  <script>
+    const quotes = [
+      `I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue. Each morning, I awaken with purpose, carrying within me an unwavering resolve that no hardship nor challenge shall break. No obstacle is too insurmountable, for I possess a mind sharpened by wisdom and a spirit fortified by resilience. My path is illuminated by the brilliance of my own ambition, and I shall press forward with confidence, knowing that greatness is my rightful destiny`,
+      `I trust deeply in my own wisdom and discernment, for my thoughts are clear, my intentions are noble, and my heart is steadfast in its convictions. With each deliberate step I take, I move closer to the fulfillment of my dreams, guided by an unshakable belief in my own abilities. My voice, strong and resolute, shall not waver in the face of adversity, nor shall my ambitions be tempered by the doubts of others. I am deserving of boundless success and happiness, and I shall accept nothing less than the fullest realization of my potential.`,
+      `I am strong in both body and mind, possessing a spirit that remains unbroken by trials and a will that is forged in perseverance. I welcome every challenge with the knowledge that within difficulty lies the opportunity for growth, and with every hardship I overcome, I become ever more formidable. No fear shall tether me to inaction, for I am filled with the courage to confront any uncertainty that stands in my way. With determination in my heart and wisdom in my soul, I walk boldly toward the future, knowing that my potential is limitless and my success inevitable`,
+      `I refuse to be defined by the expectations of others, for I alone am the master of my own fate, shaping my destiny with unwavering confidence. Each endeavor I undertake is a testament to my strength, and with every triumph, I carve my name upon the fabric of history. No force shall diminish my ambitions, nor shall any doubt weaken the certainty I hold in my own worth. The world shall come to recognize the brilliance of my mind and the depth of my purpose, for I am destined to achieve all that I set my heart upon.`,
+      `I am deserving of great success, unshakable love, and boundless happiness, and I open my arms wide to embrace all the blessings that life has to offer. I shall never permit fear to dictate my choices, nor shall I allow hesitation to delay the realization of my greatest dreams. No aspiration is too grand, for I possess within me both the vision and the determination to bring my desires into reality. I move forward each day with gratitude, grace, and certainty, knowing that I am worthy of all that I seek, and nothing shall stand in my way.`,
+      `I am fearless in my pursuit of knowledge and ambition, and I do not allow the weight of uncertainty to hinder my progress. My purpose is resolute, my will unrelenting, and my spirit is forged in the fires of perseverance and dedication. I have been blessed with talents both vast and extraordinary, and I shall employ them with wisdom, knowing they are the keys to my success. The world shall bear witness to my strength, and I shall stand tall, unwavering in my belief that my potential knows no limits.`,
+      `I am worthy of every triumph, for my efforts are sincere, my heart is steadfast, and my mind is as keen as the sharpest blade. I honor my ambitions by pursuing them with courage and conviction, never faltering in the face of hardship or doubt. No failure shall ever define me, for every setback is but a stepping stone upon the path to my inevitable success. With each passing day, I grow stronger, wiser, and more resolute in my journey toward greatness, for I know that all that I seek is already within my grasp.`
+    ];
+
+    const container = document.getElementById('quoteContainer');
+
+    quotes.forEach(text => {
+      const boxContainer = document.createElement('div');
+      boxContainer.className = 'box-container';
+
+      const box = document.createElement('div');
+      box.className = 'box';
+
+      const words = text.split(' ').map(word => {
+        const cleanWord = word.replace(/[.,]/g, '');
+        return `<span class="word">${word}<div class="cloud"><p><strong>${cleanWord}</strong></p><p>Definition</p></div></span>`;
+      });
+
+      box.innerHTML = words.join(' ');
+      boxContainer.appendChild(box);
+
+      const buttons = document.createElement('div');
+      buttons.className = 'buttons-container';
+      buttons.innerHTML = `
+        <div class="buttons">
+          <button class="like">Like</button>
+          <button class="dislike">Dislike</button>
         </div>
-        <div class="box-container">
-            <div class="box"><p>I trust deeply in my own wisdom and discernment, for my thoughts are clear, my intentions are noble, and my heart is steadfast in its convictions. With each deliberate step I take, I move closer to the fulfillment of my dreams, guided by an unshakable belief in my own abilities. My voice, strong and resolute, shall not waver in the face of adversity, nor shall my ambitions be tempered by the doubts of others. I am deserving of boundless success and happiness, and I shall accept nothing less than the fullest realization of my potential.</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
+        <div class="buttons">
+          <button class="clear">Clear</button>
+          <button class="unclear">Unclear</button>
         </div>
-        <div class="box-container">
-            <div class="box"><p>I am strong in both body and mind, possessing a spirit that remains unbroken by trials and a will that is forged in perseverance. I welcome every challenge with the knowledge that within difficulty lies the opportunity for growth, and with every hardship I overcome, I become ever more formidable. No fear shall tether me to inaction, for I am filled with the courage to confront any uncertainty that stands in my way. With determination in my heart and wisdom in my soul, I walk boldly toward the future, knowing that my potential is limitless and my success inevitable</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box"><p>I refuse to be defined by the expectations of others, for I alone am the master of my own fate, shaping my destiny with unwavering confidence. Each endeavor I undertake is a testament to my strength, and with every triumph, I carve my name upon the fabric of history. No force shall diminish my ambitions, nor shall any doubt weaken the certainty I hold in my own worth. The world shall come to recognize the brilliance of my mind and the depth of my purpose, for I am destined to achieve all that I set my heart upon.</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box"><p>I am deserving of great success, unshakable love, and boundless happiness, and I open my arms wide to embrace all the blessings that life has to offer. I shall never permit fear to dictate my choices, nor shall I allow hesitation to delay the realization of my greatest dreams. No aspiration is too grand, for I possess within me both the vision and the determination to bring my desires into reality. I move forward each day with gratitude, grace, and certainty, knowing that I am worthy of all that I seek, and nothing shall stand in my way.</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box"><p>I am fearless in my pursuit of knowledge and ambition, and I do not allow the weight of uncertainty to hinder my progress. My purpose is resolute, my will unrelenting, and my spirit is forged in the fires of perseverance and dedication. I have been blessed with talents both vast and extraordinary, and I shall employ them with wisdom, knowing they are the keys to my success. The world shall bear witness to my strength, and I shall stand tall, unwavering in my belief that my potential knows no limits.</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box"><p>I am worthy of every triumph, for my efforts are sincere, my heart is steadfast, and my mind is as keen as the sharpest blade. I honor my ambitions by pursuing them with courage and conviction, never faltering in the face of hardship or doubt. No failure shall ever define me, for every setback is but a stepping stone upon the path to my inevitable success. With each passing day, I grow stronger, wiser, and more resolute in my journey toward greatness, for I know that all that I seek is already within my grasp.</p></div>
-            <div class="buttons-container">
-                <div class="buttons"><button class="like">Like</button><button class="dislike">Dislike</button></div>
-                <div class="buttons"><button class="clear">Clear</button><button class="unclear">Unclear</button></div>
-            </div>
-        </div>
-    </div>
+      `;
+      boxContainer.appendChild(buttons);
+      container.appendChild(boxContainer);
+    });
+
+    // Activate popup on word click
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('word') || e.target.closest('.word')) {
+        const word = e.target.closest('.word');
+        document.querySelectorAll('.word').forEach(el => {
+          if (el !== word) el.classList.remove('active');
+        });
+        word.classList.toggle('active');
+      } else {
+        document.querySelectorAll('.word').forEach(el => el.classList.remove('active'));
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,1 +1,80 @@
-wdmdwkmd
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Available Courses | Dulat Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFC700;     /* Gold */
+      --secondary: #6B3FA0;   /* Purple */
+      --bg-dark: #1b1325;
+      --text-light: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 40px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--primary);
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .course-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .course-card {
+      background: var(--primary); /* Now gold */
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: var(--secondary); /* Purple text */
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .course-card h2 {
+      font-size: 1.6em;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Available Courses</h1>
+  <div class="course-list">
+    <div class="course-card">
+      <h2>SAT Prep</h2>
+    </div>
+    <div class="course-card">
+      <h2>IELTS Mastery</h2>
+    </div>
+    <div class="course-card">
+      <h2>Premium Application</h2>
+    </div>
+  </div>
+</body>
+</html>

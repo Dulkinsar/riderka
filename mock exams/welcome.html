@@ -77,6 +77,13 @@
       color: #444;
     }
 
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
     .cta-button {
       background-color: var(--primary);
       color: var(--text);
@@ -87,6 +94,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s ease;
+      min-width: 160px;
     }
 
     .cta-button:hover {
@@ -126,21 +134,24 @@
 </head>
 <body>
 
-  <!-- Background Memphis Shapes -->
+  <!-- Memphis background shapes -->
   <div class="shape circle"></div>
   <div class="shape triangle"></div>
 
-  <!-- Hero Section -->
+  <!-- Hero section -->
   <section class="hero">
     <h1>Mock Exams</h1>
     <p>
       Sharpen your skills and simulate real testing conditions with our expertly crafted mock exams. 
-      Designed to reflect the actual SAT, IELTS, and more — Dulat the great guarantees a legendary prep experience.
+      Choose your test and step into greatness — Dulat the great approves. So does LeBron James.
     </p>
-    <button class="cta-button" onclick="window.location.href='start-mock.html'">Start Mock Exam</button>
+    <div class="button-group">
+      <button class="cta-button" onclick="window.location.href='sat-mock.html'">Take SAT Mock</button>
+      <button class="cta-button" onclick="window.location.href='ielts-mock.html'">Take IELTS Mock</button>
+    </div>
   </section>
 
-  <!-- Feature Highlights -->
+  <!-- Feature highlights -->
   <section class="features">
     <div class="feature">
       <h3>Real Exam Feel</h3>

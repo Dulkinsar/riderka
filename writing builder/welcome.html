@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dulat the Great's Essay Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --primary: #FFC700;
+      --secondary: #6B3FA0;
+      --background: #fefefe;
+      --gray: #f3f3f3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: var(--background);
+      padding: 50px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    .add-essay-btn {
+      background-color: var(--primary);
+      color: black;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: 0.2s ease;
+    }
+
+    .add-essay-btn:hover {
+      background-color: #e0b000;
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.2);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 4% auto;
+      padding: 40px;
+      border-radius: 24px;
+      width: 95%;
+      max-width: 720px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      text-align: left;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      font-size: 2rem;
+      color: var(--secondary);
+    }
+
+    .modal-content label {
+      font-weight: 600;
+      margin-top: 16px;
+      display: block;
+      color: #333;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 14px 16px;
+      margin-top: 8px;
+      font-size: 1rem;
+      border-radius: 16px;
+      border: 2px solid #ddd;
+      background: var(--gray);
+    }
+
+    .modal-content textarea {
+      height: 200px;
+      resize: vertical;
+    }
+
+    .modal-content .button-group {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .save-btn {
+      background-color: var(--primary);
+      color: black;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .close-btn {
+      background-color: var(--secondary);
+      color: white;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .country-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0 24px;
+    }
+
+    .country-btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: var(--gray);
+      color: var(--secondary);
+      border: 2px solid var(--secondary);
+      border-radius: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .country-btn:hover {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .country-btn.active {
+      background-color: var(--secondary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Dulat's Essay Builder</h1>
+    <p>Click below to start crafting your masterpiece.</p>
+    <button class="add-essay-btn" onclick="openModal()">✍️ Add Essay</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="essayModal" class="modal">
+    <div class="modal-content">
+      <h2>New Essay</h2>
+
+      <label>Choose Essay Type</label>
+      <div class="country-buttons">
+        <button class="country-btn" data-country="us">🇺🇸 US</button>
+        <button class="country-btn" data-country="uk">🇬🇧 UK</button>
+        <button class="country-btn" data-country="italy">🇮🇹 Italy</button>
+        <button class="country-btn" data-country="hongkong">🇭🇰 Hong Kong</button>
+        <button class="country-btn" data-country="other">😏 Other</button>
+      </div>
+      <input type="hidden" id="country">
+
+      <label for="essayName">Essay Name</label>
+      <input type="text" id="essayName" placeholder="Enter essay name...">
+
+      <label for="essayContent">Essay</label>
+      <textarea id="essayContent" placeholder="Start writing here..."></textarea>
+
+      <div class="button-group">
+        <button class="save-btn" onclick="saveEssay()">Save</button>
+        <button class="close-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedCountry = null;
+
+    document.querySelectorAll('.country-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        selectedCountry = this.getAttribute('data-country');
+        document.getElementById('country').value = selectedCountry;
+      });
+    });
+
+    function openModal() {
+      document.getElementById('essayModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('essayModal').style.display = 'none';
+    }
+
+    function saveEssay() {
+      const country = selectedCountry;
+      const name = document.getElementById('essayName').value;
+      const content = document.getElementById('essayContent').value;
+
+      if (!country || !name || !content) {
+        alert("Fill out all fields, Dulat the Great.");
+        return;
+      }
+
+      alert(`Essay Saved!\nType: ${country}\nName: ${name}\nContent Length: ${content.length} characters`);
+      closeModal();
+    }
+  </script>
+</body>
+</html>

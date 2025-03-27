@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dulat the Great's Essay Builder</title>
+  <title>Dulat's Essay Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
       --primary: #FFC700;
       --secondary: #6B3FA0;
-      --background: #fefefe;
       --gray: #f3f3f3;
     }
 
@@ -21,44 +20,38 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: var(--gray);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      padding: 40px 20px;
     }
 
     .container {
-      background: var(--background);
-      padding: 50px;
+      background: #fff;
+      padding: 40px;
       border-radius: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 720px;
       text-align: center;
-      width: 90%;
-      max-width: 600px;
+      margin-bottom: 40px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
       color: var(--secondary);
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: #444;
+      margin-bottom: 10px;
     }
 
     .add-essay-btn {
       background-color: var(--primary);
       color: black;
-      padding: 16px 32px;
+      padding: 14px 28px;
       font-size: 1.1rem;
-      font-weight: bold;
       border: none;
       border-radius: 14px;
       cursor: pointer;
-      margin-top: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: 0.2s ease;
+      margin-top: 20px;
+      font-weight: bold;
+      transition: 0.2s;
     }
 
     .add-essay-btn:hover {
@@ -84,30 +77,16 @@
       padding: 40px;
       border-radius: 24px;
       width: 95%;
-      max-width: 720px;
+      max-width: 700px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-      text-align: left;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-      font-size: 2rem;
-      color: var(--secondary);
-    }
-
-    .modal-content label {
-      font-weight: 600;
-      margin-top: 16px;
-      display: block;
-      color: #333;
     }
 
     .modal-content input,
     .modal-content textarea {
       width: 100%;
-      padding: 14px 16px;
-      margin-top: 8px;
+      padding: 14px;
       font-size: 1rem;
+      margin-top: 8px;
       border-radius: 16px;
       border: 2px solid #ddd;
       background: var(--gray);
@@ -115,66 +94,90 @@
 
     .modal-content textarea {
       height: 200px;
-      resize: vertical;
     }
 
-    .modal-content .button-group {
-      margin-top: 24px;
-      display: flex;
-      gap: 12px;
-    }
-
-    .save-btn {
-      background-color: var(--primary);
-      color: black;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 16px;
-      font-size: 1rem;
+    .modal-content label {
       font-weight: bold;
-      cursor: pointer;
-      flex: 1;
-    }
-
-    .close-btn {
-      background-color: var(--secondary);
-      color: white;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 16px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      flex: 1;
+      margin-top: 16px;
+      display: block;
     }
 
     .country-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 16px 0 24px;
+      margin: 10px 0 20px;
     }
 
     .country-btn {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: var(--gray);
+      background-color: var(--gray);
       color: var(--secondary);
       border: 2px solid var(--secondary);
-      border-radius: 24px;
+      padding: 10px 20px;
+      border-radius: 20px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s ease;
+      transition: 0.2s;
     }
 
-    .country-btn:hover {
-      background: var(--secondary);
-      color: white;
-    }
-
+    .country-btn:hover,
     .country-btn.active {
       background-color: var(--secondary);
       color: white;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .save-btn, .close-btn {
+      flex: 1;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 16px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .save-btn {
+      background-color: var(--primary);
+      color: black;
+    }
+
+    .close-btn {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .essay-list {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .essay-card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .essay-card h3 {
+      margin: 0;
+      color: var(--secondary);
+    }
+
+    .essay-card small {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .essay-card p {
+      margin-top: 10px;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -186,7 +189,8 @@
     <button class="add-essay-btn" onclick="openModal()">✍️ Add Essay</button>
   </div>
 
-  <!-- Modal -->
+  <div class="essay-list" id="essayList"></div>
+
   <div id="essayModal" class="modal">
     <div class="modal-content">
       <h2>New Essay</h2>
@@ -232,21 +236,59 @@
 
     function closeModal() {
       document.getElementById('essayModal').style.display = 'none';
+      resetForm();
+    }
+
+    function resetForm() {
+      document.getElementById('essayName').value = '';
+      document.getElementById('essayContent').value = '';
+      document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+      selectedCountry = null;
+      document.getElementById('country').value = '';
     }
 
     function saveEssay() {
       const country = selectedCountry;
-      const name = document.getElementById('essayName').value;
-      const content = document.getElementById('essayContent').value;
+      const name = document.getElementById('essayName').value.trim();
+      const content = document.getElementById('essayContent').value.trim();
 
       if (!country || !name || !content) {
         alert("Fill out all fields, Dulat the Great.");
         return;
       }
 
-      alert(`Essay Saved!\nType: ${country}\nName: ${name}\nContent Length: ${content.length} characters`);
+      const essays = JSON.parse(localStorage.getItem('essays') || '[]');
+      const newEssay = { id: Date.now(), country, name, content };
+      essays.push(newEssay);
+      localStorage.setItem('essays', JSON.stringify(essays));
+
       closeModal();
+      loadEssays();
     }
+
+    function loadEssays() {
+      const container = document.getElementById('essayList');
+      container.innerHTML = '';
+
+      const essays = JSON.parse(localStorage.getItem('essays') || '[]');
+      if (essays.length === 0) {
+        container.innerHTML = '<p style="text-align:center;color:#888;">No essays yet, Dulat the Great.</p>';
+        return;
+      }
+
+      essays.forEach(essay => {
+        const card = document.createElement('div');
+        card.className = 'essay-card';
+        card.innerHTML = `
+          <h3>${essay.name}</h3>
+          <small>Type: ${essay.country.toUpperCase()}</small>
+          <p>${essay.content}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = loadEssays;
   </script>
 </body>
 </html>

@@ -11,6 +11,7 @@
       --bg: #f9f9f9;
       --text: #1e1e1e;
       --white: #ffffff;
+      --price-highlight: #fff3a0;
     }
 
     * {
@@ -23,78 +24,78 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    .shape {
-      position: absolute;
-      z-index: 0;
-      opacity: 0.15;
-      pointer-events: none;
-    }
-
-    .circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--primary);
-      top: 60px;
-      left: 30px;
-    }
-
-    .triangle {
-      width: 0;
-      height: 0;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-      border-bottom: 90px solid var(--secondary);
-      bottom: 30px;
-      right: 40px;
     }
 
     .hero {
-      padding: 100px 20px 60px;
       text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      padding: 80px 20px 40px;
     }
 
     .hero h1 {
       font-size: 3rem;
       color: var(--secondary);
-      margin-bottom: 20px;
       font-weight: 700;
+      margin-bottom: 16px;
     }
 
     .hero p {
       font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
       color: #444;
+      max-width: 600px;
+      margin: 0 auto 50px;
     }
 
-    .button-group {
+    .mock-container {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 40px;
       flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    .mock-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 30px 24px;
+      max-width: 260px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .mock-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .mock-card h2 {
+      font-size: 1.4rem;
+      color: var(--secondary);
+      margin-bottom: 16px;
+    }
+
+    .price-tag {
+      display: inline-block;
+      background-color: var(--price-highlight);
+      color: #5a4300;
+      font-weight: 800;
+      font-size: 1.2rem;
+      padding: 8px 16px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .cta-button {
       background-color: var(--primary);
       color: var(--text);
+      font-weight: 600;
+      padding: 12px 24px;
       border: none;
       border-radius: 8px;
-      padding: 14px 28px;
-      font-size: 1.1rem;
-      font-weight: 600;
       cursor: pointer;
+      font-size: 1rem;
       transition: background 0.2s ease;
-      min-width: 160px;
     }
 
     .cta-button:hover {
@@ -102,13 +103,11 @@
     }
 
     .features {
+      padding: 80px 20px;
       display: flex;
       justify-content: center;
       gap: 30px;
       flex-wrap: wrap;
-      padding: 60px 20px;
-      z-index: 1;
-      position: relative;
     }
 
     .feature {
@@ -134,36 +133,38 @@
 </head>
 <body>
 
-  <!-- Memphis background shapes -->
-  <div class="shape circle"></div>
-  <div class="shape triangle"></div>
-
-  <!-- Hero section -->
   <section class="hero">
     <h1>Mock Exams</h1>
     <p>
-      Sharpen your skills and simulate real testing conditions with our expertly crafted mock exams. 
-      Choose your test and step into greatness — Dulat the great approves. So does LeBron James.
+      Dominate your test prep with official-style mock exams. Trusted by champions, Dulat the Great (6'1.5) & LeBron James approve of this excellence.
     </p>
-    <div class="button-group">
-      <button class="cta-button" onclick="window.location.href='sat-mock.html'">Take SAT Mock</button>
-      <button class="cta-button" onclick="window.location.href='ielts-mock.html'">Take IELTS Mock</button>
+  </section>
+
+  <section class="mock-container">
+    <div class="mock-card">
+      <h2>SAT Mock Test</h2>
+      <div class="price-tag">2899₸</div>
+      <button class="cta-button" onclick="window.location.href='sat-mock.html'">Take Test</button>
+    </div>
+    <div class="mock-card">
+      <h2>IELTS Mock Test</h2>
+      <div class="price-tag">2899₸</div>
+      <button class="cta-button" onclick="window.location.href='ielts-mock.html'">Take Test</button>
     </div>
   </section>
 
-  <!-- Feature highlights -->
   <section class="features">
     <div class="feature">
       <h3>Real Exam Feel</h3>
-      <p>Timed and formatted exactly like the real tests, so you build confidence and stamina.</p>
+      <p>Experience pressure and pacing just like the real deal. Greatness thrives under challenge.</p>
     </div>
     <div class="feature">
       <h3>Instant Feedback</h3>
-      <p>Get performance breakdowns immediately after you finish — no waiting around.</p>
+      <p>Detailed breakdowns right after submission — no waiting. Level up fast.</p>
     </div>
     <div class="feature">
       <h3>Dulat Certified</h3>
-      <p>Each test is handpicked and reviewed by Dulat the great (6'1.5), LeBron James approved.</p>
+      <p>Every test is hand-approved by Dulat the Great (6'1.5). LeBron James agrees — it's elite.</p>
     </div>
   </section>
 

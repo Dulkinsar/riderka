@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scholarship Search - Dulat the Great</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e8f0ff, #f0f4ff);
+      color: #333;
+    }
+    header {
+      background: #1d3557;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #bde0fe;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+    }
+    .search-bar input {
+      padding: 1rem;
+      width: 100%;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    select {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .scholarship {
+      background: #f9f9ff;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    .scholarship:hover {
+      transform: translateY(-5px);
+    }
+    .scholarship h2 {
+      margin-top: 0;
+      color: #1d3557;
+    }
+    .scholarship p {
+      margin: 0.3rem 0;
+      line-height: 1.5;
+    }
+    .tag {
+      display: inline-block;
+      background-color: #1d3557;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+      margin-top: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Scholarship Search Powered by Dulat the Great</h1>
+    <p>In honor of LeBron James – Loyalty. Vision. Legacy.</p>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="🔍 Search scholarships...">
+    </div>
+
+    <div class="filters">
+      <select id="regionFilter">
+        <option value="">🌍 All Regions</option>
+        <option value="North America">North America</option>
+        <option value="Europe">Europe</option>
+        <option value="Asia">Asia</option>
+        <option value="Africa">Africa</option>
+      </select>
+      <select id="coverageFilter">
+        <option value="">💰 All Coverage</option>
+        <option value="Full">Full</option>
+        <option value="Partial">Partial</option>
+      </select>
+      <select id="ethnicFilter">
+        <option value="">🧬 All Ethnicities</option>
+        <option value="African American">African American</option>
+        <option value="Asian">Asian</option>
+        <option value="Latino">Latino</option>
+        <option value="Indigenous">Indigenous</option>
+      </select>
+      <select id="genderFilter">
+        <option value="">⚧️ All Genders</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Non-binary">Non-binary</option>
+      </select>
+    </div>
+
+    <div id="scholarshipList"></div>
+  </div>
+
+  <script>
+    window.scholarshipData = window.scholarshipData || [
+      {
+        title: "Tech Excellence Scholarship",
+        provider: "TechWorld Foundation",
+        deadline: "June 30, 2025",
+        amount: "$5,000",
+        region: "North America",
+        coverage: "Full",
+        ethnicity: "African American",
+        gender: "Female"
+      },
+      {
+        title: "Future Leaders Award",
+        provider: "Global Education Trust",
+        deadline: "August 15, 2025",
+        amount: "$3,000",
+        region: "Europe",
+        coverage: "Partial",
+        ethnicity: "Asian",
+        gender: "Male"
+      },
+      {
+        title: "Diversity in STEM Scholarship",
+        provider: "STEM Forward",
+        deadline: "May 1, 2025",
+        amount: "$4,500",
+        region: "Asia",
+        coverage: "Full",
+        ethnicity: "Latino",
+        gender: "Non-binary"
+      }
+    ];
+
+    function displayScholarships(data) {
+      const list = document.getElementById('scholarshipList');
+      list.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        list.innerHTML = '<p>No scholarships found.</p>';
+        return;
+      }
+
+      data.forEach(scholarship => {
+        const div = document.createElement('div');
+        div.className = 'scholarship';
+        div.innerHTML = `
+          <h2>${scholarship.title}</h2>
+          <p><strong>Provider:</strong> ${scholarship.provider}</p>
+          <p><strong>Deadline:</strong> ${scholarship.deadline}</p>
+          <p><strong>Amount:</strong> ${scholarship.amount}</p>
+          <div class="tags">
+            <span class="tag">${scholarship.region}</span>
+            <span class="tag">${scholarship.coverage} Coverage</span>
+            <span class="tag">${scholarship.ethnicity}</span>
+            <span class="tag">${scholarship.gender}</span>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function filterScholarships() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const region = document.getElementById('regionFilter').value;
+      const coverage = document.getElementById('coverageFilter').value;
+      const ethnicity = document.getElementById('ethnicFilter').value;
+      const gender = document.getElementById('genderFilter').value;
+
+      const filtered = window.scholarshipData.filter(s => {
+        return (
+          (s.title.toLowerCase().includes(keyword) || s.provider.toLowerCase().includes(keyword)) &&
+          (!region || s.region === region) &&
+          (!coverage || s.coverage === coverage) &&
+          (!ethnicity || s.ethnicity === ethnicity) &&
+          (!gender || s.gender === gender)
+        );
+      });
+
+      displayScholarships(filtered);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('searchInput').addEventListener('input', filterScholarships);
+      document.getElementById('regionFilter').addEventListener('change', filterScholarships);
+      document.getElementById('coverageFilter').addEventListener('change', filterScholarships);
+      document.getElementById('ethnicFilter').addEventListener('change', filterScholarships);
+      document.getElementById('genderFilter').addEventListener('change', filterScholarships);
+
+      displayScholarships(window.scholarshipData);
+    });
+  </script>
+
+</body>
+</html>

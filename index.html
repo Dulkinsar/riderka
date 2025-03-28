@@ -265,31 +265,40 @@
     </header>
     
     <div class="icon-row">
-    <style>
+   <style>
+  .icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding: 2rem;
+  }
+
   .icon-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 1rem;
-    border-radius: 1rem;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
     transition: transform 0.3s, box-shadow 0.3s;
+    width: 180px;
   }
 
   .icon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-7px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   }
 
   .icon-card img {
-    width: 100px;
+    width: 120px;
     height: auto;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .icon-card a {
     font-family: 'Georgia', serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #333;
     text-decoration: none;
@@ -326,6 +335,8 @@
     <img src="/images/wtf.webp" alt="Other Services">
     <a href="/other/welcome.html">Other</a>
   </div>
+</div>
+
 </div>
 
     </div>

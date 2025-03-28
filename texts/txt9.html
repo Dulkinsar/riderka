@@ -1,43 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velvet Visions</title>
-  <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      padding: 1em;
-      text-align: center;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1em;
-      padding: 1em;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Velvet Visions</h1>
-    <p>Welcome, Dulat the great (6'1.5")</p>
-  </header>
-  <section class="gallery">
-    <img src="example1.jpg" alt="Thumbnail 1" />
-    <img src="example2.jpg" alt="Thumbnail 2" />
-    <img src="example3.jpg" alt="Thumbnail 3" />
-  </section>
-</body>
-</html>
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Search } from "lucide-react";
+
+export default function UniversitySearchLanding() {
+  return (
+    <div className="min-h-screen bg-[#FFC700] flex flex-col items-center justify-center p-8">
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-12"
+      >
+        <h1 className="text-5xl font-bold text-[#6B3FA0] mb-4">
+          Find Your Perfect University
+        </h1>
+        <p className="text-lg text-[#6B3FA0]">
+          Search and explore universities with ease and confidence.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="w-full max-w-xl"
+      >
+        <Card className="shadow-xl rounded-2xl">
+          <CardContent className="p-6 bg-white rounded-2xl">
+            <div className="flex items-center space-x-4">
+              <Input
+                type="text"
+                placeholder="Search by name, major, or location"
+                className="flex-grow text-[#6B3FA0] border-[#6B3FA0] focus:ring-[#6B3FA0]"
+              />
+              <Button className="bg-[#6B3FA0] text-white hover:bg-[#573083]">
+                <Search className="w-5 h-5 mr-2" />
+                Search
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}

@@ -1,52 +1,97 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BookOpen, ExternalLink } from "lucide-react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Application Resources</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8e1;
+      margin: 0;
+      padding: 40px;
+    }
 
-const resources = [
-  {
-    title: "Common App Guide",
-    description: "Everything you need to know to master the Common Application.",
-    link: "https://www.commonapp.org/",
-  },
-  {
-    title: "FAFSA Application",
-    description: "Apply for financial aid using the Free Application for Federal Student Aid.",
-    link: "https://studentaid.gov/h/apply-for-aid/fafsa",
-  },
-  {
-    title: "Essay Examples",
-    description: "Browse successful college essays for inspiration.",
-    link: "https://www.collegeessayguy.com/blog/college-essay-examples",
-  },
-  {
-    title: "SAT Practice",
-    description: "Official SAT practice from Khan Academy.",
-    link: "https://www.khanacademy.org/test-prep/sat",
-  },
-];
+    h1 {
+      color: #6B3FA0;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
 
-export default function ResourcesPage() {
-  return (
-    <div className="min-h-screen bg-[#fff8e1] p-8">
-      <h1 className="text-4xl font-bold text-[#6B3FA0] mb-6">🎓 Useful Resources for College Applications</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-        {resources.map((resource, index) => (
-          <Card key={index} className="bg-white border-[#ffc700] shadow-md hover:shadow-lg transition-all">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <BookOpen className="text-[#6B3FA0]" />
-                <h2 className="text-2xl font-semibold text-[#6B3FA0]">{resource.title}</h2>
-              </div>
-              <p className="text-gray-700 mb-4">{resource.description}</p>
-              <Button asChild className="bg-[#ffc700] hover:bg-[#e6b800] text-black">
-                <a href={resource.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  Visit Resource <ExternalLink className="w-4 h-4" />
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 2px solid #ffc700;
+      border-radius: 12px;
+      padding: 20px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      color: #6B3FA0;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      background-color: #ffc700;
+      color: #000;
+      padding: 10px 16px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #e6b800;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 Useful Resources for College Applications</h1>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Common App Guide</h2>
+      <p>Everything you need to know to master the Common Application.</p>
+      <a class="btn" href="https://www.commonapp.org/" target="_blank">Visit Resource</a>
     </div>
-  );
-}
+
+    <div class="card">
+      <h2>FAFSA Application</h2>
+      <p>Apply for financial aid using the Free Application for Federal Student Aid.</p>
+      <a class="btn" href="https://studentaid.gov/h/apply-for-aid/fafsa" target="_blank">Visit Resource</a>
+    </div>
+
+    <div class="card">
+      <h2>Essay Examples</h2>
+      <p>Browse successful college essays for inspiration.</p>
+      <a class="btn" href="https://www.collegeessayguy.com/blog/college-essay-examples" target="_blank">Visit Resource</a>
+    </div>
+
+    <div class="card">
+      <h2>SAT Practice</h2>
+      <p>Official SAT practice from Khan Academy.</p>
+      <a class="btn" href="https://www.khanacademy.org/test-prep/sat" target="_blank">Visit Resource</a>
+    </div>
+  </div>
+
+</body>
+</html>

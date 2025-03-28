@@ -1,49 +1,86 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { Search } from "lucide-react";
-
-export default function UniversitySearchLanding() {
-  return (
-    <div className="min-h-screen bg-[#FFC700] flex flex-col items-center justify-center p-8">
-      <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-12"
-      >
-        <h1 className="text-5xl font-bold text-[#6B3FA0] mb-4">
-          Find Your Perfect University
-        </h1>
-        <p className="text-lg text-[#6B3FA0]">
-          Search and explore universities with ease and confidence.
-        </p>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="w-full max-w-xl"
-      >
-        <Card className="shadow-xl rounded-2xl">
-          <CardContent className="p-6 bg-white rounded-2xl">
-            <div className="flex items-center space-x-4">
-              <Input
-                type="text"
-                placeholder="Search by name, major, or location"
-                className="flex-grow text-[#6B3FA0] border-[#6B3FA0] focus:ring-[#6B3FA0]"
-              />
-              <Button className="bg-[#6B3FA0] text-white hover:bg-[#573083]">
-                <Search className="w-5 h-5 mr-2" />
-                Search
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>University Search | Dulat the Great</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-[#FFC700] min-h-screen flex flex-col items-center justify-center p-8">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-[#6B3FA0] mb-4">Find Your Perfect University</h1>
+      <p class="text-lg text-[#6B3FA0]">
+        Search and explore universities with ease and confidence.
+      </p>
     </div>
-  );
-}
+
+    <!-- Search Box -->
+    <div class="w-full max-w-xl mb-8">
+      <div class="bg-white p-6 rounded-2xl shadow-xl">
+        <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search by name, major, or location"
+            class="w-full border-2 border-[#6B3FA0] text-[#6B3FA0] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]"
+          />
+          <button
+            onclick="performSearch()"
+            class="w-full sm:w-auto bg-[#6B3FA0] hover:bg-[#573083] text-white px-6 py-2 rounded-lg flex items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+            </svg>
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="w-full max-w-3xl space-y-4"></div>
+
+    <script>
+      const apiKey = 'elV9DCUH7kojfZmIamQHtcaTZ6Vpf2n9tXVLmH39'; // Replace with your actual API key
+
+      function performSearch() {
+        const query = document.getElementById("searchInput").value.trim();
+        if (!query) return;
+
+        const apiUrl = `https://api.data.gov/ed/collegescorecard/v1/schools.json?api_key=${apiKey}&school.name=${encodeURIComponent(query)}&fields=school.name,school.city,school.state,school.school_url&per_page=10`;
+
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => displayResults(data.results))
+          .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("results").innerHTML = '<p class="text-[#6B3FA0] text-center">Something went wrong. Try again later.</p>';
+          });
+      }
+
+      function displayResults(schools) {
+        const container = document.getElementById("results");
+        container.innerHTML = "";
+
+        if (schools.length === 0) {
+          container.innerHTML = "<p class='text-[#6B3FA0] text-center'>No universities found.</p>";
+          return;
+        }
+
+        schools.forEach(school => {
+          const card = document.createElement("div");
+          card.className = "bg-white p-6 rounded-xl shadow-md";
+          card.innerHTML = `
+            <h2 class="text-2xl font-semibold text-[#6B3FA0] mb-1">${school['school.name']}</h2>
+            <p class="text-[#6B3FA0] mb-1">${school['school.city']}, ${school['school.state']}</p>
+            <a href="https://${school['school.school_url']}" target="_blank" class="text-blue-600 underline">Visit Website</a>
+          `;
+          container.appendChild(card);
+        });
+      }
+    </script>
+  </body>
+</html>

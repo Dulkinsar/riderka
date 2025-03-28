@@ -11,7 +11,7 @@
     <div class="text-center mb-12">
       <h1 class="text-5xl font-bold text-[#6B3FA0] mb-4">Find Your Perfect University</h1>
       <p class="text-lg text-[#6B3FA0]">
-        Search and explore universities with ease and confidence.
+        Search and explore universities around the globe.
       </p>
     </div>
 
@@ -22,7 +22,7 @@
           <input
             id="searchInput"
             type="text"
-            placeholder="Search by name, major, or location"
+            placeholder="Search by name or country"
             class="w-full border-2 border-[#6B3FA0] text-[#6B3FA0] px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6B3FA0]"
           />
           <button
@@ -44,40 +44,86 @@
     <div id="results" class="w-full max-w-3xl space-y-4"></div>
 
     <script>
-      const apiKey = 'elV9DCUH7kojfZmIamQHtcaTZ6Vpf2n9tXVLmH39'; // Replace with your actual API key
+      const apiKey = 'elV9DCUH7kojfZmIamQHtcaTZ6Vpf2n9tXVLmH39'; // Replace with your College Scorecard API key
 
-      function performSearch() {
-        const query = document.getElementById("searchInput").value.trim();
+      async function performSearch() {
+        const query = document.getElementById("searchInput").value.trim().toLowerCase();
         if (!query) return;
 
-        const apiUrl = `https://api.data.gov/ed/collegescorecard/v1/schools.json?api_key=${apiKey}&school.name=${encodeURIComponent(query)}&fields=school.name,school.city,school.state,school.school_url&per_page=10`;
+        const sparqlQuery = `
+          SELECT ?universityLabel ?countryLabel ?website WHERE {
+            ?university wdt:P31 wd:Q3918.
+            OPTIONAL { ?university wdt:P17 ?country. }
+            OPTIONAL { ?university wdt:P856 ?website. }
+            SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". }
+            FILTER(CONTAINS(LCASE(STR(?universityLabel)), \"${query}\") || CONTAINS(LCASE(STR(?countryLabel)), \"${query}\"))
+          }
+          LIMIT 10
+        `;
 
-        fetch(apiUrl)
-          .then(response => response.json())
-          .then(data => displayResults(data.results))
-          .catch(error => {
-            console.error("Error fetching data:", error);
-            document.getElementById("results").innerHTML = '<p class="text-[#6B3FA0] text-center">Something went wrong. Try again later.</p>';
+        try {
+          const res = await fetch("https://query.wikidata.org/sparql?query=" + encodeURIComponent(sparqlQuery), {
+            headers: { Accept: "application/sparql-results+json" },
           });
+          const data = await res.json();
+          const results = data.results.bindings;
+
+          const enrichedResults = await Promise.all(results.map(async (item) => {
+            const name = item.universityLabel?.value || "";
+            const country = item.countryLabel?.value || "";
+            const website = item.website?.value || null;
+
+            let extraInfo = null;
+            if (country.toLowerCase() === "united states") {
+              const collegeApiUrl = `https://api.data.gov/ed/collegescorecard/v1/schools.json?api_key=${apiKey}&school.name=${encodeURIComponent(name)}&fields=school.name,school.city,school.state,school.school_url,latest.cost.tuition.in_state,latest.cost.tuition.out_of_state,latest.admissions.admission_rate.overall`;
+              try {
+                const usRes = await fetch(collegeApiUrl);
+                const usData = await usRes.json();
+                if (usData.results.length > 0) {
+                  extraInfo = usData.results[0];
+                }
+              } catch (error) {
+                console.error("College Scorecard API error:", error);
+              }
+            }
+
+            return { name, country, website, extraInfo };
+          }));
+
+          displayResults(enrichedResults);
+
+        } catch (err) {
+          console.error("Wikidata fetch error:", err);
+          document.getElementById("results").innerHTML = '<p class="text-[#6B3FA0] text-center">Something went wrong. Try again later.</p>';
+        }
       }
 
-      function displayResults(schools) {
+      function displayResults(results) {
         const container = document.getElementById("results");
         container.innerHTML = "";
 
-        if (schools.length === 0) {
+        if (results.length === 0) {
           container.innerHTML = "<p class='text-[#6B3FA0] text-center'>No universities found.</p>";
           return;
         }
 
-        schools.forEach(school => {
+        results.forEach((item) => {
+          const { name, country, website, extraInfo } = item;
+
           const card = document.createElement("div");
           card.className = "bg-white p-6 rounded-xl shadow-md";
           card.innerHTML = `
-            <h2 class="text-2xl font-semibold text-[#6B3FA0] mb-1">${school['school.name']}</h2>
-            <p class="text-[#6B3FA0] mb-1">${school['school.city']}, ${school['school.state']}</p>
-            <a href="https://${school['school.school_url']}" target="_blank" class="text-blue-600 underline">Visit Website</a>
+            <h2 class="text-2xl font-semibold text-[#6B3FA0] mb-1">${name}</h2>
+            <p class="text-[#6B3FA0] mb-1">${country}</p>
+            ${website ? `<a href="${website}" target="_blank" class="text-blue-600 underline">Visit Website</a>` : ""}
+            ${extraInfo ? `
+              <p class="text-[#6B3FA0] mt-2 text-sm">City: ${extraInfo["school.city"]}, ${extraInfo["school.state"]}</p>
+              <p class="text-[#6B3FA0] text-sm">In-State Tuition: $${extraInfo["latest.cost.tuition.in_state"] || 'N/A'}</p>
+              <p class="text-[#6B3FA0] text-sm">Out-of-State Tuition: $${extraInfo["latest.cost.tuition.out_of_state"] || 'N/A'}</p>
+              <p class="text-[#6B3FA0] text-sm">Admission Rate: ${(extraInfo["latest.admissions.admission_rate.overall"] * 100).toFixed(2)}%</p>
+            ` : ""}
           `;
+
           container.appendChild(card);
         });
       }

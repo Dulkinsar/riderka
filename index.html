@@ -265,26 +265,69 @@
     </header>
     
     <div class="icon-row">
-      <div class="icon-card">
-        <img src="/images/profile.webp" alt="Profile Builder">
-        <a href="/profile builder/welcome.html"> Profile Builder </a>
-      </div>
-      <div class="icon-card">
-        <img src="/images/pay.png" alt="Courses">
-         <a href="/courses/wlcm.html"> Courses </a>
-      </div>
-      <div class="icon-card">
-        <img src="/images/exam.webp" alt="Mock Exams">
-         <a href="/mock exams/welcome.html"> mock exams </a>
-      </div>
-      <div class="icon-card">
-        <img src="/images/think.webp" alt="Writing Builder">
-        <a href="/writing builder/welcome.html"> writing builder </a>
-      </div>
-      <div class="icon-card">
-        <img src="/images/wtf.webp" alt="Other Services">
-        <a href="/other/welcome.html"> other </a>
-      </div>
+    <style>
+  .icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .icon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .icon-card img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  .icon-card a {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .icon-card a:hover {
+    letter-spacing: 1px;
+    transform: scale(1.05);
+  }
+</style>
+
+<div class="icon-row">
+  <div class="icon-card">
+    <img src="/images/profile.webp" alt="Profile Builder">
+    <a href="/profile builder/welcome.html">Profile Builder</a>
+  </div>
+  <div class="icon-card">
+    <img src="/images/pay.png" alt="Courses">
+    <a href="/courses/wlcm.html">Courses</a>
+  </div>
+  <div class="icon-card">
+    <img src="/images/exam.webp" alt="Mock Exams">
+    <a href="/mock exams/welcome.html">Mock Exams</a>
+  </div>
+  <div class="icon-card">
+    <img src="/images/think.webp" alt="Writing Builder">
+    <a href="/writing builder/welcome.html">Writing Builder</a>
+  </div>
+  <div class="icon-card">
+    <img src="/images/wtf.webp" alt="Other Services">
+    <a href="/other/welcome.html">Other</a>
+  </div>
+</div>
+
     </div>
     
     <main>

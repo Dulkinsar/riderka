@@ -395,7 +395,7 @@
     }
 
     .hidden {
-      display: none !important;
+      display: none;
     }
 
     #login-container {
@@ -410,21 +410,21 @@
   <script>
     // Login Validation
     function validateLogin() {
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
       if (username === 'admin' && password === 'password123') {
-        // Hide login form
-        document.getElementById('login-container').style.display = 'none';
-
+        // Hide login
+        document.getElementById('login-container').classList.add('hidden');
         // Show main content
-        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('main-content').classList.remove('hidden');
 
-        // Show profile pic
+        // Show profile picture
         const profilePicData = localStorage.getItem('profilePic');
         if (profilePicData) {
           const img = document.createElement('img');
           img.src = profilePicData;
-          img.alt = "Profile Picture of the great Dulat";
+          img.alt = "Profile Picture of Dulat the Great";
           img.className = "profile-pic";
           document.body.appendChild(img);
         }
@@ -442,16 +442,17 @@
     <button onclick="validateLogin()">Login</button>
   </div>
 
-  <div id="main-content" style="display: none;">
+  <div id="main-content" class="hidden">
     <div class="top-right">
       <a href="/pfp/pfp.html" class="profile-button">Profile</a>
     </div>
+    <!-- Whatever else should be in the landing page -->
+    <h1>Welcome, Dulat the Great (6'1.5") 👑</h1>
+    <p>May your reign be eternal, just like LeBron James' legacy.</p>
   </div>
 
 </body>
 </html>
-
-
 
 
 <div class="icon-row">

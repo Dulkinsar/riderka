@@ -352,6 +352,66 @@
 </body>
 </html>
 
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Button</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    .profile-button {
+      padding: 10px 20px;
+      background-color: #FFC700;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .profile-button:hover {
+      background-color: #0056b3;
+    }
+    .profile-pic {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #FFC700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-right">
+    <a href="/pfp/pfp.html" class="profile-button">Profile</a>
+  </div>
+
+  <script>
+    const profilePicData = localStorage.getItem('profilePic');
+    if (profilePicData) {
+      const img = document.createElement('img');
+      img.src = profilePicData;
+      img.alt = "Profile Picture";
+      img.className = "profile-pic";
+      document.body.appendChild(img);
+    }
+  </script>
+
+</body>
+</html>
+
+
 
 <div class="icon-row">
   <div class="icon-card">

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile Editor & Viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #6B3FA0;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #6B3FA0;
+      margin-bottom: 16px;
+    }
+
+    button {
+      background-color: #ffc700;
+      color: #000;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e6b800;
+    }
+
+    #viewer-section {
+      display: none;
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .profile-bio {
+      font-size: 16px;
+      color: #555;
+      max-width: 90%;
+    }
+
+    .edit-btn {
+      margin-top: 20px;
+      width: auto;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Editor -->
+    <div id="editor-section" style="padding: 24px;">
+      <h2>Edit Your Profile</h2>
+
+      <label for="profile-pic">Profile Picture</label>
+      <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)" />
+      <div id="image-preview"></div>
+
+      <label for="nickname">Nickname</label>
+      <input type="text" id="nickname" placeholder="Enter your nickname" />
+
+      <label for="bio">Bio</label>
+      <textarea id="bio" rows="4" placeholder="Write a short bio about yourself"></textarea>
+
+      <button onclick="saveProfile()">Save & View</button>
+    </div>
+
+    <!-- Viewer -->
+    <div id="viewer-section">
+      <h2>Your Social Profile</h2>
+      <div class="profile-card">
+        <div id="viewer-image"></div>
+        <div class="profile-name" id="viewer-nickname"></div>
+        <div class="profile-bio" id="viewer-bio"></div>
+      </div>
+      <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+    </div>
+  </div>
+
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        const output = document.getElementById('image-preview');
+        output.innerHTML = '<img class=\"profile-pic\" src=\"' + reader.result + '\" alt=\"Profile Picture\">';
+        localStorage.setItem('profilePic', reader.result);
+      };
+      if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
+
+    function saveProfile() {
+      const nickname = document.getElementById('nickname').value;
+      const bio = document.getElementById('bio').value;
+
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('bio', bio);
+
+      showViewer();
+    }
+
+    function showViewer() {
+      document.getElementById('editor-section').style.display = 'none';
+      document.getElementById('viewer-section').style.display = 'block';
+
+      const nickname = localStorage.getItem('nickname') || 'Not set';
+      const bio = localStorage.getItem('bio') || 'No bio provided.';
+      const profilePic = localStorage.getItem('profilePic');
+
+      document.getElementById('viewer-nickname').textContent = nickname;
+      document.getElementById('viewer-bio').textContent = bio;
+
+      const imageContainer = document.getElementById('viewer-image');
+      imageContainer.innerHTML = '';
+      if (profilePic) {
+        const img = document.createElement('img');
+        img.src = profilePic;
+        img.alt = 'Profile Picture';
+        img.className = 'profile-pic';
+        imageContainer.appendChild(img);
+      }
+    }
+
+    function editProfile() {
+      document.getElementById('editor-section').style.display = 'block';
+      document.getElementById('viewer-section').style.display = 'none';
+    }
+
+    // Show viewer if data exists
+    window.onload = function() {
+      if (localStorage.getItem('nickname') || localStorage.getItem('bio') || localStorage.getItem('profilePic')) {
+        showViewer();
+      }
+    };
+  </script>
+</body>
+</html>

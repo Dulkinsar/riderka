@@ -352,7 +352,7 @@
 </body>
 </html>
 
-      <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -389,27 +389,51 @@
       object-fit: cover;
       border: 2px solid #FFC700;
     }
+    .hidden {
+      display: none;
+    }
   </style>
+  <script>
+    // Login Validation
+    function validateLogin() {
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+      if (username === 'admin' && password === 'password123') {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+
+        // Display profile pic after successful login
+        const profilePicData = localStorage.getItem('profilePic');
+        if (profilePicData) {
+          const img = document.createElement('img');
+          img.src = profilePicData;
+          img.alt = "Profile Picture of the great Dulat";
+          img.className = "profile-pic";
+          document.body.appendChild(img);
+        }
+      } else {
+        alert('Invalid username or password.');
+      }
+    }
+  </script>
 </head>
 <body>
 
-  <div class="top-right">
-    <a href="/pfp/pfp.html" class="profile-button">Profile</a>
+  <div id="login-container">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="validateLogin()">Login</button>
   </div>
 
-  <script>
-    const profilePicData = localStorage.getItem('profilePic');
-    if (profilePicData) {
-      const img = document.createElement('img');
-      img.src = profilePicData;
-      img.alt = "Profile Picture";
-      img.className = "profile-pic";
-      document.body.appendChild(img);
-    }
-  </script>
+  <div id="main-content" class="hidden">
+    <div class="top-right">
+      <a href="/pfp/pfp.html" class="profile-button">Profile</a>
+    </div>
+  </div>
 
 </body>
 </html>
+
 
 
 

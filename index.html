@@ -414,12 +414,13 @@
       const password = document.getElementById('password').value;
 
       if (username === 'admin' && password === 'password123') {
-        // Hide login
+        // Hide login container
         document.getElementById('login-container').classList.add('hidden');
+
         // Show main content
         document.getElementById('main-content').classList.remove('hidden');
 
-        // Show profile picture
+        // Display profile pic
         const profilePicData = localStorage.getItem('profilePic');
         if (profilePicData) {
           const img = document.createElement('img');
@@ -436,19 +437,20 @@
 </head>
 <body>
 
+  <!-- LOGIN SECTION (separate from main content) -->
   <div id="login-container">
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button onclick="validateLogin()">Login</button>
   </div>
 
+  <!-- MAIN CONTENT SECTION (initially hidden) -->
   <div id="main-content" class="hidden">
     <div class="top-right">
       <a href="/pfp/pfp.html" class="profile-button">Profile</a>
     </div>
-    <!-- Whatever else should be in the landing page -->
     <h1>Welcome, Dulat the Great (6'1.5") 👑</h1>
-    <p>May your reign be eternal, just like LeBron James' legacy.</p>
+    <p>This is your domain. May your greatness shine brighter than LeBron James' rings.</p>
   </div>
 
 </body>

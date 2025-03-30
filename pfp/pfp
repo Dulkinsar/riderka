@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile Editor & Viewer</title>
+  <title>Profile of Dulat the Great</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -68,16 +68,42 @@
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s ease;
+      margin-top: 10px;
     }
 
     button:hover {
       background-color: #e6b800;
     }
 
-    #viewer-section {
-      display: none;
-      text-align: center;
-      padding: 32px 24px;
+    .edit-btn {
+      margin-top: 20px;
+      width: auto;
+      padding: 10px 20px;
+    }
+
+    .avatar-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .avatar-choice {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border 0.2s ease;
+      object-fit: cover;
+    }
+
+    .avatar-choice:hover {
+      border: 2px solid #ffc700;
+    }
+
+    .avatar-choice.selected {
+      border: 3px solid #6B3FA0;
     }
 
     .profile-card {
@@ -97,22 +123,58 @@
       font-size: 16px;
       color: #555;
       max-width: 90%;
+      text-align: center;
     }
 
-    .edit-btn {
-      margin-top: 20px;
-      width: auto;
-      padding: 10px 20px;
+    #viewer-section {
+      display: none;
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    #top-nav {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      z-index: 1000;
+    }
+
+    .profile-nav {
+      background-color: #ffc700;
+      color: #000;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .profile-nav:hover {
+      background-color: #e6b800;
     }
   </style>
 </head>
 <body>
+
+  <div id="top-nav">
+    <a href="javascript:showViewer()" class="profile-nav">My Profile</a>
+  </div>
+
   <div class="container">
     <!-- Editor -->
     <div id="editor-section" style="padding: 24px;">
       <h2>Edit Your Profile</h2>
 
-      <label for="profile-pic">Profile Picture</label>
+      <label>Choose a Profile Picture</label>
+      <div class="avatar-options">
+        <img src="https://i.pravatar.cc/100?img=1" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="https://i.pravatar.cc/100?img=2" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="https://i.pravatar.cc/100?img=3" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="https://i.pravatar.cc/100?img=4" class="avatar-choice" onclick="selectAvatar(this)">
+      </div>
+
+      <p style="margin: 10px 0; font-weight: bold;">Or upload your own:</p>
       <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)" />
       <div id="image-preview"></div>
 
@@ -140,14 +202,29 @@
   <script>
     function previewImage(event) {
       const reader = new FileReader();
-      reader.onload = function() {
+      reader.onload = function () {
         const output = document.getElementById('image-preview');
-        output.innerHTML = '<img class=\"profile-pic\" src=\"' + reader.result + '\" alt=\"Profile Picture\">';
+        output.innerHTML = '<img class="profile-pic" src="' + reader.result + '" alt="Profile Picture">';
         localStorage.setItem('profilePic', reader.result);
+        clearAvatarSelection();
       };
       if (event.target.files[0]) {
         reader.readAsDataURL(event.target.files[0]);
       }
+    }
+
+    function selectAvatar(img) {
+      clearAvatarSelection();
+      img.classList.add('selected');
+      const src = img.getAttribute('src');
+      localStorage.setItem('profilePic', src);
+      const preview = document.getElementById('image-preview');
+      preview.innerHTML = '<img class="profile-pic" src="' + src + '" alt="Profile Picture">';
+    }
+
+    function clearAvatarSelection() {
+      const all = document.querySelectorAll('.avatar-choice');
+      all.forEach(i => i.classList.remove('selected'));
     }
 
     function saveProfile() {
@@ -187,8 +264,7 @@
       document.getElementById('viewer-section').style.display = 'none';
     }
 
-    // Show viewer if data exists
-    window.onload = function() {
+    window.onload = function () {
       if (localStorage.getItem('nickname') || localStorage.getItem('bio') || localStorage.getItem('profilePic')) {
         showViewer();
       }

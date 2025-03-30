@@ -361,6 +361,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      background-color: #ffffff; /* Set your background color here */
     }
 
     .top-right {
@@ -394,8 +395,15 @@
       border: 2px solid #FFC700;
     }
 
-    .hidden {
-      display: none;
+    .disguised {
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      overflow: hidden;
+      background-color: #ffffff; /* Match the background */
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
     }
 
     #login-container {
@@ -404,6 +412,7 @@
 
     #main-content {
       padding: 20px;
+      display: none;
     }
   </style>
 
@@ -414,13 +423,14 @@
       const password = document.getElementById('password').value;
 
       if (username === 'admin' && password === 'password123') {
-        // Hide login container
-        document.getElementById('login-container').classList.add('hidden');
+        // Camouflage the login box
+        const loginBox = document.getElementById('login-container');
+        loginBox.classList.add('disguised');
 
         // Show main content
-        document.getElementById('main-content').classList.remove('hidden');
+        document.getElementById('main-content').style.display = 'block';
 
-        // Display profile pic
+        // Show profile pic
         const profilePicData = localStorage.getItem('profilePic');
         if (profilePicData) {
           const img = document.createElement('img');
@@ -436,6 +446,22 @@
   </script>
 </head>
 <body>
+
+  <!-- LOGIN SECTION -->
+  <div id="login-container">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="validateLogin()">Login</button>
+  </div>
+
+  <!-- MAIN CONTENT SECTION -->
+  <div id="main-content">
+    <div class="top-right">
+      <a href="/pfp/pfp.html" class="profile-button">Profile</a>
+    </div>
+    <h1>Welcome, Dulat the Great (6'1.5") 👑</h1>
+    <p>Your digital empire
+
 
   <!-- LOGIN SECTION (separate from main content) -->
   <div id="login-container">

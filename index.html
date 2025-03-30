@@ -352,7 +352,7 @@
 </body>
 </html>
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -362,11 +362,13 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
+
     .top-right {
       position: absolute;
       top: 20px;
       right: 20px;
     }
+
     .profile-button {
       padding: 10px 20px;
       background-color: #FFC700;
@@ -376,9 +378,11 @@
       text-decoration: none;
       font-weight: bold;
     }
+
     .profile-button:hover {
       background-color: #0056b3;
     }
+
     .profile-pic {
       position: absolute;
       top: 80px;
@@ -389,20 +393,33 @@
       object-fit: cover;
       border: 2px solid #FFC700;
     }
+
     .hidden {
-      display: none;
+      display: none !important;
+    }
+
+    #login-container {
+      padding: 20px;
+    }
+
+    #main-content {
+      padding: 20px;
     }
   </style>
+
   <script>
     // Login Validation
     function validateLogin() {
       var username = document.getElementById('username').value;
       var password = document.getElementById('password').value;
       if (username === 'admin' && password === 'password123') {
-        document.getElementById('login-container').classList.add('hidden');
-        document.getElementById('main-content').classList.remove('hidden');
+        // Hide login form
+        document.getElementById('login-container').style.display = 'none';
 
-        // Display profile pic after successful login
+        // Show main content
+        document.getElementById('main-content').style.display = 'block';
+
+        // Show profile pic
         const profilePicData = localStorage.getItem('profilePic');
         if (profilePicData) {
           const img = document.createElement('img');
@@ -425,7 +442,7 @@
     <button onclick="validateLogin()">Login</button>
   </div>
 
-  <div id="main-content" class="hidden">
+  <div id="main-content" style="display: none;">
     <div class="top-right">
       <a href="/pfp/pfp.html" class="profile-button">Profile</a>
     </div>

@@ -168,10 +168,10 @@
 
       <label>Choose a Profile Picture</label>
       <div class="avatar-options">
-        <img src="https://i.pravatar.cc/100?img=1" class="avatar-choice" onclick="selectAvatar(this)">
-        <img src="https://i.pravatar.cc/100?img=2" class="avatar-choice" onclick="selectAvatar(this)">
-        <img src="https://i.pravatar.cc/100?img=3" class="avatar-choice" onclick="selectAvatar(this)">
-        <img src="https://i.pravatar.cc/100?img=4" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="papa.jpeg" onclick="selectAvatar(this)">
+        <img src="base.png" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="woman.png" class="avatar-choice" onclick="selectAvatar(this)">
+        <img src="vipka.png" class="avatar-choice" onclick="selectAvatar(this)">
       </div>
 
       <p style="margin: 10px 0; font-weight: bold;">Or upload your own:</p>

@@ -280,15 +280,45 @@
         const card = document.createElement('div');
         card.className = 'essay-card';
         card.innerHTML = `
-          <h3>${essay.name}</h3>
-          <small>Type: ${essay.country.toUpperCase()}</small>
-          <p>${essay.content}</p>
-        `;
+  <h3>${essay.name}</h3>
+  <small>Type: ${essay.country.toUpperCase()}</small>
+  <p>${essay.content}</p>
+  <button class="delete-btn" onclick="deleteEssay(${essay.id})">🗑️ Delete</button>
+`;
         container.appendChild(card);
       });
     }
 
     window.onload = loadEssays;
   </script>
+
+  <script>
+  // your existing JS code here...
+
+  function deleteEssay(id) {
+    let essays = JSON.parse(localStorage.getItem('essays') || '[]');
+    essays = essays.filter(essay => essay.id !== id);
+    localStorage.setItem('essays', JSON.stringify(essays));
+    loadEssays();
+  }
+</script>
+<style>
+  .delete-btn {
+    margin-top: 10px;
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .delete-btn:hover {
+    background-color: #e60000;
+  }
+</style>
+</body>
+</html>
+
 </body>
 </html>

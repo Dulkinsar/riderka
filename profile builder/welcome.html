@@ -213,5 +213,123 @@
       <button type="submit">Save Profile</button>
     </form>
   </main>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Profile Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #savedProfile {
+      margin-top: 40px;
+      border-top: 2px solid #000;
+      padding-top: 20px;
+    }
+    .profile-entry {
+      background: #f2f2f2;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>Build Your College Profile</h2>
+    <form id="profileForm">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" placeholder="e.g., Dulat the Great">
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="e.g., dulat@email.com">
+
+      <label for="highSchool">High School Name</label>
+      <input type="text" id="highSchool" placeholder="e.g., Galaxy International School">
+
+      <label for="gpa">GPA</label>
+      <input type="text" id="gpa" placeholder="e.g., 3.8">
+
+      <label for="testScores">SAT/ACT Scores</label>
+      <input type="text" id="testScores" placeholder="e.g., SAT: 1500, ACT: 33">
+
+      <label for="ielts">IELTS Score</label>
+      <input type="text" id="ielts" placeholder="e.g., 6.9">
+
+      <label for="activities">Extracurricular Activities</label>
+      <textarea id="activities" rows="4" placeholder="e.g., Basketball team captain, Debate club president..."></textarea>
+
+      <label for="essay">Personal Statement (Optional)</label>
+      <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
+
+      <button type="submit">Save Profile</button>
+    </form>
+
+    <div id="savedProfile">
+      <h3>Saved Profile</h3>
+      <div class="profile-entry" id="profileDisplay">
+        <!-- Saved info shows up here -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const profileData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        highSchool: document.getElementById('highSchool').value,
+        gpa: document.getElementById('gpa').value,
+        testScores: document.getElementById('testScores').value,
+        ielts: document.getElementById('ielts').value,
+        activities: document.getElementById('activities').value,
+        essay: document.getElementById('essay').value
+      };
+
+      localStorage.setItem('dulatProfile', JSON.stringify(profileData));
+      displayProfile();
+    });
+
+    function displayProfile() {
+      const saved = localStorage.getItem('dulatProfile');
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('profileDisplay').innerHTML = `
+          <p><strong>Full Name:</strong> ${data.fullName}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>High School:</strong> ${data.highSchool}</p>
+          <p><strong>GPA:</strong> ${data.gpa}</p>
+          <p><strong>SAT/ACT:</strong> ${data.testScores}</p>
+          <p><strong>IELTS:</strong> ${data.ielts}</p>
+          <p><strong>Activities:</strong> ${data.activities}</p>
+          <p><strong>Essay:</strong> ${data.essay}</p>
+        `;
+      }
+    }
+
+    // Load profile on page load
+    window.onload = displayProfile;
+  </script>
+</body>
+</html>
+
 </body>
 </html>

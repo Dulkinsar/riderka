@@ -36,6 +36,42 @@
       margin: 50px auto;
     }
 
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 50px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+      background-color: #6b3fa0;
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5a3490;
+    }
+
     .resource-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -106,30 +142,69 @@
 </header>
 
 <div class="container">
-  <div class="resource-list">
-    <div class="resource-card">
-      <h2 class="resource-title">Resource 1</h2>
-      <p class="resource-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor</p>
-      <a href="#" class="resource-link">View Resource</a>
-    </div>
-    
-    <div class="resource-card">
-      <h2 class="resource-title">Resource 2</h2>
-      <p class="resource-description">Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.</p>
-      <a href="#" class="resource-link">View Resource</a>
-    </div>
+  <!-- Resource Form -->
+  <form id="resource-form">
+    <input type="text" id="resource-title" placeholder="Resource Title" required />
+    <textarea id="resource-description" placeholder="Resource Description" required></textarea>
+    <input type="url" id="resource-link" placeholder="Resource Link (URL)" required />
+    <button type="submit">Add Resource</button>
+  </form>
 
-    <div class="resource-card">
-      <h2 class="resource-title">Resource 3</h2>
-      <p class="resource-description">Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper.</p>
-      <a href="#" class="resource-link">View Resource</a>
-    </div>
+  <!-- Resource List -->
+  <div class="resource-list" id="resource-list">
+    <!-- Resources will be dynamically inserted here -->
   </div>
 </div>
 
 <footer>
   <p>&copy; 2025 Dulat's Website - All rights reserved</p>
 </footer>
+
+<script>
+  const form = document.getElementById('resource-form');
+  const list = document.getElementById('resource-list');
+
+  function getResources() {
+    return JSON.parse(localStorage.getItem('dulat-resources') || '[]');
+  }
+
+  function saveResources(resources) {
+    localStorage.setItem('dulat-resources', JSON.stringify(resources));
+  }
+
+  function renderResources() {
+    const resources = getResources();
+    list.innerHTML = '';
+    resources.forEach((res, i) => {
+      const card = document.createElement('div');
+      card.className = 'resource-card';
+      card.innerHTML = `
+        <h2 class="resource-title">${res.title}</h2>
+        <p class="resource-description">${res.description}</p>
+        <a href="${res.link}" class="resource-link" target="_blank">View Resource</a>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('resource-title').value.trim();
+    const description = document.getElementById('resource-description').value.trim();
+    const link = document.getElementById('resource-link').value.trim();
+
+    if (title && description && link) {
+      const resources = getResources();
+      resources.push({ title, description, link });
+      saveResources(resources);
+      renderResources();
+      form.reset();
+    }
+  });
+
+  // Initial render
+  renderResources();
+</script>
 
 </body>
 </html>

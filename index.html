@@ -261,7 +261,7 @@
 
   <!-- Main Content Section -->
   <div id="main-content" class="hidden">
-    <header>
+    <header id="main-header">
       <h1>Riderka</h1>
       <p class="slogan">GC - твой шаг в будущее!</p>
     </header>
@@ -300,6 +300,7 @@
       right: 20px;
       width: 60px;
       height: 60px;
+      margin-top: 10px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #FFC700;
@@ -319,7 +320,7 @@
       img.src = profilePicData;
       img.alt = "Profile Picture";
       img.className = "profile-pic";
-      document.body.appendChild(img);
+      document.getElementById("main-header").appendChild(img);
     }
   </script>
 

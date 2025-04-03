@@ -226,6 +226,29 @@
   <div class="course-list">
     <div class="course-card">
       <button class="buy-btn-course" onclick="openPopup()">Buy</button>
+      .buy-btn-course {
+  background: linear-gradient(90deg, #4fa7f4 0%, #3a8dde 100%);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+}
+
+.buy-btn-course:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.35);
+}
+
+.buy-btn-course:active {
+  transform: scale(0.97);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.2);
+}
+
       <div class="course-name">SAT Prep</div>
       <div class="course-desc">Master the SAT with elite strategies, drills, and scoring hacks.</div>
     </div>

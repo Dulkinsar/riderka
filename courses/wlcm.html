@@ -5,6 +5,101 @@
   <title>Courses | Dulat Academy</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    .popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup.active {
+  display: flex;
+}
+
+.popup-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pricing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.plan-card {
+  width: 200px;
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.plan-card.gold { background-color: #4fa7f4; color: white; }
+.plan-card.platinum { border: 2px solid #4fa7f4; background: white; color: #222; }
+.plan-card.silver, .plan-card.silverplus {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.plan-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.plan-price {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.plan-old-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.kaspi {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.4rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.buy-btn-plan {
+  background-color: #4fa7f4;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
     :root {
       --primary: #FFC700;  /* Gold */
       --secondary: #6B3FA0; /* Purple */
@@ -130,17 +225,68 @@
   <h1>Available Courses</h1>
   <div class="course-list">
     <div class="course-card">
+      <button class="buy-btn-course" onclick="openPopup()">Buy</button>
       <div class="course-name">SAT Prep</div>
       <div class="course-desc">Master the SAT with elite strategies, drills, and scoring hacks.</div>
     </div>
     <div class="course-card">
+      <button class="buy-btn-course" onclick="openPopup()">Buy</button>
       <div class="course-name">IELTS Mastery</div>
       <div class="course-desc">Everything you need to dominate the IELTS and speak like royalty.</div>
     </div>
     <div class="course-card">
+      <button class="buy-btn-course" onclick="openPopup()">Buy</button>
       <div class="course-name">Premium Application</div>
       <div class="course-desc">Crafted personal statements, top-tier mentorship, and submission strategy.</div>
     </div>
   </div>
+  <script>
+  function openPopup() {
+    document.getElementById('popup').classList.add('active');
+  }
+
+  function closePopup() {
+    document.getElementById('popup').classList.remove('active');
+  }
+</script>
+
+  <!-- Pricing Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <button class="close-btn" onclick="closePopup()">×</button>
+    <h2>Выберите тариф</h2>
+    <div class="pricing-row">
+      <div class="plan-card gold">
+        <div class="plan-name">Gold</div>
+        <div class="plan-price">275 000 ₸</div>
+        <div class="plan-old-price">306 000 ₸</div>
+        <div class="kaspi">Kaspi.kz</div>
+        <button class="buy-btn-plan">Buy</button>
+      </div>
+      <div class="plan-card platinum">
+        <div class="plan-name">Platinum</div>
+        <div class="plan-price">495 000 ₸</div>
+        <div class="plan-old-price">550 000 ₸</div>
+        <div class="kaspi">Kaspi.kz</div>
+        <button class="buy-btn-plan">Buy</button>
+      </div>
+      <div class="plan-card silver">
+        <div class="plan-name">Silver</div>
+        <div class="plan-price">75 000 ₸</div>
+        <div class="plan-old-price">83 000 ₸</div>
+        <div class="kaspi">Kaspi.kz</div>
+        <button class="buy-btn-plan">Buy</button>
+      </div>
+      <div class="plan-card silverplus">
+        <div class="plan-name">Silver+</div>
+        <div class="plan-price">125 000 ₸</div>
+        <div class="plan-old-price">139 000 ₸</div>
+        <div class="kaspi">Kaspi.kz</div>
+        <button class="buy-btn-plan">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

@@ -1,115 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Text</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #fff;
-            color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
-            padding: 20px;
-        }
-        h1 {
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .text-box {
-            border-radius: 12px;
-            padding: 15px;
-            margin: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f5f5f7;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        .text-box:hover {
-            background-color: #e5e5ea;
-        }
-        .preview {
-            flex-grow: 1;
-            padding: 0 15px;
-            font-weight: 500;
-        }
-        .link {
-            color: #6b59ff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        .link:hover {
-            color: #ffcc00;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admissions Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 2rem;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    .title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .highlight {
+      color: #ffc700;
+      font-weight: bold;
+    }
+    .bar-group {
+      margin-bottom: 1.5rem;
+    }
+    .bar-label {
+      margin-bottom: 0.5rem;
+    }
+    .bar-container {
+      position: relative;
+      height: 20px;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+    }
+    .bar-fill {
+      position: absolute;
+      height: 100%;
+      background-color: #ffc700;
+      border-radius: 10px 0 0 10px;
+    }
+    .score-bubble {
+      position: absolute;
+      top: -25px;
+      background-color: #6b3fa0;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+    .program-info {
+      margin-top: 2rem;
+    }
+    .program-info input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Choose Text</h1>
-        
-        <div class="text-box">
-            <span>Test 1</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 2</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 3</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 4</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 5</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 6</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 7</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 8</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 9</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
-        <div class="text-box">
-            <span>Test 10</span>
-            <span class="preview">Lorem ipsum dolor...</span>
-            <span class="link">Link</span>
-        </div>
+  <div class="container">
+    <div class="title">The chances of admission are: <span class="highlight">1.32%</span></div>
+
+    <div class="bar-group">
+      <div class="bar-label">GPA</div>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: 93%;"></div>
+        <div class="score-bubble" style="left: 75%;">3</div>
+        <div class="score-bubble" style="left: 93%; background-color: #28a745;">3.73</div>
+      </div>
     </div>
+
+    <div class="bar-group">
+      <div class="bar-label">SAT</div>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: 85%;"></div>
+        <div class="score-bubble" style="left: 10%;">13</div>
+        <div class="score-bubble" style="left: 85%; background-color: #28a745;">1340</div>
+      </div>
+    </div>
+
+    <div class="bar-group">
+      <div class="bar-label">IELTS</div>
+      <div class="bar-container">
+        <div class="bar-fill" style="width: 74%;"></div>
+        <div class="score-bubble" style="left: 74%;">6</div>
+        <div class="score-bubble" style="left: 86%; background-color: #28a745;">7</div>
+      </div>
+    </div>
+
+    <div class="program-info">
+      <label>Chances of admission into</label>
+      <input type="text" value="AGH University of Science and Technology" readonly>
+
+      <label>in the program</label>
+      <input type="text" value="Biomedical Engineering: Emerging Health Care Technologies" readonly>
+    </div>
+  </div>
 </body>
 </html>

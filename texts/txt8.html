@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Guidance</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Guidance Portal</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,10 +14,10 @@
     }
     header {
       background-color: #ffc700;
-      padding: 1rem;
+      padding: 1.5rem;
       text-align: center;
-      color: #fff;
-      font-size: 1.5rem;
+      color: white;
+      font-size: 2rem;
       font-weight: bold;
     }
     .container {
@@ -28,13 +28,13 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    h2 {
+    h2, h3 {
       color: #6b3fa0;
     }
     p {
       line-height: 1.6;
     }
-    .test-section {
+    .test-section, .pretest-section {
       margin-top: 2rem;
       padding: 1rem;
       background-color: #fdf3c1;
@@ -46,34 +46,60 @@
       margin-top: 1rem;
       padding: 0.75rem 1.5rem;
       background-color: #6b3fa0;
-      color: #fff;
+      color: white;
       text-decoration: none;
       border-radius: 8px;
       font-weight: bold;
     }
     .test-button:hover {
-      background-color: #5a3492;
+      background-color: #59338f;
+    }
+    .hidden {
+      display: none;
+    }
+    ul {
+      margin-top: 1rem;
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.75rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    Career Guidance Portal
-  </header>
-  <div class="container">
-    <h2>Welcome to Your Personalized Career Guidance</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. 
-    </p>
-    <p>
-      Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
-    </p>
+  <header>Career Guidance Portal</header>
 
+  <!-- Main Intro Section -->
+  <div class="container" id="intro-section">
+    <h2>Welcome to Your Personalized Career Guidance</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+    <p>Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.</p>
+    
     <div class="test-section">
       <h3>Take the Career Guidance Test</h3>
       <p>Answer a short set of questions to receive tailored career recommendations based on your interests and preferences.</p>
-      <a href="#" class="test-button">Start the Test</a>
+      <a href="#pretest-section" class="test-button" onclick="showPreTest()">Start the Test</a>
     </div>
   </div>
+
+  <!-- Pre-Test Section -->
+  <div class="container hidden" id="pretest-section">
+    <h2>Read This Before Taking the Test</h2>
+    <p>Please keep the following in mind to get the most accurate career advice based on your responses:</p>
+    <ul>
+      <li>Answer honestly and based on your true interests.</li>
+      <li>The test takes approximately 5–10 minutes.</li>
+      <li>Try to stay focused and avoid distractions.</li>
+      <li>Your responses are private and used only for your guidance.</li>
+    </ul>
+    <a href="#" class="test-button">I'm Ready – Start the Test</a>
+  </div>
+
+  <script>
+    function showPreTest() {
+      document.getElementById('intro-section').classList.add('hidden');
+      document.getElementById('pretest-section').classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>

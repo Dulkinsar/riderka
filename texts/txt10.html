@@ -57,7 +57,8 @@
     .program-info {
       margin-top: 2rem;
     }
-    .program-info input {
+    .program-info input,
+    .bar-group input[type="number"] {
       width: 100%;
       padding: 10px;
       margin-top: 0.5rem;
@@ -69,31 +70,31 @@
 </head>
 <body>
   <div class="container">
-    <div class="title">The chances of admission are: <span class="highlight">1.32%</span></div>
+    <div class="title">The chances of admission are: <span class="highlight" id="chance">1.32%</span></div>
 
     <div class="bar-group">
       <div class="bar-label">GPA</div>
+      <input type="number" id="gpa" min="0" max="4" step="0.01" value="3">
       <div class="bar-container">
-        <div class="bar-fill" style="width: 93%;"></div>
-        <div class="score-bubble" style="left: 75%;">3</div>
+        <div class="bar-fill" id="gpa-fill"></div>
         <div class="score-bubble" style="left: 93%; background-color: #28a745;">3.73</div>
       </div>
     </div>
 
     <div class="bar-group">
       <div class="bar-label">SAT</div>
+      <input type="number" id="sat" min="400" max="1600" value="1340">
       <div class="bar-container">
-        <div class="bar-fill" style="width: 85%;"></div>
-        <div class="score-bubble" style="left: 10%;">13</div>
+        <div class="bar-fill" id="sat-fill"></div>
         <div class="score-bubble" style="left: 85%; background-color: #28a745;">1340</div>
       </div>
     </div>
 
     <div class="bar-group">
       <div class="bar-label">IELTS</div>
+      <input type="number" id="ielts" min="0" max="9" step="0.5" value="6">
       <div class="bar-container">
-        <div class="bar-fill" style="width: 74%;"></div>
-        <div class="score-bubble" style="left: 74%;">6</div>
+        <div class="bar-fill" id="ielts-fill"></div>
         <div class="score-bubble" style="left: 86%; background-color: #28a745;">7</div>
       </div>
     </div>
@@ -106,5 +107,35 @@
       <input type="text" value="Biomedical Engineering: Emerging Health Care Technologies" readonly>
     </div>
   </div>
+
+  <script>
+    const gpaInput = document.getElementById('gpa');
+    const satInput = document.getElementById('sat');
+    const ieltsInput = document.getElementById('ielts');
+    const gpaFill = document.getElementById('gpa-fill');
+    const satFill = document.getElementById('sat-fill');
+    const ieltsFill = document.getElementById('ielts-fill');
+    const chanceText = document.getElementById('chance');
+
+    function update() {
+      const gpa = parseFloat(gpaInput.value);
+      const sat = parseInt(satInput.value);
+      const ielts = parseFloat(ieltsInput.value);
+
+      gpaFill.style.width = `${(gpa / 4) * 100}%`;
+      satFill.style.width = `${(sat / 1600) * 100}%`;
+      ieltsFill.style.width = `${(ielts / 9) * 100}%`;
+
+      // Dummy formula for demo MVP purposes
+      const chance = ((gpa / 4) * 0.4 + (sat / 1600) * 0.4 + (ielts / 9) * 0.2) * 100;
+      chanceText.textContent = `${chance.toFixed(2)}%`;
+    }
+
+    gpaInput.addEventListener('input', update);
+    satInput.addEventListener('input', update);
+    ieltsInput.addEventListener('input', update);
+
+    update();
+  </script>
 </body>
 </html>

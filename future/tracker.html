@@ -1,45 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>College Application Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dulat the Great - Profile & Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f2f5;
       margin: 0;
-      padding: 40px;
-      background-color: #fff;
+      padding: 0;
       color: #6b3fa0;
     }
 
-    header {
-      background-color: #ffc700;
-      padding: 30px 40px;
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      padding: 24px;
+    }
+
+    h1, h2 {
       text-align: center;
-      border-radius: 12px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 32px;
       color: #6b3fa0;
     }
 
-    p {
-      font-size: 18px;
+    label, input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #6b3fa0;
+      margin-bottom: 16px;
+    }
+
+    button, .use-coins-btn, .profile-nav {
+      background-color: #ffc700;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
       margin-top: 10px;
     }
 
-    .student-info {
-      margin-top: 40px;
+    button:hover, .profile-nav:hover, .use-coins-btn:hover {
+      background-color: #e6b800;
     }
 
-    .student-info h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
+    .avatar-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .task-list {
+    .avatar-choice {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .avatar-choice.selected {
+      border: 3px solid #6b3fa0;
+    }
+
+    .profile-card, .task-list {
       margin-top: 20px;
     }
 
@@ -48,28 +89,18 @@
       justify-content: space-between;
       align-items: center;
       background-color: #f6f6f6;
+      padding: 15px;
+      margin-bottom: 10px;
       border-left: 6px solid #6b3fa0;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
     }
 
-    .task-name a {
-      font-size: 18px;
+    .task a {
       color: #6b3fa0;
       text-decoration: none;
-      transition: color 0.2s;
     }
 
-    .task-name a:hover {
-      text-decoration: underline;
-      color: #4c268c;
-    }
-
-    .status {
-      font-size: 16px;
-      margin-right: 20px;
+    .task .status {
       font-weight: bold;
     }
 
@@ -81,75 +112,161 @@
       color: red;
     }
 
-    button {
-      background-color: #6b3fa0;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      box-shadow: 3px 3px 0 #ffc700;
-      transition: all 0.2s ease-in-out;
+    #top-nav {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      z-index: 1000;
     }
 
-    button:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 #ffc700;
+    .bonus-popup {
+      position: fixed;
+      top: 80px;
+      right: 40px;
+      background-color: #ffc700;
+      color: #6b3fa0;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 5px 5px 0 #6b3fa0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease-in-out;
+      z-index: 999;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .bonus-popup.show {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>College Application Tracker</h1>
-    <p>Led by Dulat the Great (6'1.5") — Forever inspired by King LeBron James 🏀</p>
-  </header>
+  <div id="top-nav">
+    <a href="javascript:showViewer()" class="profile-nav">My Profile</a>
+  </div>
 
-  <div class="student-info">
-    <h2>🎓 Student: Aigerim Nurtayeva</h2>
+  <div class="container" id="editor-section">
+    <h2>Edit Your Profile</h2>
+    <label>Choose a Profile Picture</label>
+    <div class="avatar-options">
+      <img src="/images/papa.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/base.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/woman.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/vipka.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/boss.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/shynar.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/aknur.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/beard.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/potter.png" class="avatar-choice" onclick="selectAvatar(this)">
+      <img src="/images/finance.png" class="avatar-choice" onclick="selectAvatar(this)">
+    </div>
+    <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)" />
+    <div id="image-preview"></div>
+    <label for="nickname">Nickname</label>
+    <input type="text" id="nickname" placeholder="Enter your nickname" />
+    <label for="bio">Bio</label>
+    <textarea id="bio" rows="4"></textarea>
+    <button onclick="saveProfile()">Save & View</button>
+  </div>
 
+  <div class="container" id="viewer-section" style="display:none">
+    <h2>Your Profile</h2>
+    <div class="profile-card">
+      <div id="viewer-image"></div>
+      <div class="profile-name" id="viewer-nickname"></div>
+      <div class="profile-bio" id="viewer-bio"></div>
+    </div>
+    <button onclick="editProfile()">Edit Profile</button>
+    <h2>GC Coins: <span id="coins">0</span> 🪙</h2>
+    <a href="/use-gc-coins" class="use-coins-btn">Use GC Coins</a>
     <div class="task-list">
       <div class="task">
-        <span class="task-name"><a href="/tasks/personal-statement">Write Common App Personal Statement</a></span>
+        <a href="/tasks/personal-statement">Write Common App Essay</a>
         <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this)">Mark Complete</button>
+        <button onclick="markComplete(this, 30)">Complete</button>
       </div>
-
       <div class="task">
-        <span class="task-name"><a href="/tasks/recommendation-letters">Request Letters of Recommendation</a></span>
+        <a href="/tasks/recommendation-letters">Request Recommendation Letters</a>
         <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this)">Mark Complete</button>
+        <button onclick="markComplete(this, 20)">Complete</button>
       </div>
-
       <div class="task">
-        <span class="task-name"><a href="/tasks/fafsa">Submit FAFSA & CSS Profile</a></span>
+        <a href="/tasks/fafsa">Submit FAFSA</a>
         <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this)">Mark Complete</button>
-      </div>
-
-      <div class="task">
-        <span class="task-name"><a href="/tasks/college-list">Finalize College List</a></span>
-        <span class="status complete">Complete</span>
-        <button disabled>✔</button>
+        <button onclick="markComplete(this, 25)">Complete</button>
       </div>
     </div>
   </div>
 
+  <div id="bonusPopup" class="bonus-popup">+30 GC Coins! Hustle like LeBron!</div>
+
   <script>
-    function markComplete(button) {
+    let totalCoins = 0;
+
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const output = document.getElementById('image-preview');
+        output.innerHTML = '<img class="profile-pic" src="' + reader.result + '">';
+        localStorage.setItem('profilePic', reader.result);
+        clearAvatarSelection();
+      };
+      if (event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function selectAvatar(img) {
+      clearAvatarSelection();
+      img.classList.add('selected');
+      localStorage.setItem('profilePic', img.src);
+      document.getElementById('image-preview').innerHTML = '<img class="profile-pic" src="' + img.src + '">';
+    }
+
+    function clearAvatarSelection() {
+      document.querySelectorAll('.avatar-choice').forEach(i => i.classList.remove('selected'));
+    }
+
+    function saveProfile() {
+      localStorage.setItem('nickname', document.getElementById('nickname').value);
+      localStorage.setItem('bio', document.getElementById('bio').value);
+      showViewer();
+    }
+
+    function showViewer() {
+      document.getElementById('editor-section').style.display = 'none';
+      document.getElementById('viewer-section').style.display = 'block';
+      document.getElementById('viewer-nickname').textContent = localStorage.getItem('nickname') || 'Not set';
+      document.getElementById('viewer-bio').textContent = localStorage.getItem('bio') || 'No bio provided';
+      const pic = localStorage.getItem('profilePic');
+      if (pic) document.getElementById('viewer-image').innerHTML = '<img class="profile-pic" src="' + pic + '">';
+    }
+
+    function editProfile() {
+      document.getElementById('editor-section').style.display = 'block';
+      document.getElementById('viewer-section').style.display = 'none';
+    }
+
+    function markComplete(button, bonus) {
       const task = button.closest('.task');
       const status = task.querySelector('.status');
-
       status.textContent = 'Complete';
       status.classList.remove('incomplete');
       status.classList.add('complete');
-
-      button.textContent = '✔';
       button.disabled = true;
+      button.textContent = '✔';
+      totalCoins += bonus;
+      document.getElementById('coins').textContent = totalCoins;
+      const popup = document.getElementById('bonusPopup');
+      popup.textContent = `+${bonus} GC Coins! Hustle like LeBron!`;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 3000);
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem('nickname') || localStorage.getItem('bio') || localStorage.getItem('profilePic')) {
+        showViewer();
+      }
     }
   </script>
 </body>

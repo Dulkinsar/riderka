@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Application Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background-color: #fff;
+      color: #6b3fa0;
+    }
+
+    header {
+      background-color: #ffc700;
+      padding: 30px 40px;
+      text-align: center;
+      border-radius: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #6b3fa0;
+    }
+
+    p {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .student-info {
+      margin-top: 40px;
+    }
+
+    .student-info h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .task-list {
+      margin-top: 20px;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f6f6f6;
+      border-left: 6px solid #6b3fa0;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .task-name a {
+      font-size: 18px;
+      color: #6b3fa0;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .task-name a:hover {
+      text-decoration: underline;
+      color: #4c268c;
+    }
+
+    .status {
+      font-size: 16px;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    .complete {
+      color: green;
+    }
+
+    .incomplete {
+      color: red;
+    }
+
+    button {
+      background-color: #6b3fa0;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 #ffc700;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #ffc700;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>College Application Tracker</h1>
+    <p>Led by Dulat the Great (6'1.5") — Forever inspired by King LeBron James 🏀</p>
+  </header>
+
+  <div class="student-info">
+    <h2>🎓 Student: Aigerim Nurtayeva</h2>
+
+    <div class="task-list">
+      <div class="task">
+        <span class="task-name"><a href="/tasks/personal-statement">Write Common App Personal Statement</a></span>
+        <span class="status incomplete">Incomplete</span>
+        <button onclick="markComplete(this)">Mark Complete</button>
+      </div>
+
+      <div class="task">
+        <span class="task-name"><a href="/tasks/recommendation-letters">Request Letters of Recommendation</a></span>
+        <span class="status incomplete">Incomplete</span>
+        <button onclick="markComplete(this)">Mark Complete</button>
+      </div>
+
+      <div class="task">
+        <span class="task-name"><a href="/tasks/fafsa">Submit FAFSA & CSS Profile</a></span>
+        <span class="status incomplete">Incomplete</span>
+        <button onclick="markComplete(this)">Mark Complete</button>
+      </div>
+
+      <div class="task">
+        <span class="task-name"><a href="/tasks/college-list">Finalize College List</a></span>
+        <span class="status complete">Complete</span>
+        <button disabled>✔</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function markComplete(button) {
+      const task = button.closest('.task');
+      const status = task.querySelector('.status');
+
+      status.textContent = 'Complete';
+      status.classList.remove('incomplete');
+      status.classList.add('complete');
+
+      button.textContent = '✔';
+      button.disabled = true;
+    }
+  </script>
+</body>
+</html>

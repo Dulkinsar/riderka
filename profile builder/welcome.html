@@ -328,9 +328,99 @@
   }
 </script>
 
+<!-- SAT Score Input with Gradient Background -->
+<div style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
+  <label for="sat" style="font-weight: 600; font-size: 1rem; color: #333;">📝 SAT Score (400 - 1600)</label>
+  
+  <input 
+    type="number" 
+    id="sat" 
+    name="sat" 
+    placeholder="e.g., 1450"
+    step="10" 
+    min="400" 
+    max="1600"
+    oninput="validateSAT(this)"
+    style="
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+      box-sizing: border-box;
+      background-color: #fff;
+    "
+  >
+  <div id="sat-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
+</div>
 
-      <label for="testScores">SAT/ACT Scores</label>
-      <input type="text" id="testScores" placeholder="e.g., SAT: 1500, ACT: 33">
+<script>
+  function hexToRgb(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+  }
+
+  function interpolateColor(color1, color2, factor) {
+    return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
+  }
+
+  function validateSAT(input) {
+    const feedback = document.getElementById('sat-feedback');
+    const value = parseInt(input.value);
+
+    const red = hexToRgb("#ff000d");
+    const yellow = hexToRgb("#ffff00");
+    const green = hexToRgb("#008000");
+
+    if (input.value === '') {
+      feedback.style.display = "none";
+      input.style.borderColor = "#ccc";
+      input.style.boxShadow = "none";
+      input.style.backgroundColor = "#fff";
+      return;
+    }
+
+    if (isNaN(value)) {
+      feedback.textContent = "Please enter a valid number.";
+      feedback.style.display = "block";
+      feedback.style.color = "#d32f2f";
+      input.style.borderColor = "#d32f2f";
+      input.style.boxShadow = "0 0 6px #d32f2f55";
+      input.style.backgroundColor = "#ffcccc";
+      return;
+    }
+
+    if (value < 400 || value > 1600) {
+      feedback.textContent = "SAT score must be between 400 and 1600.";
+      feedback.style.display = "block";
+      feedback.style.color = "#d32f2f";
+      input.style.borderColor = "#d32f2f";
+      input.style.boxShadow = "0 0 6px #d32f2f55";
+      input.style.backgroundColor = "#ffcccc";
+      return;
+    }
+
+    // Interpolate color: 400 → red, 1000 → yellow, 1600 → green
+    let bgColor;
+    if (value <= 1000) {
+      const factor = (value - 400) / 600; // 400 to 1000 → red to yellow
+      bgColor = interpolateColor(red, yellow, factor);
+    } else {
+      const factor = (value - 1000) / 600; // 1000 to 1600 → yellow to green
+      bgColor = interpolateColor(yellow, green, factor);
+    }
+
+    const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
+
+    feedback.style.display = "none"; // no message, just vibes
+    input.style.borderColor = "#4CAF50";
+    input.style.boxShadow = "0 0 6px #4CAF5055";
+    input.style.backgroundColor = finalColor;
+  }
+</script>
+
 
       <label for="ielts">IELTS Score</label>
       <input type="text" id="ielts" placeholder="e.g., 6.9">

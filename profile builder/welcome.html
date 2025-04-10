@@ -236,19 +236,19 @@
       <label for="highSchool">High School Name</label>
       <input type="text" id="highSchool" placeholder="e.g., Galaxy International School">
 
-      <!-- GPA Input with Tri-Color Gradient Background (No "Looks good!") -->
-<div style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  <label for="gpa" style="font-weight: 600; font-size: 1rem; color: #333;">🎓 GPA (0.0 - 4.0)</label>
+     <!-- Input Template with Gradient Background -->
+<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
+  <label for="score" style="font-weight: 600; font-size: 1rem; color: #333;">🎓 Score Input</label>
   
   <input 
     type="number" 
-    id="gpa" 
-    name="gpa" 
+    id="score" 
+    name="score" 
     placeholder="e.g., 3.8"
     step="0.1" 
     min="0" 
     max="4.0"
-    oninput="validateGPA(this)"
+    oninput="validateInput(this, 'score', [0, 4], ['#ff000d', '#ffff00', '#008000'], 'Score between 0 and 4')"
     style="
       width: 100%;
       padding: 0.75rem;
@@ -261,10 +261,11 @@
       background-color: #fff;
     "
   >
-  <div id="gpa-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
+  <div id="feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
 </div>
 
 <script>
+  // Utility functions for color manipulation
   function hexToRgb(hex) {
     const bigint = parseInt(hex.slice(1), 16);
     return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
@@ -274,14 +275,14 @@
     return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
   }
 
-  function validateGPA(input) {
-    const feedback = document.getElementById('gpa-feedback');
+  // Generic input validation function
+  function validateInput(input, type, range, colors, message) {
+    const feedback = document.getElementById('feedback');
     const value = parseFloat(input.value);
 
-    const red = hexToRgb("#ff000d");
-    const yellow = hexToRgb("#ffff00");
-    const green = hexToRgb("#008000");
+    const [red, yellow, green] = colors.map(hexToRgb);
 
+    // Reset on empty input
     if (input.value === '') {
       feedback.style.display = "none";
       input.style.borderColor = "#ccc";
@@ -290,6 +291,7 @@
       return;
     }
 
+    // Validate number
     if (isNaN(value)) {
       feedback.textContent = "Please enter a valid number.";
       feedback.style.display = "block";
@@ -300,8 +302,9 @@
       return;
     }
 
-    if (value < 0 || value > 4.0) {
-      feedback.textContent = "GPA must be between 0.0 and 4.0.";
+    // Validate range
+    if (value < range[0] || value > range[1]) {
+      feedback.textContent = message;
       feedback.style.display = "block";
       feedback.style.color = "#d32f2f";
       input.style.borderColor = "#d32f2f";
@@ -310,12 +313,13 @@
       return;
     }
 
+    // Color interpolation
     let bgColor;
-    if (value <= 2.0) {
-      const factor = value / 2.0; // 0.0 to 2.0 → red to yellow
+    if (value <= (range[1] / 2)) {
+      const factor = value / (range[1] / 2); // Lower half → red to yellow
       bgColor = interpolateColor(red, yellow, factor);
     } else {
-      const factor = (value - 2.0) / 2.0; // 2.0 to 4.0 → yellow to green
+      const factor = (value - (range[1] / 2)) / (range[1] / 2); // Upper half → yellow to green
       bgColor = interpolateColor(yellow, green, factor);
     }
 
@@ -328,10 +332,9 @@
   }
 </script>
 
-<!-- SAT Score Input with Gradient Background -->
-<div style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
+<!-- SAT Score Input -->
+<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
   <label for="sat" style="font-weight: 600; font-size: 1rem; color: #333;">📝 SAT Score (400 - 1600)</label>
-  
   <input 
     type="number" 
     id="sat" 
@@ -340,7 +343,7 @@
     step="10" 
     min="400" 
     max="1600"
-    oninput="validateSAT(this)"
+    oninput="validateInput(this, 'sat', [400, 1600], ['#ff000d', '#ffff00', '#008000'], 'SAT score between 400 and 1600')"
     style="
       width: 100%;
       padding: 0.75rem;
@@ -356,76 +359,9 @@
   <div id="sat-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
 </div>
 
-<script>
-  function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  }
-
-  function interpolateColor(color1, color2, factor) {
-    return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
-  }
-
-  function validateSAT(input) {
-    const feedback = document.getElementById('sat-feedback');
-    const value = parseInt(input.value);
-
-    const red = hexToRgb("#ff000d");
-    const yellow = hexToRgb("#ffff00");
-    const green = hexToRgb("#008000");
-
-    if (input.value === '') {
-      feedback.style.display = "none";
-      input.style.borderColor = "#ccc";
-      input.style.boxShadow = "none";
-      input.style.backgroundColor = "#fff";
-      return;
-    }
-
-    if (isNaN(value)) {
-      feedback.textContent = "Please enter a valid number.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    if (value < 400 || value > 1600) {
-      feedback.textContent = "SAT score must be between 400 and 1600.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    // Interpolate color: 400 → red, 1000 → yellow, 1600 → green
-    let bgColor;
-    if (value <= 1000) {
-      const factor = (value - 400) / 600; // 400 to 1000 → red to yellow
-      bgColor = interpolateColor(red, yellow, factor);
-    } else {
-      const factor = (value - 1000) / 600; // 1000 to 1600 → yellow to green
-      bgColor = interpolateColor(yellow, green, factor);
-    }
-
-    const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
-
-    feedback.style.display = "none"; // no message, just vibes
-    input.style.borderColor = "#4CAF50";
-    input.style.boxShadow = "0 0 6px #4CAF5055";
-    input.style.backgroundColor = finalColor;
-  }
-</script>
-
-
-      <!-- IELTS Score Input with Gradient Background -->
-<div style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
+<!-- IELTS Score Input -->
+<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
   <label for="ielts" style="font-weight: 600; font-size: 1rem; color: #333;">🌍 IELTS Score (0.0 - 9.0)</label>
-  
   <input 
     type="number" 
     id="ielts" 
@@ -434,7 +370,7 @@
     step="0.5" 
     min="0" 
     max="9"
-    oninput="validateIELTS(this)"
+    oninput="validateInput(this, 'ielts', [0, 9], ['#ff000d', '#ffff00', '#008000'], 'IELTS score between 0 and 9')"
     style="
       width: 100%;
       padding: 0.75rem;
@@ -450,100 +386,9 @@
   <div id="ielts-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
 </div>
 
-<script>
-  function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  }
-
-  function interpolateColor(color1, color2, factor) {
-    return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
-  }
-
-  function validateIELTS(input) {
-    const feedback = document.getElementById('ielts-feedback');
-    const value = parseFloat(input.value);
-
-    const red = hexToRgb("#ff000d");
-    const yellow = hexToRgb("#ffff00");
-    const green = hexToRgb("#008000");
-
-    if (input.value === '') {
-      feedback.style.display = "none";
-      input.style.borderColor = "#ccc";
-      input.style.boxShadow = "none";
-      input.style.backgroundColor = "#fff";
-      return;
-    }
-
-    if (isNaN(value)) {
-      feedback.textContent = "Please enter a valid number.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    if (value < 0 || value > 9.0) {
-      feedback.textContent = "IELTS score must be between 0.0 and 9.0.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    let bgColor;
-    if (value <= 4.5) {
-      const factor = value / 4.5; // 0.0 to 4.5 → red to yellow
-      bgColor = interpolateColor(red, yellow, factor);
-    } else {
-      const factor = (value - 4.5) / 4.5; // 4.5 to 9.0 → yellow to green
-      bgColor = interpolateColor(yellow, green, factor);
-    }
-
-    const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
-
-    feedback.style.display = "none"; // no message, pure vibes
-    input.style.borderColor = "#4CAF50";
-    input.style.boxShadow = "0 0 6px #4CAF5055";
-    input.style.backgroundColor = finalColor;
-  }
-</script>
-
-<!-- Extracurricular Activities Entry + Score -->
-<div style="max-width: 500px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  
-  <!-- Textarea for Writing in Activities -->
-  <label for="activities" style="font-weight: 600; font-size: 1rem; color: #333;">
-    ✍️ Describe Your Extracurricular Activities
-  </label>
-  <textarea 
-    id="activities" 
-    name="activities" 
-    placeholder="e.g., Debate club captain, volunteer at local shelter, founder of robotics team..."
-    rows="5"
-    style="
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      resize: vertical;
-      transition: border-color 0.3s;
-      box-sizing: border-box;
-    "
-  ></textarea>
-
-  <!-- Mentor-Assigned Score -->
-  <label for="ec-score" style="font-weight: 600; font-size: 1rem; color: #333;">
-    🏆 Mentor's Extracurricular Score (0 - 100)
-  </label>
+<!-- Extracurricular Score Input -->
+<div class="input-container" style="max-width: 500px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
+  <label for="ec-score" style="font-weight: 600; font-size: 1rem; color: #333;">🏆 Mentor's Extracurricular Score (0 - 100)</label>
   <input 
     type="number" 
     id="ec-score" 
@@ -552,7 +397,7 @@
     step="1" 
     min="0" 
     max="100"
-    oninput="validateEC(this)"
+    oninput="validateInput(this, 'ec-score', [0, 100], ['#ff000d', '#ffff00', '#008000'], 'Score between 0 and 100')"
     style="
       width: 100%;
       padding: 0.75rem;
@@ -567,70 +412,6 @@
   >
   <div id="ec-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
 </div>
-
-<script>
-  function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  }
-
-  function interpolateColor(color1, color2, factor) {
-    return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
-  }
-
-  function validateEC(input) {
-    const feedback = document.getElementById('ec-feedback');
-    const value = parseFloat(input.value);
-
-    const red = hexToRgb("#ff000d");
-    const yellow = hexToRgb("#ffff00");
-    const green = hexToRgb("#008000");
-
-    if (input.value === '') {
-      feedback.style.display = "none";
-      input.style.borderColor = "#ccc";
-      input.style.boxShadow = "none";
-      input.style.backgroundColor = "#fff";
-      return;
-    }
-
-    if (isNaN(value)) {
-      feedback.textContent = "Please enter a valid number.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    if (value < 0 || value > 100) {
-      feedback.textContent = "Score must be between 0 and 100.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
-
-    let bgColor;
-    if (value <= 50) {
-      const factor = value / 50;
-      bgColor = interpolateColor(red, yellow, factor);
-    } else {
-      const factor = (value - 50) / 50;
-      bgColor = interpolateColor(yellow, green, factor);
-    }
-
-    const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
-
-    feedback.style.display = "none";
-    input.style.borderColor = "#4CAF50";
-    input.style.boxShadow = "0 0 6px #4CAF5055";
-    input.style.backgroundColor = finalColor;
-  }
-</script>
 
 
       <label for="essay">Personal Statement (Optional)</label>

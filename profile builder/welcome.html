@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>College Profile Builder</title>
   <style>
-    /* Memphis Corporate Style Variables */
     :root {
       --primary-purple: #6b3fa0;
       --accent-yellow: #ffc700;
@@ -14,23 +13,15 @@
       --deep-shadow: 4px 4px 0 var(--primary-purple);
     }
 
-    /* Base Styles */
     body {
       font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
       margin: 0;
       padding: 20px;
-      background: repeating-linear-gradient(
-        45deg,
-        #f8f5ff,
-        #f8f5ff 20px,
-        #f0ebfa 20px,
-        #f0ebfa 40px
-      );
+      background: repeating-linear-gradient(45deg, #f8f5ff, #f8f5ff 20px, #f0ebfa 20px, #f0ebfa 40px);
       color: #333;
       min-height: 100vh;
     }
 
-    /* Geometric Background Elements */
     .geometric-patterns {
       position: fixed;
       top: 0;
@@ -46,17 +37,13 @@
       opacity: 0.15;
     }
 
-    /* Main Container */
     .memphis-background {
-      background: 
-        url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'),
+      background: url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'),
         linear-gradient(145deg, var(--primary-purple) 60%, #7d4fb3);
       background-size: 30px 30px, cover;
       padding: 4rem 2rem;
       border-radius: 30px;
-      box-shadow: 
-        0 8px 20px rgba(0, 0, 0, 0.15),
-        var(--deep-shadow);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), var(--deep-shadow);
       border: 4px solid var(--clean-white);
       max-width: 800px;
       margin: 2rem auto;
@@ -76,7 +63,6 @@
       z-index: 0;
     }
 
-    /* Typography */
     h2 {
       color: var(--clean-white);
       text-align: center;
@@ -88,7 +74,6 @@
       text-shadow: 2px 2px var(--primary-purple);
     }
 
-    /* Form Elements */
     label {
       display: block;
       margin: 1.5rem 0 0.5rem;
@@ -112,13 +97,10 @@
     input:focus, textarea:focus {
       outline: none;
       border-color: var(--accent-yellow);
-      box-shadow: 
-        0 0 0 4px rgba(255, 199, 0, 0.3),
-        var(--deep-shadow);
+      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3), var(--deep-shadow);
       transform: translateY(-2px);
     }
 
-    /* Input Containers */
     .input-container {
       max-width: 500px;
       margin: 2rem auto;
@@ -129,7 +111,6 @@
       border: 2px dashed var(--accent-yellow);
     }
 
-    /* Button Styles */
     button {
       margin: 2.5rem auto 1rem;
       padding: 1.2rem 2.5rem;
@@ -142,30 +123,23 @@
       font-size: 1.2rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 
-        0 4px 0 #d13248,
-        var(--deep-shadow);
+      box-shadow: 0 4px 0 #d13248, var(--deep-shadow);
       transition: all 0.2s ease;
       cursor: pointer;
     }
 
     button:hover {
       transform: translateY(2px);
-      box-shadow: 
-        0 2px 0 #d13248,
-        2px 2px 0 var(--primary-purple);
+      box-shadow: 0 2px 0 #d13248, 2px 2px 0 var(--primary-purple);
       background: #ff2b44;
     }
 
-    /* Profile Display Section */
     .profile-entry {
       background: var(--clean-white);
       padding: 2.5rem;
       border-radius: 25px;
       margin: 3rem auto;
-      box-shadow: 
-        0 8px 20px rgba(0, 0, 0, 0.1),
-        var(--deep-shadow);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), var(--deep-shadow);
       border: 3px solid var(--primary-purple);
       max-width: 700px;
     }
@@ -192,7 +166,6 @@
       color: var(--energized-red);
     }
 
-    /* Feedback Messages */
     .feedback {
       color: var(--energized-red);
       font-weight: bold;
@@ -208,7 +181,6 @@
       top: 0;
     }
 
-    /* Gamification Styles */
     .coin-counter {
       position: fixed;
       top: 20px;
@@ -269,6 +241,18 @@
       font-weight: bold;
       margin-left: 0.5rem;
     }
+
+    .reset-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--energized-red);
+      padding: 0.8rem 1.5rem;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      box-shadow: var(--deep-shadow);
+    }
   </style>
 </head>
 <body>
@@ -279,6 +263,7 @@
   </div>
 
   <div class="coin-counter" id="coinDisplay">0 Coins</div>
+  <div class="reset-button" onclick="clearLocalStorage()">🔄 Reset All Data</div>
   
   <main>
     <div class="memphis-background">
@@ -371,11 +356,23 @@
   </main>
 
   <script>
-    // Gamification System
-    let userCoins = 0;
-    let profileSubmitted = false;
+    const STORAGE_KEYS = {
+      PROFILE: 'collegeProfile',
+      COINS: 'userCoins',
+      PURCHASES: 'purchases'
+    };
 
-    // Color Validation Functions
+    let userCoins = parseInt(localStorage.getItem(STORAGE_KEYS.COINS)) || 0;
+    let savedProfile = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROFILE)) || null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCoinDisplay();
+      if (savedProfile) {
+        populateForm(savedProfile);
+        showProfile(savedProfile);
+      }
+    });
+
     function hexToRgb(hex) {
       const bigint = parseInt(hex.slice(1), 16);
       return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
@@ -385,7 +382,6 @@
       return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
     }
 
-    // Input Validation
     function validateInput(input, range, colors, message) {
       const feedback = input.nextElementSibling;
       const value = parseFloat(input.value);
@@ -430,7 +426,6 @@
       input.style.backgroundColor = "#ffcccc";
     }
 
-    // Coin Calculation
     function calculateCoins(profile) {
       const gpa = parseFloat(profile.score) || 0;
       const sat = parseInt(profile.sat) || 0;
@@ -438,55 +433,61 @@
       const ec = parseInt(profile.ecScore) || 0;
       const essay = parseInt(profile.essay) || 0;
 
-      // Calculate coins based on scores (weighted)
-      userCoins = Math.round(
-        (gpa * 25) +         // GPA out of 4 → 100 coins max
-        (sat / 16) +         // SAT out of 1600 → 100 coins max
-        (ielts * 11.11) +    // IELTS out of 9 → 100 coins max
-        (ec * 0.9) +         // EC out of 100 → 90 coins max
-        (essay * 0.9)        // Essay out of 100 → 90 coins max
+      return Math.round(
+        (gpa * 25) +
+        (sat / 16) +
+        (ielts * 11.11) +
+        (ec * 0.9) +
+        (essay * 0.9)
       );
-
-      updateCoinDisplay();
-      return userCoins;
     }
 
     function updateCoinDisplay() {
       const coinDisplay = document.getElementById('coinDisplay');
       coinDisplay.textContent = `${userCoins} Coins`;
-      
-      // Animation when coins increase
-      if (profileSubmitted) {
-        coinDisplay.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-          coinDisplay.style.transform = 'scale(1)';
-        }, 300);
-      }
-      
-      // Show store if coins available
-      if(userCoins > 0) {
-        document.getElementById('premiumStore').style.display = 'block';
-      }
+      localStorage.setItem(STORAGE_KEYS.COINS, userCoins.toString());
+      document.getElementById('premiumStore').style.display = userCoins > 0 ? 'block' : 'none';
     }
 
-    // Purchase Function
     function purchaseItem(cost, itemId) {
-      if(userCoins >= cost) {
-        if(confirm(`Confirm purchase for ${cost} coins?`)) {
+      if (userCoins >= cost) {
+        if (confirm(`Confirm purchase for ${cost} coins?`)) {
           userCoins -= cost;
+          const purchases = JSON.parse(localStorage.getItem(STORAGE_KEYS.PURCHASES)) || [];
+          purchases.push({ item: itemId, date: new Date(), cost: cost });
+          localStorage.setItem(STORAGE_KEYS.PURCHASES, JSON.stringify(purchases));
           updateCoinDisplay();
-          // In a real app, you would process the purchase here
           window.location.href = `https://your-store.com/purchase?item=${itemId}&coins=${cost}`;
         }
       } else {
-        alert(`You need ${cost - userCoins} more coins for this item!`);
+        alert(`You need ${cost - userCoins} more coins!`);
       }
     }
 
-    // Form Submission
+    function populateForm(profile) {
+      document.getElementById('fullName').value = profile.fullName || '';
+      document.getElementById('email').value = profile.email || '';
+      document.getElementById('highSchool').value = profile.highSchool || '';
+      document.getElementById('score').value = profile.score || '';
+      document.getElementById('sat').value = profile.sat || '';
+      document.getElementById('ielts').value = profile.ielts || '';
+      document.getElementById('ec-score').value = profile.ecScore || '';
+      document.getElementById('essay').value = profile.essay || '';
+    }
+
+    function clearLocalStorage() {
+      if (confirm('Are you sure you want to reset all data?')) {
+        localStorage.clear();
+        userCoins = 0;
+        savedProfile = null;
+        document.getElementById('profileForm').reset();
+        document.getElementById('savedProfile').style.display = 'none';
+        updateCoinDisplay();
+      }
+    }
+
     document.getElementById('profileForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      profileSubmitted = true;
       
       const profile = {
         fullName: document.getElementById('fullName').value,
@@ -500,6 +501,10 @@
       };
 
       const coinsEarned = calculateCoins(profile);
+      userCoins += coinsEarned;
+      
+      localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
+      localStorage.setItem(STORAGE_KEYS.COINS, userCoins.toString());
       
       const profileContent = `
         <p><strong>Name:</strong> ${profile.fullName}</p>
@@ -510,12 +515,16 @@
         <p><strong>IELTS Score:</strong> ${profile.ielts} <span class="score-badge">+${Math.round(profile.ielts * 11.11)} coins</span></p>
         <p><strong>Extracurricular Score:</strong> ${profile.ecScore} <span class="score-badge">+${Math.round(profile.ecScore * 0.9)} coins</span></p>
         <p><strong>Essay Score:</strong> ${profile.essay || 'N/A'} <span class="score-badge">+${Math.round(profile.essay * 0.9)} coins</span></p>
-        <p style="font-size: 1.3rem; margin-top: 1.5rem;"><strong>Total Coins Earned:</strong> 🪙 <span style="color: var(--accent-yellow); font-weight: 800;">${coinsEarned}</span></p>
+        <p style="font-size: 1.3rem; margin-top: 1.5rem;">
+          <strong>Total Coins:</strong> 🪙 
+          <span style="color: var(--accent-yellow); font-weight: 800;">${userCoins}</span>
+        </p>
       `;
 
       document.getElementById('profileContent').innerHTML = profileContent;
       document.getElementById('savedProfile').style.display = 'block';
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      updateCoinDisplay();
     });
   </script>
 </body>

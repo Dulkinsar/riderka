@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dulat the Great - Profile & Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-purple: #6b3fa0;
+      --accent-yellow: #ffc700;
+      --energized-red: #ff3b53;
+      --clean-white: #fff;
+      --deep-shadow: 4px 4px 0 var(--primary-purple);
+    }
+
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f0f2f5;
+      font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
+      background: repeating-linear-gradient(45deg, #f8f5ff, #f8f5ff 20px, #f0ebfa 20px, #f0ebfa 40px);
       margin: 0;
-      padding: 0;
-      color: #6b3fa0;
+      padding: 20px;
+      color: var(--primary-purple);
     }
 
     .container {
       max-width: 800px;
-      margin: 50px auto;
-      background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+      background: var(--clean-white);
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), var(--deep-shadow);
+      border: 4px solid var(--accent-yellow);
+      padding: 2rem;
+      position: relative;
       overflow: hidden;
-      padding: 24px;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      background: var(--energized-red);
+      transform: rotate(45deg);
+      z-index: -1;
     }
 
     h1, h2 {
       text-align: center;
-      color: #6b3fa0;
-    }
-
-    label, input[type="text"], textarea, input[type="file"] {
-      width: 100%;
-      display: block;
-      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 1.5rem 0;
     }
 
     .profile-pic {
@@ -40,99 +57,120 @@
       height: 120px;
       object-fit: cover;
       border-radius: 50%;
-      border: 3px solid #6b3fa0;
-      margin-bottom: 16px;
+      border: 3px solid var(--primary-purple);
+      margin: 1rem auto;
+      box-shadow: var(--deep-shadow);
     }
 
     button, .use-coins-btn, .profile-nav {
-      background-color: #ffc700;
-      color: #000;
+      background: var(--energized-red);
+      color: var(--clean-white);
       border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: var(--deep-shadow);
       cursor: pointer;
-      text-align: center;
+      transition: all 0.2s ease;
       display: inline-block;
-      margin-top: 10px;
+      margin: 0.5rem;
     }
 
     button:hover, .profile-nav:hover, .use-coins-btn:hover {
-      background-color: #e6b800;
+      transform: translateY(2px);
+      box-shadow: 2px 2px 0 var(--primary-purple);
     }
 
     .avatar-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
     }
 
     .avatar-choice {
-      width: 64px;
-      height: 64px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
       cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s ease;
     }
 
     .avatar-choice.selected {
-      border: 3px solid #6b3fa0;
+      border-color: var(--primary-purple);
+      transform: scale(1.1);
+      box-shadow: var(--deep-shadow);
     }
 
-    .profile-card, .task-list {
-      margin-top: 20px;
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 3px solid var(--primary-purple);
+      border-radius: 15px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-yellow);
+      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3);
+    }
+
+    .task-list {
+      margin: 2rem 0;
     }
 
     .task {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #f6f6f6;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-left: 6px solid #6b3fa0;
-      border-radius: 10px;
+      background: rgba(107, 63, 160, 0.1);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 15px;
+      border-left: 6px solid var(--primary-purple);
     }
 
     .task a {
-      color: #6b3fa0;
+      color: var(--primary-purple);
+      font-weight: 700;
       text-decoration: none;
     }
 
-    .task .status {
-      font-weight: bold;
+    .status {
+      font-weight: 800;
+      text-transform: uppercase;
     }
 
-    .complete {
-      color: green;
-    }
-
-    .incomplete {
-      color: red;
-    }
+    .complete { color: #2ecc71; }
+    .incomplete { color: var(--energized-red); }
 
     #top-nav {
       position: fixed;
       top: 20px;
-      right: 24px;
+      right: 20px;
       z-index: 1000;
     }
 
     .bonus-popup {
       position: fixed;
       top: 80px;
-      right: 40px;
-      background-color: #ffc700;
-      color: #6b3fa0;
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 18px;
-      box-shadow: 5px 5px 0 #6b3fa0;
+      right: 20px;
+      background: var(--accent-yellow);
+      color: var(--primary-purple);
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      font-weight: 800;
+      box-shadow: var(--deep-shadow);
       opacity: 0;
       transform: translateY(-20px);
-      transition: all 0.5s ease-in-out;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       z-index: 999;
     }
 
@@ -140,16 +178,18 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    #viewer-section { display: none; }
+    #image-preview { text-align: center; }
   </style>
 </head>
 <body>
   <div id="top-nav">
-    <a href="javascript:showViewer()" class="profile-nav">My Profile</a>
+    <a href="javascript:showViewer()" class="profile-nav">🌟 My Profile</a>
   </div>
 
   <div class="container" id="editor-section">
-    <h2>Edit Your Profile</h2>
-    <label>Choose a Profile Picture</label>
+    <h2>🎨 Edit Profile</h2>
     <div class="avatar-options">
       <img src="/images/papa.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
       <img src="/images/base.png" class="avatar-choice" onclick="selectAvatar(this)">
@@ -162,54 +202,54 @@
       <img src="/images/potter.png" class="avatar-choice" onclick="selectAvatar(this)">
       <img src="/images/finance.png" class="avatar-choice" onclick="selectAvatar(this)">
     </div>
-    <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)" />
+    <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)">
     <div id="image-preview"></div>
-    <label for="nickname">Nickname</label>
-    <input type="text" id="nickname" placeholder="Enter your nickname" />
-    <label for="bio">Bio</label>
-    <textarea id="bio" rows="4"></textarea>
-    <button onclick="saveProfile()">Save & View</button>
+    
+    <input type="text" id="nickname" placeholder="✨ Enter your nickname">
+    <textarea id="bio" rows="4" placeholder="📝 Write your bio..."></textarea>
+    <button onclick="saveProfile()">💾 Save Profile</button>
   </div>
 
-  <div class="container" id="viewer-section" style="display:none">
-    <h2>Your Profile</h2>
+  <div class="container" id="viewer-section">
+    <h2>🌟 Your Profile</h2>
     <div class="profile-card">
       <div id="viewer-image"></div>
       <div class="profile-name" id="viewer-nickname"></div>
       <div class="profile-bio" id="viewer-bio"></div>
     </div>
-    <button onclick="editProfile()">Edit Profile</button>
-    <h2>GC Coins: <span id="coins">0</span> 🪙</h2>
-    <a href="/use-gc-coins" class="use-coins-btn">Use GC Coins</a>
+    <button onclick="editProfile()">✏️ Edit Profile</button>
+    <h2>🪙 GC Coins: <span id="coins">0</span></h2>
+    <a href="/use-gc-coins" class="use-coins-btn">🚀 Use GC Coins</a>
+    
     <div class="task-list">
       <div class="task">
-        <a href="/tasks/personal-statement">Write Common App Essay</a>
-        <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this, 30)">Complete</button>
+        <a href="/tasks/personal-statement">📝 Write Common App Essay</a>
+        <span class="status incomplete">INCOMPLETE</span>
+        <button onclick="markComplete(this, 30)">✅ Complete</button>
       </div>
       <div class="task">
-        <a href="/tasks/recommendation-letters">Request Recommendation Letters</a>
-        <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this, 20)">Complete</button>
+        <a href="/tasks/recommendation-letters">📩 Request Recommendations</a>
+        <span class="status incomplete">INCOMPLETE</span>
+        <button onclick="markComplete(this, 20)">✅ Complete</button>
       </div>
       <div class="task">
-        <a href="/tasks/fafsa">Submit FAFSA</a>
-        <span class="status incomplete">Incomplete</span>
-        <button onclick="markComplete(this, 25)">Complete</button>
+        <a href="/tasks/fafsa">💸 Submit FAFSA</a>
+        <span class="status incomplete">INCOMPLETE</span>
+        <button onclick="markComplete(this, 25)">✅ Complete</button>
       </div>
     </div>
   </div>
 
-  <div id="bonusPopup" class="bonus-popup">+30 GC Coins! Hustle like LeBron!</div>
+  <div id="bonusPopup" class="bonus-popup">+30 GC Coins! 🏀 Hustle like LeBron!</div>
 
   <script>
-    let totalCoins = 0;
+    let totalCoins = parseInt(localStorage.getItem('gcCoins')) || 0;
 
     function previewImage(event) {
       const reader = new FileReader();
-      reader.onload = function () {
+      reader.onload = function() {
         const output = document.getElementById('image-preview');
-        output.innerHTML = '<img class="profile-pic" src="' + reader.result + '">';
+        output.innerHTML = `<img class="profile-pic" src="${reader.result}">`;
         localStorage.setItem('profilePic', reader.result);
         clearAvatarSelection();
       };
@@ -220,7 +260,7 @@
       clearAvatarSelection();
       img.classList.add('selected');
       localStorage.setItem('profilePic', img.src);
-      document.getElementById('image-preview').innerHTML = '<img class="profile-pic" src="' + img.src + '">';
+      document.getElementById('image-preview').innerHTML = `<img class="profile-pic" src="${img.src}">`;
     }
 
     function clearAvatarSelection() {
@@ -236,29 +276,32 @@
     function showViewer() {
       document.getElementById('editor-section').style.display = 'none';
       document.getElementById('viewer-section').style.display = 'block';
-      document.getElementById('viewer-nickname').textContent = localStorage.getItem('nickname') || 'Not set';
-      document.getElementById('viewer-bio').textContent = localStorage.getItem('bio') || 'No bio provided';
+      document.getElementById('viewer-nickname').textContent = localStorage.getItem('nickname') || '🎯 No Nickname Set';
+      document.getElementById('viewer-bio').textContent = localStorage.getItem('bio') || '📌 No Bio Provided';
       const pic = localStorage.getItem('profilePic');
-      if (pic) document.getElementById('viewer-image').innerHTML = '<img class="profile-pic" src="' + pic + '">';
+      document.getElementById('viewer-image').innerHTML = pic ? `<img class="profile-pic" src="${pic}">` : '🖼️ No Image';
+      document.getElementById('coins').textContent = totalCoins;
     }
 
     function editProfile() {
       document.getElementById('editor-section').style.display = 'block';
       document.getElementById('viewer-section').style.display = 'none';
+      document.getElementById('nickname').value = localStorage.getItem('nickname') || '';
+      document.getElementById('bio').value = localStorage.getItem('bio') || '';
     }
 
     function markComplete(button, bonus) {
       const task = button.closest('.task');
       const status = task.querySelector('.status');
-      status.textContent = 'Complete';
-      status.classList.remove('incomplete');
-      status.classList.add('complete');
+      status.textContent = 'COMPLETE 🎉';
+      status.classList.replace('incomplete', 'complete');
       button.disabled = true;
-      button.textContent = '✔';
       totalCoins += bonus;
+      localStorage.setItem('gcCoins', totalCoins);
       document.getElementById('coins').textContent = totalCoins;
+      
       const popup = document.getElementById('bonusPopup');
-      popup.textContent = `+${bonus} GC Coins! Hustle like LeBron!`;
+      popup.textContent = `+${bonus} GC Coins! 🏀 Hustle like LeBron!`;
       popup.classList.add('show');
       setTimeout(() => popup.classList.remove('show'), 3000);
     }
@@ -267,6 +310,7 @@
       if (localStorage.getItem('nickname') || localStorage.getItem('bio') || localStorage.getItem('profilePic')) {
         showViewer();
       }
+      document.getElementById('coins').textContent = totalCoins;
     }
   </script>
 </body>

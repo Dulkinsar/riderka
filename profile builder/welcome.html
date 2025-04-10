@@ -5,180 +5,281 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>College Profile Builder</title>
   <style>
-    /* General Body Styling */
+    /* Memphis Corporate Style Variables */
+    :root {
+      --primary-purple: #6b3fa0;
+      --accent-yellow: #ffc700;
+      --energized-red: #ff3b53;
+      --clean-white: #fff;
+      --deep-shadow: 4px 4px 0 var(--primary-purple);
+    }
+
+    /* Base Styles */
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
       margin: 0;
       padding: 20px;
-      background-color: #f0f0f0;
+      background: repeating-linear-gradient(
+        45deg,
+        #f8f5ff,
+        #f8f5ff 20px,
+        #f0ebfa 20px,
+        #f0ebfa 40px
+      );
       color: #333;
-    }
-    
-    h2 {
-      color: #6b3fa0;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 20px;
+      min-height: 100vh;
     }
 
-    /* Memphis Corporate Style */
+    /* Geometric Background Elements */
+    .geometric-patterns {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .geometric-pattern {
+      position: absolute;
+      opacity: 0.15;
+    }
+
+    /* Main Container */
     .memphis-background {
-      background: url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'), #ffc700;
-      background-size: 30px 30px;
-      background-color: #6b3fa0;
-      padding: 40px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      color: white;
+      background: 
+        url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'),
+        linear-gradient(145deg, var(--primary-purple) 60%, #7d4fb3);
+      background-size: 30px 30px, cover;
+      padding: 4rem 2rem;
+      border-radius: 30px;
+      box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.15),
+        var(--deep-shadow);
+      border: 4px solid var(--clean-white);
       max-width: 800px;
-      margin: auto;
-      font-size: 1rem;
+      margin: 2rem auto;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Labels and Inputs */
-   label {
+    .memphis-background::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 100px;
+      height: 100px;
+      background: var(--accent-yellow);
+      transform: rotate(45deg);
+      z-index: 0;
+    }
+
+    /* Typography */
+    h2 {
+      color: var(--clean-white);
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin: 0 0 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px var(--primary-purple);
+    }
+
+    /* Form Elements */
+    label {
       display: block;
-      margin-top: 15px;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #ffc700;
-}
+      margin: 1.5rem 0 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent-yellow);
+      letter-spacing: 0.5px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px;
-      margin-top: 5px;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      box-sizing: border-box;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      border: 3px solid var(--clean-white);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Buttons */
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      background-color: #ffc700;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-yellow);
+      box-shadow: 
+        0 0 0 4px rgba(255, 199, 0, 0.3),
+        var(--deep-shadow);
+      transform: translateY(-2px);
     }
+
+    /* Input Containers */
+    .input-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      position: relative;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      border: 2px dashed var(--accent-yellow);
+    }
+
+    /* Button Styles */
+    button {
+      margin: 2.5rem auto 1rem;
+      padding: 1.2rem 2.5rem;
+      display: block;
+      font-weight: 800;
+      background: var(--energized-red);
+      color: var(--clean-white);
+      border: none;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 
+        0 4px 0 #d13248,
+        var(--deep-shadow);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
     button:hover {
-      background-color: #ffb400;
+      transform: translateY(2px);
+      box-shadow: 
+        0 2px 0 #d13248,
+        2px 2px 0 var(--primary-purple);
+      background: #ff2b44;
     }
 
     /* Profile Display Section */
     .profile-entry {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: var(--clean-white);
+      padding: 2.5rem;
+      border-radius: 25px;
+      margin: 3rem auto;
+      box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.1),
+        var(--deep-shadow);
+      border: 3px solid var(--primary-purple);
+      max-width: 700px;
     }
 
     .profile-entry h3 {
-      color: #6b3fa0;
-      font-size: 1.5rem;
+      color: var(--primary-purple);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 3px solid var(--accent-yellow);
+      padding-bottom: 1rem;
     }
 
     .profile-entry p {
       font-size: 1.1rem;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .profile-entry p::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--energized-red);
     }
 
     /* Feedback Messages */
     .feedback {
-      margin-top: 5px;
-      font-size: 0.9rem;
-      color: #d32f2f;
-      display: none;
+      color: var(--energized-red);
+      font-weight: bold;
+      margin-top: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
     }
 
-    /* Form Input Containers */
-    .input-container {
-      max-width: 500px;
-      margin: 2rem auto;
-    }
-
-    /* Memphis Corporate Geometric Styling */
-    .geometric-pattern {
+    .feedback::before {
+      content: "⚠️";
       position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 150px;
-      height: 150px;
-      background-color: #6b3fa0;
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      z-index: -1;
+      left: 0;
+      top: 0;
     }
   </style>
 </head>
 <body>
+  <div class="geometric-patterns">
+    <div class="geometric-pattern" style="top: 20%; left: 10%; width: 80px; height: 80px; background: var(--accent-yellow); clip-path: circle(50% at 50% 50%);"></div>
+    <div class="geometric-pattern" style="top: 60%; right: 15%; width: 120px; height: 120px; background: var(--primary-purple); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+    <div class="geometric-pattern" style="top: 40%; left: 5%; width: 100px; height: 100px; background: var(--energized-red); clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);"></div>
+  </div>
 
-  <div class="geometric-pattern"></div>
-  
   <main>
     <div class="memphis-background">
-      <h2>Build Your College Profile</h2>
+      <h2>🎓 College Profile Builder</h2>
       <form id="profileForm">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" placeholder="e.g., Dulat the Great" required>
-
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="e.g., dulat@email.com" required>
-
-        <label for="highSchool">High School Name</label>
-        <input type="text" id="highSchool" placeholder="e.g., Galaxy International School" required>
+        <div class="input-container">
+          <label for="fullName">🌟 Full Name</label>
+          <input type="text" id="fullName" placeholder="e.g., Dulat the Great" required>
+        </div>
 
         <div class="input-container">
-          <label for="score">🎓 GPA Score</label>
-          <input type="number" id="score" name="score" placeholder="e.g., 3.8" step="0.1" min="0" max="4.0"
+          <label for="email">📧 Email Address</label>
+          <input type="email" id="email" placeholder="e.g., dulat@email.com" required>
+        </div>
+
+        <div class="input-container">
+          <label for="highSchool">🏫 High School Name</label>
+          <input type="text" id="highSchool" placeholder="e.g., Galaxy International School" required>
+        </div>
+
+        <div class="input-container">
+          <label for="score">📚 GPA Score (0-4)</label>
+          <input type="number" id="score" placeholder="e.g., 3.8" step="0.1" min="0" max="4.0"
             oninput="validateInput(this, [0, 4], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 4')">
           <div class="feedback" id="score-feedback"></div>
         </div>
 
         <div class="input-container">
-          <label for="sat">📝SAT Score (400 - 1600)</label>
-          <input type="number" id="sat" name="sat" placeholder="e.g., 1450" step="10" min="400" max="1600"
+          <label for="sat">✏️ SAT Score (400-1600)</label>
+          <input type="number" id="sat" placeholder="e.g., 1450" step="10" min="400" max="1600"
             oninput="validateInput(this, [400, 1600], ['#ff000d', '#ffff00', '#6b3fa0'], 'SAT score between 400 and 1600')">
           <div class="feedback" id="sat-feedback"></div>
         </div>
 
         <div class="input-container">
-          <label for="ielts">🌍IELTS Score (0.0 - 9.0)</label>
-          <input type="number" id="ielts" name="ielts" placeholder="e.g., 7.5" step="0.5" min="0" max="9"
+          <label for="ielts">🌍 IELTS Score (0-9)</label>
+          <input type="number" id="ielts" placeholder="e.g., 7.5" step="0.5" min="0" max="9"
             oninput="validateInput(this, [0, 9], ['#ff000d', '#ffff00', '#6b3fa0'], 'IELTS score between 0 and 9')">
           <div class="feedback" id="ielts-feedback"></div>
         </div>
 
         <div class="input-container">
-          <label for="ec-score">🏆Extracurricular Score (0 - 100)</label>
-          <input type="number" id="ec-score" name="ec-score" placeholder="e.g., 85" step="1" min="0" max="100"
+          <label for="ec-score">🏆 Extracurricular Score (0-100)</label>
+          <input type="number" id="ec-score" placeholder="e.g., 85" step="1" min="0" max="100"
             oninput="validateInput(this, [0, 100], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 100')">
           <div class="feedback" id="ec-feedback"></div>
         </div>
 
-        <label for="essay">Personal Statement (Optional)</label>
-        <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
+        <div class="input-container">
+          <label for="essay">📝 Personal Statement</label>
+          <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
+        </div>
 
-        <button type="submit">Save Profile</button>
+        <button type="submit">💾 Save Profile</button>
       </form>
     </div>
 
     <div id="savedProfile" class="profile-entry" style="display:none;">
-      <h3>Your Profile</h3>
+      <h3>🎉 Your College Profile</h3>
       <div id="profileContent"></div>
     </div>
   </main>
 
   <script>
+    // Color Validation Functions
     function hexToRgb(hex) {
       const bigint = parseInt(hex.slice(1), 16);
       return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
@@ -188,13 +289,13 @@
       return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
     }
 
+    // Input Validation
     function validateInput(input, range, colors, message) {
       const feedback = input.nextElementSibling;
       const value = parseFloat(input.value);
-
       const [red, yellow, purple] = colors.map(hexToRgb);
 
-      if (input.value === '') {
+      if (!input.value) {
         feedback.style.display = "none";
         input.style.borderColor = "#ccc";
         input.style.backgroundColor = "#fff";
@@ -202,40 +303,39 @@
       }
 
       if (isNaN(value)) {
-        feedback.textContent = "Please enter a valid number.";
-        feedback.style.display = "block";
-        feedback.style.color = "#d32f2f";
-        input.style.borderColor = "#d32f2f";
-        input.style.backgroundColor = "#ffcccc";
+        showError(feedback, "Please enter a valid number", input);
         return;
       }
 
       if (value < range[0] || value > range[1]) {
-        feedback.textContent = message;
-        feedback.style.display = "block";
-        feedback.style.color = "#d32f2f";
-        input.style.borderColor = "#d32f2f";
-        input.style.backgroundColor = "#ffcccc";
+        showError(feedback, message, input);
         return;
       }
 
       let bgColor;
-      if (value <= (range[1] / 2)) {
-        const factor = value / (range[1] / 2);
+      const midRange = (range[1] - range[0]) / 2;
+      if (value <= midRange) {
+        const factor = value / midRange;
         bgColor = interpolateColor(red, yellow, factor);
       } else {
-        const factor = (value - (range[1] / 2)) / (range[1] / 2);
+        const factor = (value - midRange) / midRange;
         bgColor = interpolateColor(yellow, purple, factor);
       }
 
-      const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
-
-      feedback.style.display = "none";
       input.style.borderColor = "#4CAF50";
-      input.style.backgroundColor = finalColor;
+      input.style.backgroundColor = `rgb(${bgColor.join(',')})`;
+      feedback.style.display = "none";
     }
 
-    document.getElementById('profileForm').addEventListener('submit', function (e) {
+    function showError(feedback, message, input) {
+      feedback.textContent = message;
+      feedback.style.display = "block";
+      input.style.borderColor = "#d32f2f";
+      input.style.backgroundColor = "#ffcccc";
+    }
+
+    // Form Submission
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const profile = {
         fullName: document.getElementById('fullName').value,
@@ -261,8 +361,8 @@
 
       document.getElementById('profileContent').innerHTML = profileContent;
       document.getElementById('savedProfile').style.display = 'block';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
   </script>
-
 </body>
 </html>

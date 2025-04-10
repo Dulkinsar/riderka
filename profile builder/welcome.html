@@ -16,7 +16,6 @@
 
     /* Base Styles */
     body {
-      <div class="coin-counter" id="coinDisplay">0 Coins</div>
       font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
       margin: 0;
       padding: 20px;
@@ -157,27 +156,6 @@
         2px 2px 0 var(--primary-purple);
       background: #ff2b44;
     }
-    <div class="premium-store" id="premiumStore" style="display:none;">
-  <h3>🎁 Premium Store</h3>
-  <div class="premium-item">
-    <h4>College Essay Review</h4>
-    <p>📝 Expert feedback on your essay</p>
-    <p>🪙 500 Coins</p>
-    <button onclick="purchaseItem(500)">Buy Now</button>
-  </div>
-  <div class="premium-item">
-    <h4>SAT Prep Course</h4>
-    <p>📚 Full preparation materials</p>
-    <p>🪙 1000 Coins</p>
-    <button onclick="purchaseItem(1000)">Buy Now</button>
-  </div>
-  <div class="premium-item">
-    <h4>Admission Consultant</h4>
-    <p>🎓 1-hour consultation</p>
-    <p>🪙 1500 Coins</p>
-    <button onclick="purchaseItem(1500)">Buy Now</button>
-  </div>
-</div>
 
     /* Profile Display Section */
     .profile-entry {
@@ -229,57 +207,68 @@
       left: 0;
       top: 0;
     }
+
     /* Gamification Styles */
-.coin-counter {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--accent-yellow);
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  box-shadow: var(--deep-shadow);
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 1000;
-}
+    .coin-counter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-yellow);
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      box-shadow: var(--deep-shadow);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 100;
+    }
 
-.coin-counter::before {
-  content: '🪙';
-  font-size: 1.5rem;
-}
+    .coin-counter::before {
+      content: '🪙';
+      font-size: 1.5rem;
+    }
 
-.premium-store {
-  background: var(--clean-white);
-  padding: 2rem;
-  border-radius: 20px;
-  margin: 2rem auto;
-  max-width: 800px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
+    .premium-store {
+      background: var(--clean-white);
+      padding: 2rem;
+      border-radius: 20px;
+      margin: 2rem auto;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-.premium-item {
-  background: rgba(107, 63, 160, 0.1);
-  padding: 1.5rem;
-  border-radius: 15px;
-  margin: 1rem;
-  display: inline-block;
-  transition: transform 0.3s ease;
-  width: 250px;
-  vertical-align: top;
-}
+    .premium-item {
+      background: rgba(107, 63, 160, 0.1);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin: 1rem;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      width: 200px;
+      vertical-align: top;
+    }
 
-.premium-item:hover {
-  transform: scale(1.05);
-}
+    .premium-item:hover {
+      transform: scale(1.05);
+    }
 
-.premium-item button {
-  margin: 1rem auto 0;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-}
+    .premium-item button {
+      margin: 1rem auto 0;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .score-badge {
+      display: inline-block;
+      background: var(--accent-yellow);
+      color: var(--primary-purple);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -289,6 +278,8 @@
     <div class="geometric-pattern" style="top: 40%; left: 5%; width: 100px; height: 100px; background: var(--energized-red); clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);"></div>
   </div>
 
+  <div class="coin-counter" id="coinDisplay">0 Coins</div>
+  
   <main>
     <div class="memphis-background">
       <h2>🎓 College Profile Builder</h2>
@@ -337,11 +328,11 @@
         </div>
 
         <div class="input-container">
-  <label for="essay">📝 Essay Score (0-100)</label>
-  <input type="number" id="essay" placeholder="e.g., 85" step="1" min="0" max="100"
-    oninput="validateInput(this, [0, 100], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 100')">
-  <div class="feedback" id="essay-feedback"></div>
-</div>
+          <label for="essay">📝 Essay Score (0-100)</label>
+          <input type="number" id="essay" placeholder="e.g., 85" step="1" min="0" max="100"
+            oninput="validateInput(this, [0, 100], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 100')">
+          <div class="feedback" id="essay-feedback"></div>
+        </div>
 
         <button type="submit">💾 Save Profile</button>
       </form>
@@ -351,9 +342,39 @@
       <h3>🎉 Your College Profile</h3>
       <div id="profileContent"></div>
     </div>
+
+    <div class="premium-store" id="premiumStore" style="display:none;">
+      <h3>🎁 Premium Store</h3>
+      <p>Use your earned coins to unlock premium resources!</p>
+      
+      <div class="premium-item">
+        <h4>College Essay Review</h4>
+        <p>📝 Expert feedback on your essay</p>
+        <p><span class="score-badge">🪙 500 Coins</span></p>
+        <button onclick="purchaseItem(500, 'essay-review')">Buy Now</button>
+      </div>
+      
+      <div class="premium-item">
+        <h4>SAT Prep Course</h4>
+        <p>📚 Full preparation materials</p>
+        <p><span class="score-badge">🪙 1000 Coins</span></p>
+        <button onclick="purchaseItem(1000, 'sat-prep')">Buy Now</button>
+      </div>
+      
+      <div class="premium-item">
+        <h4>Admission Consultant</h4>
+        <p>🎓 1-hour strategy session</p>
+        <p><span class="score-badge">🪙 1500 Coins</span></p>
+        <button onclick="purchaseItem(1500, 'consultant')">Buy Now</button>
+      </div>
+    </div>
   </main>
 
   <script>
+    // Gamification System
+    let userCoins = 0;
+    let profileSubmitted = false;
+
     // Color Validation Functions
     function hexToRgb(hex) {
       const bigint = parseInt(hex.slice(1), 16);
@@ -409,9 +430,64 @@
       input.style.backgroundColor = "#ffcccc";
     }
 
+    // Coin Calculation
+    function calculateCoins(profile) {
+      const gpa = parseFloat(profile.score) || 0;
+      const sat = parseInt(profile.sat) || 0;
+      const ielts = parseFloat(profile.ielts) || 0;
+      const ec = parseInt(profile.ecScore) || 0;
+      const essay = parseInt(profile.essay) || 0;
+
+      // Calculate coins based on scores (weighted)
+      userCoins = Math.round(
+        (gpa * 25) +         // GPA out of 4 → 100 coins max
+        (sat / 16) +         // SAT out of 1600 → 100 coins max
+        (ielts * 11.11) +    // IELTS out of 9 → 100 coins max
+        (ec * 0.9) +         // EC out of 100 → 90 coins max
+        (essay * 0.9)        // Essay out of 100 → 90 coins max
+      );
+
+      updateCoinDisplay();
+      return userCoins;
+    }
+
+    function updateCoinDisplay() {
+      const coinDisplay = document.getElementById('coinDisplay');
+      coinDisplay.textContent = `${userCoins} Coins`;
+      
+      // Animation when coins increase
+      if (profileSubmitted) {
+        coinDisplay.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+          coinDisplay.style.transform = 'scale(1)';
+        }, 300);
+      }
+      
+      // Show store if coins available
+      if(userCoins > 0) {
+        document.getElementById('premiumStore').style.display = 'block';
+      }
+    }
+
+    // Purchase Function
+    function purchaseItem(cost, itemId) {
+      if(userCoins >= cost) {
+        if(confirm(`Confirm purchase for ${cost} coins?`)) {
+          userCoins -= cost;
+          updateCoinDisplay();
+          // In a real app, you would process the purchase here
+          window.location.href = `https://your-store.com/purchase?item=${itemId}&coins=${cost}`;
+        }
+      } else {
+        alert(`You need ${cost - userCoins} more coins for this item!`);
+      }
+    }
+
     // Form Submission
     document.getElementById('profileForm').addEventListener('submit', function(e) {
       e.preventDefault();
+      profileSubmitted = true;
+      
       const profile = {
         fullName: document.getElementById('fullName').value,
         email: document.getElementById('email').value,
@@ -423,15 +499,18 @@
         essay: document.getElementById('essay').value
       };
 
+      const coinsEarned = calculateCoins(profile);
+      
       const profileContent = `
         <p><strong>Name:</strong> ${profile.fullName}</p>
         <p><strong>Email:</strong> ${profile.email}</p>
         <p><strong>High School:</strong> ${profile.highSchool}</p>
-        <p><strong>GPA Score:</strong> ${profile.score}</p>
-        <p><strong>SAT Score:</strong> ${profile.sat}</p>
-        <p><strong>IELTS Score:</strong> ${profile.ielts}</p>
-        <p><strong>Extracurricular Score:</strong> ${profile.ecScore}</p>
-        <p><strong>Personal Statement:</strong> ${profile.essay || 'N/A'}</p>
+        <p><strong>GPA Score:</strong> ${profile.score} <span class="score-badge">+${Math.round(profile.score * 25)} coins</span></p>
+        <p><strong>SAT Score:</strong> ${profile.sat} <span class="score-badge">+${Math.round(profile.sat / 16)} coins</span></p>
+        <p><strong>IELTS Score:</strong> ${profile.ielts} <span class="score-badge">+${Math.round(profile.ielts * 11.11)} coins</span></p>
+        <p><strong>Extracurricular Score:</strong> ${profile.ecScore} <span class="score-badge">+${Math.round(profile.ecScore * 0.9)} coins</span></p>
+        <p><strong>Essay Score:</strong> ${profile.essay || 'N/A'} <span class="score-badge">+${Math.round(profile.essay * 0.9)} coins</span></p>
+        <p style="font-size: 1.3rem; margin-top: 1.5rem;"><strong>Total Coins Earned:</strong> 🪙 <span style="color: var(--accent-yellow); font-weight: 800;">${coinsEarned}</span></p>
       `;
 
       document.getElementById('profileContent').innerHTML = profileContent;

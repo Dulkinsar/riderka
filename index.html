@@ -5,534 +5,363 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riderka</title>
   <style>
-    /* Font & Global Styles */
-    @font-face {
-      font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    :root {
+      --primary-purple: #6b3fa0;
+      --accent-yellow: #ffc700;
+      --energized-red: #ff3b53;
+      --clean-white: #fff;
+      --deep-shadow: 4px 4px 0 var(--primary-purple);
     }
+
     body {
-      font-family: 'Stapel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #ffffff;
+      background: repeating-linear-gradient(
+        45deg,
+        #f8f5ff,
+        #f8f5ff 20px,
+        #f0ebfa 20px,
+        #f0ebfa 40px
+      );
       color: #333;
     }
-    
-    /* Login Container Styles */
+
+    /* Memphis Login Styles */
     .login-container {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f0f0f0;
+      background: url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'),
+        linear-gradient(145deg, var(--primary-purple) 60%, #7d4fb3);
     }
+
     .login-box {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 300px;
+      background: var(--clean-white);
+      padding: 2.5rem;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), var(--deep-shadow);
+      border: 4px solid var(--accent-yellow);
+      width: 350px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .login-box::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      background: var(--accent-yellow);
+      transform: rotate(45deg);
+    }
+
     .login-box h2 {
-      margin-bottom: 20px;
-      color: #6B3FA0;
+      color: var(--primary-purple);
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 2rem;
     }
+
     .login-box input {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 3px solid var(--primary-purple);
+      border-radius: 15px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
     }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--accent-yellow);
+      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3);
+    }
+
     .login-box button {
       width: 100%;
-      padding: 10px;
-      background-color: #FFC700;
+      padding: 1rem;
+      background: var(--energized-red);
+      color: var(--clean-white);
       border: none;
-      border-radius: 5px;
-      color: #6B3FA0;
-      font-weight: bold;
-      cursor: pointer;
+      border-radius: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: var(--deep-shadow);
+      transition: all 0.2s ease;
     }
+
     .login-box button:hover {
-      background-color: #6B3FA0;
-      color: #FFC700;
+      transform: translateY(2px);
+      box-shadow: 2px 2px 0 var(--primary-purple);
     }
-    .hidden {
-      display: none;
-    }
-    
-    /* Header Styles */
+
+    /* Memphis Header Styles */
     header {
-      background-color: #ffffff;
-      padding: 20px;
+      background: var(--clean-white);
+      padding: 3rem 2rem;
       text-align: center;
-      border-bottom: 5px solid #FFC700;
+      border-bottom: 5px solid var(--accent-yellow);
       position: relative;
+      margin-bottom: 3rem;
     }
+
     header::after {
       content: '';
       position: absolute;
       width: 100%;
       height: 5px;
-      background: linear-gradient(to right, #FFC700, #6B3FA0);
-      bottom: 0;
+      background: linear-gradient(to right, var(--accent-yellow), var(--primary-purple));
+      bottom: -5px;
       left: 0;
     }
+
     header h1 {
-      margin: 0;
-      font-size: 3rem;
-      color: #6B3FA0;
+      font-size: 3.5rem;
+      color: var(--primary-purple);
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px var(--accent-yellow);
+      margin: 0;
     }
-    header p {
-      margin: 10px 0 0;
-      font-size: 1.2rem;
-      color: #FFC700;
-    }
+
     .slogan {
-      margin-top: 20px;
-      font-size: 2rem;
-      color: #6B3FA0;
-      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--accent-yellow);
+      font-weight: 700;
+      margin-top: 1rem;
     }
-    
-    /* Icon Row Styles */
+
+    /* Memphis Icon Grid */
     .icon-row {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
-      padding: 20px;
-      background-color: #f9f9ff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
     }
+
     .icon-card {
-      background-color: #FFC700;
-      border-radius: 10px;
-      padding: 20px;
+      background: var(--clean-white);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), var(--deep-shadow);
+      border: 3px solid var(--primary-purple);
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-      cursor: pointer;
-      width: 150px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+
     .icon-card:hover {
-      transform: scale(1.05);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), var(--deep-shadow);
     }
+
     .icon-card img {
       width: 100px;
       height: 100px;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
+      border: 3px solid var(--accent-yellow);
+      border-radius: 15px;
+      padding: 0.5rem;
     }
-    .icon-card h3 {
-      color: #6B3FA0;
+
+    .icon-card a {
+      color: var(--primary-purple);
+      font-weight: 800;
+      text-decoration: none;
       font-size: 1.2rem;
-      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
     }
-    
-    /* Main Content & Text Blocks */
+
+    .icon-card a:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    /* Memphis Text Blocks */
     main {
-      padding: 40px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 40px;
-      align-items: start;  /* Prevents grid items from stretching to the tallest item */
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
+
     .text-block {
-      background-color: #ffffff;
-      padding: 30px;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background: var(--clean-white);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), var(--deep-shadow);
+      border: 3px solid var(--accent-yellow);
       position: relative;
     }
+
     .text-block::before {
       content: '';
       position: absolute;
-      width: 30%;
-      height: 5px;
-      background: #6B3FA0;
-      top: -10px;
-      left: 10px;
+      top: -15px;
+      left: -15px;
+      width: 60px;
+      height: 60px;
+      background: var(--energized-red);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      z-index: -1;
     }
-    .text-block::after {
-      content: '';
-      position: absolute;
-      width: 20%;
-      height: 5px;
-      background: #FFC700;
-      bottom: -10px;
-      right: 10px;
-    }
+
     .text-block h2 {
-      margin: 0 0 15px;
+      color: var(--primary-purple);
       font-size: 1.8rem;
-      color: #6B3FA0;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
+
     .text-block p {
-      margin: 0 0 15px;
-      line-height: 1.8;
       color: #555;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .link-button {
+      display: inline-block;
+      background: var(--energized-red);
+      color: var(--clean-white);
+      padding: 0.8rem 1.5rem;
+      border-radius: 15px;
+      text-decoration: none;
+      font-weight: 700;
+      text-transform: uppercase;
       transition: all 0.3s ease;
     }
-    /* When expanded, show the full text */
-    .text-block.expanded p {
-      -webkit-line-clamp: unset;
+
+    .link-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--deep-shadow);
     }
-    /* Toggle button styling */
-    .toggle-btn {
-      background: none;
-      border: none;
-      color: #0066cc;
-      cursor: pointer;
-      font-size: 1em;
-      text-decoration: underline;
-      padding: 0;
-    }
-    /* Reaction Buttons: hidden by default and visible when expanded */
+
     .reaction-buttons {
-      display: none;
-      margin-top: 10px;
-    }
-    .text-block.expanded .reaction-buttons {
       display: flex;
-      gap: 10px;
+      gap: 1rem;
+      margin-top: 1.5rem;
     }
-    /* Like/Dislike button styling */
+
     .reaction-buttons button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #FFC700;
-      color: #6B3FA0;
-      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--primary-purple);
+      border-radius: 10px;
+      background: var(--clean-white);
+      color: var(--primary-purple);
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
+
     .reaction-buttons button:hover {
-      background-color: #6B3FA0;
-      color: #FFC700;
+      background: var(--primary-purple);
+      color: var(--clean-white);
+    }
+
+    .hidden { display: none; }
+    .top-right { position: absolute; top: 20px; right: 20px; }
+    .profile-button {
+      padding: 0.8rem 1.5rem;
+      background: var(--energized-red);
+      color: white;
+      border-radius: 15px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: var(--deep-shadow);
     }
   </style>
-  <script>
-    // Login Validation
-    function validateLogin() {
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
-      if (username === 'admin' && password === 'password123') {
-        document.getElementById('login-container').classList.add('hidden');
-        document.getElementById('main-content').classList.remove('hidden');
-      } else {
-        alert('Invalid username or password.');
-      }
-    }
-    
-    // Expand/Collapse Text Function
-    function toggleText(id, btn) {
-      var textBlock = document.getElementById(id);
-      if (textBlock.classList.contains('expanded')) {
-        textBlock.classList.remove('expanded');
-        btn.textContent = "Read More";
-      } else {
-        textBlock.classList.add('expanded');
-        btn.textContent = "Read Less";
-      }
-    }
-  </script>
 </head>
 <body>
   <!-- Login Section -->
   <div id="login-container" class="login-container">
     <div class="login-box">
-      <h2>Login</h2>
+      <h2>🎓 Riderka Login</h2>
       <input type="text" id="username" placeholder="Username">
       <input type="password" id="password" placeholder="Password">
-      <button onclick="validateLogin()">Login</button>
+      <button onclick="validateLogin()">Unlock Profile</button>
     </div>
   </div>
 
-
-
-  <!-- Main Content Section -->
+  <!-- Main Content -->
   <div id="main-content" class="hidden">
-    <header id="main-header">
-      <h1>Riderka</h1>
+    <header>
+      <h1>RIDERKA</h1>
       <p class="slogan">GC - твой шаг в будущее!</p>
     </header>
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Profile Button</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    }
-    .top-right {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-    .profile-button {
-      padding: 10px 20px;
-      background-color: #FFC700;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .profile-button:hover {
-      background-color: #0056b3;
-    }
-    .profile-pic {
-/*       position: absolute; */
-      top: 80px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      margin-top: 10px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #FFC700;
-    }
-  </style>
-</head>
-<body>
+    <div class="icon-row">
+      <div class="icon-card">
+        <img src="/images/profile.webp" alt="Profile">
+        <a href="/profile builder/welcome.html">Profile Builder</a>
+      </div>
+      <div class="icon-card">
+        <img src="/images/pay.png" alt="Courses">
+        <a href="/courses/wlcm.html">Premium Courses</a>
+      </div>
+      <div class="icon-card">
+        <img src="/images/exam.webp" alt="Exams">
+        <a href="/mock exams/welcome.html">Mock Exams</a>
+      </div>
+      <div class="icon-card">
+        <img src="/images/think.webp" alt="Writing">
+        <a href="/writing builder/welcome.html">Writing Lab</a>
+      </div>
+    </div>
 
-  <div class="top-right">
-    <a href="/pfp/pfp.html" class="profile-button">Profile</a>
+    <main>
+      <div class="text-block">
+        <h2>📚 Questions Hub</h2>
+        <p>Daily Affirmations + SAT Challenges</p>
+        <a href="/questions/welcome.html" class="link-button">Start Challenge</a>
+        <div class="reaction-buttons">
+          <button>👍 248</button>
+          <button>👎 12</button>
+        </div>
+      </div>
+
+      <div class="text-block">
+        <h2>🚀 Future Features</h2>
+        <p>Explore upcoming innovations</p>
+        <a href="/future/welcome.html" class="link-button">Preview Beta</a>
+        <div class="reaction-buttons">
+          <button>👍 184</button>
+          <button>👎 5</button>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script>
-    const profilePicData = localStorage.getItem('profilePic');
-    if (profilePicData) {
-      const img = document.createElement('img');
-      img.src = profilePicData;
-      img.alt = "Profile Picture";
-      img.className = "profile-pic";
-      document.getElementById("main-header").appendChild(img);
+    function validateLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === 'admin' && password === 'password123') {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+      } else {
+        alert('⚠️ Invalid credentials! Try: admin/password123');
+      }
+    }
+
+    function toggleText(id, btn) {
+      const textBlock = document.getElementById(id);
+      textBlock.classList.toggle('expanded');
+      btn.textContent = textBlock.classList.contains('expanded') ? "Read Less" : "Read More";
     }
   </script>
-
-</body>
-</html>
-
-    
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Profile Button</title>
-  <style>
-    body {
-      margin: 0;
-       font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    }
-    .top-right {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-    .profile-button {
-      padding: 10px 20px;
-      background-color: #FFC700;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .profile-button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="top-right">
-    <a href="/pfp/pfp.html" class="profile-button">Profile</a>
-  </div>
-
-</body>
-</html>
-    
-    <div class="icon-row">
-   <style>
-  .icon-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .icon-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1.5rem;
-    border-radius: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-    width: 180px;
-  }
-
-  .icon-card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  }
-
-  .icon-card img {
-    width: 120px;
-    height: auto;
-    margin-bottom: 1rem;
-  }
-
-  .icon-card a {
-     font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-    background: linear-gradient(to right, #ff758c, #ff7eb3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .icon-card a:hover {
-    letter-spacing: 1px;
-    transform: scale(1.05);
-  }
-</style>
-
-
-<div class="icon-row">
-  <div class="icon-card">
-    <img src="/images/profile.webp" alt="Profile Builder">
-    <a href="/profile builder/welcome.html">Profile Builder</a>
-  </div>
-  <div class="icon-card">
-    <img src="/images/pay.png" alt="Courses">
-    <a href="/courses/wlcm.html">Courses</a>
-  </div>
-  <div class="icon-card">
-    <img src="/images/exam.webp" alt="Mock Exams">
-    <a href="/mock exams/welcome.html">Mock Exams</a>
-  </div>
-  <div class="icon-card">
-    <img src="/images/think.webp" alt="Writing Builder">
-    <a href="/writing builder/welcome.html">Writing Builder</a>
-  </div>
-  <div class="icon-card">
-    <img src="/images/wtf.webp" alt="Other Services">
-    <a href="/other/welcome.html">Other</a>
-  </div>
-</div>
-
-</div>
-
-    </div>
-    
-    <main>
-  <!-- Text Block 1 -->
-  <div class="text-block" id="text1">
-    <h2 class="section-title">Questions</h2>
-    <p class="description">
-      Affirmations + SAT  
-    </p>
-    <a class="link-button" href="/questions/welcome.html">Go to Questions</a>
-    <div class="reaction-buttons">
-      <button class="like-btn">👍 Like</button>
-      <button class="dislike-btn">👎 Dislike</button>
-    </div>
-  </div>
-</main>
-
-    <main>
-  <!-- Text Block 2 -->
-  <div class="text-block" id="text1">
-    <h2 class="section-title">features</h2>
-    <p class="description">
-      The future is here!  
-    </p>
-    <a class="link-button" href="/future/welcome.html">Get to it</a>
-    <div class="reaction-buttons">
-      <button class="like-btn">👍 Like</button>
-      <button class="dislike-btn">👎 Dislike</button>
-    </div>
-  </div>
-</main>
-<style>
-  .text-block {
-    background: #f9f9f9;
-    border-radius: 20px;
-    padding: 2rem;
-    max-width: 600px;
-    margin: 3rem auto;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-
-  .description {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 1.5rem;
-  }
-
-  .link-button {
-    display: inline-block;
-    background: #ffc700;
-    color: white;
-    padding: 0.7rem 1.5rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background 0.3s ease;
-    margin-bottom: 1.5rem;
-  }
-
-  .link-button:hover {
-    background: #357ab8;
-  }
-
-  .reaction-buttons button {
-    background: #eee;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .reaction-buttons button:hover {
-    background: #ddd;
-  }
-</style>
-
-  
-  </div>
 </body>
 </html>

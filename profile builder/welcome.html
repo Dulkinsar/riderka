@@ -447,131 +447,49 @@
       displayProfile();
     });
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Profile Builder</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #ece9e6, #ffffff);
-            padding: 2rem;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            max-width: 500px;
-            margin: auto;
-            background-color: #fff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: 600;
-            color: #444;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            margin-top: 1.5rem;
-            padding: 0.75rem;
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-
-<h2>Build Your College Profile</h2>
-<form id="profileForm">
-    <label for="fullName">Full Name</label>
-    <input type="text" id="fullName" placeholder="e.g., Dulat the Great">
-
-    <label for="email">Email Address</label>
-    <input type="email" id="email" placeholder="e.g., dulat@email.com">
-
-    <label for="highSchool">High School Name</label>
-    <input type="text" id="highSchool" placeholder="e.g., Galaxy International School">
-
-    <label for="score">🎓 Score (0.0 - 4.0)</label>
-    <input type="number" id="score" step="0.1" min="0" max="4.0" placeholder="e.g., 3.8">
-
-    <label for="sat">📝 SAT Score (400 - 1600)</label>
-    <input type="number" id="sat" step="10" min="400" max="1600" placeholder="e.g., 1450">
-
-    <label for="ielts">🌍 IELTS Score (0.0 - 9.0)</label>
-    <input type="number" id="ielts" step="0.5" min="0" max="9" placeholder="e.g., 7.5">
-
-    <label for="ec-score">🏆 Extracurricular Score (0 - 100)</label>
-    <input type="number" id="ec-score" step="1" min="0" max="100" placeholder="e.g., 85">
-
-    <label for="essay">Personal Statement (Optional)</label>
-    <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
-
-    <button type="submit">Save Profile</button>
-</form>
-
-<script>
+  <script>
   document.getElementById('profileForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const profileData = {
-      fullName: document.getElementById('fullName').value,
-      email: document.getElementById('email').value,
-      highSchool: document.getElementById('highSchool').value,
-      score: document.getElementById('score').value,
-      sat: document.getElementById('sat').value,
-      ielts: document.getElementById('ielts').value,
-      extracurricularScore: document.getElementById('ec-score').value,
-      essay: document.getElementById('essay').value
-    };
+    try {
+      const profileData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        highSchool: document.getElementById('highSchool').value,
+        score: document.getElementById('score').value,
+        sat: document.getElementById('sat').value,
+        ielts: document.getElementById('ielts').value,
+        extracurricularScore: document.getElementById('ec-score').value,
+        essay: document.getElementById('essay').value
+      };
 
-    localStorage.setItem('collegeProfile', JSON.stringify(profileData));
-    alert('Profile successfully saved locally, as legendary as LeBron James and Dulat the Great himself!');
+      localStorage.setItem('collegeProfile', JSON.stringify(profileData));
+      alert('Profile successfully saved locally, legendary like LeBron James and Dulat the Great himself!');
+    } catch (error) {
+      console.error('Error saving:', error);
+      alert('Error: ' + error.message);
+    }
   });
 
   window.onload = function() {
-    if (localStorage.getItem('collegeProfile')) {
-      const data = JSON.parse(localStorage.getItem('collegeProfile'));
-      Object.keys(data).forEach(key => {
-        if (document.getElementById(key)) {
-          document.getElementById(key).value = data[key];
-        }
-      });
+    try {
+      if (localStorage.getItem('collegeProfile')) {
+        const data = JSON.parse(localStorage.getItem('collegeProfile'));
+        document.getElementById('fullName').value = data.fullName || '';
+        document.getElementById('email').value = data.email || '';
+        document.getElementById('highSchool').value = data.highSchool || '';
+        document.getElementById('score').value = data.score || '';
+        document.getElementById('sat').value = data.sat || '';
+        document.getElementById('ielts').value = data.ielts || '';
+        document.getElementById('ec-score').value = data.extracurricularScore || '';
+        document.getElementById('essay').value = data.essay || '';
+      }
+    } catch (error) {
+      console.error('Error loading:', error);
     }
   };
 </script>
 
-</body>
-</html>
-
-        `;
-      }
-    }
-
-    // Load profile on page load
-    window.onload = displayProfile;
   </script>
 </body>
 </html>

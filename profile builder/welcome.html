@@ -207,6 +207,57 @@
       left: 0;
       top: 0;
     }
+    /* Gamification Styles */
+.coin-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--accent-yellow);
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  box-shadow: var(--deep-shadow);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.coin-counter::before {
+  content: '🪙';
+  font-size: 1.5rem;
+}
+
+.premium-store {
+  background: var(--clean-white);
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.premium-item {
+  background: rgba(107, 63, 160, 0.1);
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin: 1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  width: 250px;
+  vertical-align: top;
+}
+
+.premium-item:hover {
+  transform: scale(1.05);
+}
+
+.premium-item button {
+  margin: 1rem auto 0;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+}
   </style>
 </head>
 <body>

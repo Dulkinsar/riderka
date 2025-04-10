@@ -2,497 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>College Profile Builder by Riderka</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #FFC700;
-      --secondary-color: #6B3FA0;
-      --text-dark: #1e1e1e;
-      --background: #f9f9f9;
-      --card-bg: #ffffff;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-       font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-      background-color: var(--background);
-      color: var(--text-dark);
-      position: relative;
-      overflow-x: hidden;
-      padding-bottom: 100px;
-    }
-
-    /* Background shapes (Corporate Memphis style) */
-    .shape {
-      position: absolute;
-      z-index: 0;
-      opacity: 0.15;
-      pointer-events: none;
-    }
-
-    .circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      top: 80px;
-      left: 20px;
-    }
-
-    .triangle {
-      width: 0;
-      height: 0;
-      border-left: 60px solid transparent;
-      border-right: 60px solid transparent;
-      border-bottom: 100px solid var(--secondary-color);
-      bottom: 40px;
-      right: 40px;
-    }
-
-    .zigzag {
-      width: 100px;
-      height: 20px;
-      background: repeating-linear-gradient(
-        45deg,
-        var(--secondary-color),
-        var(--secondary-color) 10px,
-        transparent 10px,
-        transparent 20px
-      );
-      top: 200px;
-      right: 60px;
-      transform: rotate(-15deg);
-    }
-
-    header {
-      background-color: var(--primary-color);
-      color: var(--text-dark);
-      padding: 30px 20px;
-      text-align: center;
-      z-index: 1;
-      position: relative;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-
-    header p {
-      font-size: 1rem;
-      font-weight: 400;
-    }
-
-    nav {
-      background-color: var(--secondary-color);
-      padding: 12px 0;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      z-index: 1;
-      position: relative;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    main {
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 30px;
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      position: relative;
-      z-index: 1;
-    }
-
-    h2 {
-      text-align: center;
-      color: var(--secondary-color);
-      margin-bottom: 30px;
-      font-size: 1.8rem;
-    }
-
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: 500;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 25px;
-      padding: 12px 20px;
-      background-color: var(--primary-color);
-      color: var(--text-dark);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #e6b800;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Memphis Shapes -->
-  <div class="shape circle"></div>
-  <div class="shape triangle"></div>
-  <div class="shape zigzag"></div>
-
-  <header>
-    <h1>Welcome to Profile Builder by Riderka</h1>
-    <p>Invest in Olzh Tech 2025!</p>
-  </header>
-
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">My Profile</a>
-    <a href="#">Colleges</a>
-    <a href="#">Help</a>
-  </nav>
-
-  
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>College Profile Builder</title>
   <style>
+    /* General Body Styling */
     body {
-      font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
       padding: 20px;
+      background-color: #f0f0f0;
+      color: #333;
     }
+    
+    h2 {
+      color: #6b3fa0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    /* Memphis Corporate Style */
+    .memphis-background {
+      background: url('https://www.transparenttextures.com/patterns/diagonal-stripes.png'), #ffc700;
+      background-size: 30px 30px;
+      background-color: #6b3fa0;
+      padding: 40px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      color: white;
+      max-width: 800px;
+      margin: auto;
+      font-size: 1rem;
+    }
+
+    /* Labels and Inputs */
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #6b3fa0;
     }
+
     input, textarea {
       width: 100%;
-      padding: 8px;
+      padding: 12px;
       margin-top: 5px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
     }
+
+    /* Buttons */
     button {
-      margin-top: 15px;
-      padding: 10px 15px;
+      margin-top: 20px;
+      padding: 12px 20px;
       font-weight: bold;
       cursor: pointer;
+      background-color: #ffc700;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
     }
-    #savedProfile {
-      margin-top: 40px;
-      border-top: 2px solid #000;
-      padding-top: 20px;
+    button:hover {
+      background-color: #ffb400;
     }
+
+    /* Profile Display Section */
     .profile-entry {
-      background: #f2f2f2;
-      padding: 15px;
-      border-radius: 8px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-entry h3 {
+      color: #6b3fa0;
+      font-size: 1.5rem;
+    }
+
+    .profile-entry p {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    /* Feedback Messages */
+    .feedback {
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: #d32f2f;
+      display: none;
+    }
+
+    /* Form Input Containers */
+    .input-container {
+      max-width: 500px;
+      margin: 2rem auto;
+    }
+
+    /* Memphis Corporate Geometric Styling */
+    .geometric-pattern {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 150px;
+      background-color: #6b3fa0;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      z-index: -1;
     }
   </style>
 </head>
 <body>
-  <main>
-    <h2>Build Your College Profile</h2>
-    <form id="profileForm">
-      <label for="fullName">Full Name</label>
-      <input type="text" id="fullName" placeholder="e.g., Dulat the Great">
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" placeholder="e.g., dulat@email.com">
-
-      <label for="highSchool">High School Name</label>
-      <input type="text" id="highSchool" placeholder="e.g., Galaxy International School">
-
-     <!-- Input Template with Gradient Background -->
-<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  <label for="score" style="font-weight: 600; font-size: 1rem; color: #333;">🎓 Score Input</label>
+  <div class="geometric-pattern"></div>
   
-  <input 
-    type="number" 
-    id="score" 
-    name="score" 
-    placeholder="e.g., 3.8"
-    step="0.1" 
-    min="0" 
-    max="4.0"
-    oninput="validateInput(this, 'score', [0, 4], ['#ff000d', '#ffff00', '#008000'], 'Score between 0 and 4')"
-    style="
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-      box-sizing: border-box;
-      background-color: #fff;
-    "
-  >
-  <div id="feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
-</div>
+  <main>
+    <div class="memphis-background">
+      <h2>Build Your College Profile</h2>
+      <form id="profileForm">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g., Dulat the Great" required>
 
-<script>
-  // Utility functions for color manipulation
-  function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  }
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="e.g., dulat@email.com" required>
 
-  function interpolateColor(color1, color2, factor) {
-    return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
-  }
+        <label for="highSchool">High School Name</label>
+        <input type="text" id="highSchool" placeholder="e.g., Galaxy International School" required>
 
-  // Generic input validation function
-  function validateInput(input, type, range, colors, message) {
-    const feedback = document.getElementById('feedback');
-    const value = parseFloat(input.value);
+        <div class="input-container">
+          <label for="score">🎓 GPA Score</label>
+          <input type="number" id="score" name="score" placeholder="e.g., 3.8" step="0.1" min="0" max="4.0"
+            oninput="validateInput(this, [0, 4], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 4')">
+          <div class="feedback" id="score-feedback"></div>
+        </div>
 
-    const [red, yellow, green] = colors.map(hexToRgb);
+        <div class="input-container">
+          <label for="sat">📝 SAT Score (400 - 1600)</label>
+          <input type="number" id="sat" name="sat" placeholder="e.g., 1450" step="10" min="400" max="1600"
+            oninput="validateInput(this, [400, 1600], ['#ff000d', '#ffff00', '#6b3fa0'], 'SAT score between 400 and 1600')">
+          <div class="feedback" id="sat-feedback"></div>
+        </div>
 
-    // Reset on empty input
-    if (input.value === '') {
-      feedback.style.display = "none";
-      input.style.borderColor = "#ccc";
-      input.style.boxShadow = "none";
-      input.style.backgroundColor = "#fff";
-      return;
-    }
+        <div class="input-container">
+          <label for="ielts">🌍 IELTS Score (0.0 - 9.0)</label>
+          <input type="number" id="ielts" name="ielts" placeholder="e.g., 7.5" step="0.5" min="0" max="9"
+            oninput="validateInput(this, [0, 9], ['#ff000d', '#ffff00', '#6b3fa0'], 'IELTS score between 0 and 9')">
+          <div class="feedback" id="ielts-feedback"></div>
+        </div>
 
-    // Validate number
-    if (isNaN(value)) {
-      feedback.textContent = "Please enter a valid number.";
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
+        <div class="input-container">
+          <label for="ec-score">🏆 Extracurricular Score (0 - 100)</label>
+          <input type="number" id="ec-score" name="ec-score" placeholder="e.g., 85" step="1" min="0" max="100"
+            oninput="validateInput(this, [0, 100], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 100')">
+          <div class="feedback" id="ec-feedback"></div>
+        </div>
 
-    // Validate range
-    if (value < range[0] || value > range[1]) {
-      feedback.textContent = message;
-      feedback.style.display = "block";
-      feedback.style.color = "#d32f2f";
-      input.style.borderColor = "#d32f2f";
-      input.style.boxShadow = "0 0 6px #d32f2f55";
-      input.style.backgroundColor = "#ffcccc";
-      return;
-    }
+        <label for="essay">Personal Statement (Optional)</label>
+        <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
 
-    // Color interpolation
-    let bgColor;
-    if (value <= (range[1] / 2)) {
-      const factor = value / (range[1] / 2); // Lower half → red to yellow
-      bgColor = interpolateColor(red, yellow, factor);
-    } else {
-      const factor = (value - (range[1] / 2)) / (range[1] / 2); // Upper half → yellow to green
-      bgColor = interpolateColor(yellow, green, factor);
-    }
+        <button type="submit">Save Profile</button>
+      </form>
+    </div>
 
-    const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
-
-    feedback.style.display = "none"; // No message, just vibes
-    input.style.borderColor = "#4CAF50";
-    input.style.boxShadow = "0 0 6px #4CAF5055";
-    input.style.backgroundColor = finalColor;
-  }
-</script>
-
-<!-- SAT Score Input -->
-<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  <label for="sat" style="font-weight: 600; font-size: 1rem; color: #333;">📝 SAT Score (400 - 1600)</label>
-  <input 
-    type="number" 
-    id="sat" 
-    name="sat" 
-    placeholder="e.g., 1450"
-    step="10" 
-    min="400" 
-    max="1600"
-    oninput="validateInput(this, 'sat', [400, 1600], ['#ff000d', '#ffff00', '#008000'], 'SAT score between 400 and 1600')"
-    style="
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-      box-sizing: border-box;
-      background-color: #fff;
-    "
-  >
-  <div id="sat-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
-</div>
-
-<!-- IELTS Score Input -->
-<div class="input-container" style="max-width: 400px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  <label for="ielts" style="font-weight: 600; font-size: 1rem; color: #333;">🌍 IELTS Score (0.0 - 9.0)</label>
-  <input 
-    type="number" 
-    id="ielts" 
-    name="ielts" 
-    placeholder="e.g., 7.5"
-    step="0.5" 
-    min="0" 
-    max="9"
-    oninput="validateInput(this, 'ielts', [0, 9], ['#ff000d', '#ffff00', '#008000'], 'IELTS score between 0 and 9')"
-    style="
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-      box-sizing: border-box;
-      background-color: #fff;
-    "
-  >
-  <div id="ielts-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
-</div>
-
-<!-- Extracurricular Score Input -->
-<div class="input-container" style="max-width: 500px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif;">
-  <label for="ec-score" style="font-weight: 600; font-size: 1rem; color: #333;">🏆 Mentor's Extracurricular Score (0 - 100)</label>
-  <input 
-    type="number" 
-    id="ec-score" 
-    name="ec-score" 
-    placeholder="e.g., 85"
-    step="1" 
-    min="0" 
-    max="100"
-    oninput="validateInput(this, 'ec-score', [0, 100], ['#ff000d', '#ffff00', '#008000'], 'Score between 0 and 100')"
-    style="
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-      box-sizing: border-box;
-      background-color: #fff;
-    "
-  >
-  <div id="ec-feedback" style="margin-top: 0.5rem; font-size: 0.9rem; color: #d32f2f; display: none;"></div>
-</div>
-
-
-      <label for="essay">Personal Statement (Optional)</label>
-      <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
-
-      <button type="submit">Save Profile</button>
-    </form>
-
-    <div id="savedProfile">
-      <h3>Saved Profile</h3>
-      <div class="profile-entry" id="profileDisplay">
-        <!-- Saved info shows up here -->
-      </div>
+    <div id="savedProfile" class="profile-entry" style="display:none;">
+      <h3>Your Profile</h3>
+      <div id="profileContent"></div>
     </div>
   </main>
 
   <script>
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
+    function hexToRgb(hex) {
+      const bigint = parseInt(hex.slice(1), 16);
+      return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+    }
+
+    function interpolateColor(color1, color2, factor) {
+      return color1.map((c, i) => Math.round(c + (color2[i] - c) * factor));
+    }
+
+    function validateInput(input, range, colors, message) {
+      const feedback = input.nextElementSibling;
+      const value = parseFloat(input.value);
+
+      const [red, yellow, purple] = colors.map(hexToRgb);
+
+      if (input.value === '') {
+        feedback.style.display = "none";
+        input.style.borderColor = "#ccc";
+        input.style.backgroundColor = "#fff";
+        return;
+      }
+
+      if (isNaN(value)) {
+        feedback.textContent = "Please enter a valid number.";
+        feedback.style.display = "block";
+        feedback.style.color = "#d32f2f";
+        input.style.borderColor = "#d32f2f";
+        input.style.backgroundColor = "#ffcccc";
+        return;
+      }
+
+      if (value < range[0] || value > range[1]) {
+        feedback.textContent = message;
+        feedback.style.display = "block";
+        feedback.style.color = "#d32f2f";
+        input.style.borderColor = "#d32f2f";
+        input.style.backgroundColor = "#ffcccc";
+        return;
+      }
+
+      let bgColor;
+      if (value <= (range[1] / 2)) {
+        const factor = value / (range[1] / 2);
+        bgColor = interpolateColor(red, yellow, factor);
+      } else {
+        const factor = (value - (range[1] / 2)) / (range[1] / 2);
+        bgColor = interpolateColor(yellow, purple, factor);
+      }
+
+      const finalColor = `rgb(${bgColor[0]}, ${bgColor[1]}, ${bgColor[2]})`;
+
+      feedback.style.display = "none";
+      input.style.borderColor = "#4CAF50";
+      input.style.backgroundColor = finalColor;
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', function (e) {
       e.preventDefault();
-
-      const profileData = {
-        fullName: document.getElementById('fullName').value,
-        email: document.getElementById('email').value,
-        highSchool: document.getElementById('highSchool').value,
-        gpa: document.getElementById('gpa').value,
-        testScores: document.getElementById('testScores').value,
-        ielts: document.getElementById('ielts').value,
-        activities: document.getElementById('activities').value,
-        essay: document.getElementById('essay').value
-      };
-
-      localStorage.setItem('dulatProfile', JSON.stringify(profileData));
-      displayProfile();
-    });
-
-  <script>
-  document.getElementById('profileForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    try {
-      const profileData = {
+      const profile = {
         fullName: document.getElementById('fullName').value,
         email: document.getElementById('email').value,
         highSchool: document.getElementById('highSchool').value,
         score: document.getElementById('score').value,
         sat: document.getElementById('sat').value,
         ielts: document.getElementById('ielts').value,
-        extracurricularScore: document.getElementById('ec-score').value,
+        ecScore: document.getElementById('ec-score').value,
         essay: document.getElementById('essay').value
       };
 
-      localStorage.setItem('collegeProfile', JSON.stringify(profileData));
-      alert('Profile successfully saved locally, legendary like LeBron James and Dulat the Great himself!');
-    } catch (error) {
-      console.error('Error saving:', error);
-      alert('Error: ' + error.message);
-    }
-  });
+      const profileContent = `
+        <p><strong>Name:</strong> ${profile.fullName}</p>
+        <p><strong>Email:</strong> ${profile.email}</p>
+        <p><strong>High School:</strong> ${profile.highSchool}</p>
+        <p><strong>GPA Score:</strong> ${profile.score}</p>
+        <p><strong>SAT Score:</strong> ${profile.sat}</p>
+        <p><strong>IELTS Score:</strong> ${profile.ielts}</p>
+        <p><strong>Extracurricular Score:</strong> ${profile.ecScore}</p>
+        <p><strong>Personal Statement:</strong> ${profile.essay || 'N/A'}</p>
+      `;
 
-  window.onload = function() {
-    try {
-      if (localStorage.getItem('collegeProfile')) {
-        const data = JSON.parse(localStorage.getItem('collegeProfile'));
-        document.getElementById('fullName').value = data.fullName || '';
-        document.getElementById('email').value = data.email || '';
-        document.getElementById('highSchool').value = data.highSchool || '';
-        document.getElementById('score').value = data.score || '';
-        document.getElementById('sat').value = data.sat || '';
-        document.getElementById('ielts').value = data.ielts || '';
-        document.getElementById('ec-score').value = data.extracurricularScore || '';
-        document.getElementById('essay').value = data.essay || '';
-      }
-    } catch (error) {
-      console.error('Error loading:', error);
-    }
-  };
-</script>
-
+      document.getElementById('profileContent').innerHTML = profileContent;
+      document.getElementById('savedProfile').style.display = 'block';
+    });
   </script>
-</body>
-</html>
 
 </body>
 </html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduWave LMS</title>
+  <style>
+    :root {
+      --purple-power: #6b3fa0;
+      --gold-glow: #ffc700;
+      --red-pop: #ff3b53;
+      --white-bliss: #fff;
+      --deep-crush: 4px 4px 0 var(--purple-power);
+    }
+
+    body {
+      font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
+      background: repeating-linear-gradient(
+        45deg,
+        #f8f5ff,
+        #f8f5ff 20px,
+        #f0ebfa 20px,
+        #f0ebfa 40px
+      );
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header */
+    .lms-header {
+      background: var(--white-bliss);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--purple-power);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .profile-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--purple-power);
+    }
+
+    /* Main Layout */
+    .lms-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    /* Navigation */
+    .lms-nav {
+      background: var(--white-bliss);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--deep-crush);
+      border: 4px solid var(--gold-glow);
+    }
+
+    .nav-item a {
+      display: block;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--purple-power);
+      transition: all 0.3s ease;
+    }
+
+    .nav-item a:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    /* Course Cards */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .course-card a {
+      display: block;
+      background: var(--white-bliss);
+      padding: 1.5rem;
+      border-radius: 20px;
+      border: 3px solid var(--purple-power);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .course-card a:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: rgba(107, 63, 160, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-glow), var(--purple-power));
+      transition: width 0.5s ease;
+    }
+
+    /* Activity Feed */
+    .activity-item {
+      display: block;
+      background: var(--white-bliss);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 15px;
+      border-left: 6px solid var(--gold-glow);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease;
+    }
+
+    .activity-item:hover {
+      transform: translateX(10px);
+    }
+  </style>
+</head>
+<body>
+  <header class="lms-header">
+    <a href="/" class="logo">EDUWAVE</a>
+    <a href="/profile" class="profile-link">
+      <img src="profile.png" alt="Profile" width="40" height="40" style="border-radius: 50%;">
+      <span>Dulat the Great</span>
+    </a>
+  </header>
+
+  <div class="lms-container">
+    <nav class="lms-nav">
+      <div class="nav-item"><a href="/dashboard">📚 Dashboard</a></div>
+      <div class="nav-item"><a href="/courses">🎓 My Courses</a></div>
+      <div class="nav-item"><a href="/calendar">📅 Calendar</a></div>
+      <div class="nav-item"><a href="/assignments">📝 Assignments</a></div>
+      <div class="nav-item"><a href="/achievements">🏆 Achievements</a></div>
+      <div class="nav-item"><a href="/settings">⚙️ Settings</a></div>
+    </nav>
+
+    <main>
+      <div class="course-grid">
+        <div class="course-card">
+          <a href="/courses/math101">
+            <h3>Advanced Mathematics</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+              <span>📆 12 Weeks</span>
+              <span>📚 15 Lessons</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="course-card">
+          <a href="/courses/eng201">
+            <h3>Modern Literature</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 30%"></div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+              <span>📆 8 Weeks</span>
+              <span>📚 10 Lessons</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top: 3rem;">
+        <h2>Recent Activity</h2>
+        <a href="/assignments/math-001" class="activity-item">
+          📝 Submitted Math Assignment
+          <span style="float: right; color: #666;">2h ago</span>
+        </a>
+        <a href="/courses/eng201/module1" class="activity-item">
+          🎉 Completed English Module
+          <span style="float: right; color: #666;">1d ago</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sample course data
+    const courses = [
+      {
+        id: 'math101',
+        title: 'Advanced Mathematics',
+        progress: 65,
+        duration: '12 Weeks',
+        lessons: 15,
+        url: '/courses/math101'
+      },
+      {
+        id: 'eng201',
+        title: 'Modern Literature',
+        progress: 30,
+        duration: '8 Weeks',
+        lessons: 10,
+        url: '/courses/eng201'
+      }
+    ];
+
+    // Render courses dynamically
+    function renderCourses() {
+      const container = document.querySelector('.course-grid');
+      container.innerHTML = courses.map(course => `
+        <div class="course-card">
+          <a href="${course.url}">
+            <h3>${course.title}</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${course.progress}%"></div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+              <span>📆 ${course.duration}</span>
+              <span>📚 ${course.lessons} Lessons</span>
+            </div>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', renderCourses);
+  </script>
+</body>
+</html>

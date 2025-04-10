@@ -316,9 +316,11 @@
         </div>
 
         <div class="input-container">
-          <label for="essay">📝 Personal Statement</label>
-          <textarea id="essay" rows="4" placeholder="Write something that shows you're as legendary as LeBron James..."></textarea>
-        </div>
+  <label for="essay">📝 Essay Score (0-100)</label>
+  <input type="number" id="essay" placeholder="e.g., 85" step="1" min="0" max="100"
+    oninput="validateInput(this, [0, 100], ['#ff000d', '#ffff00', '#6b3fa0'], 'Score between 0 and 100')">
+  <div class="feedback" id="essay-feedback"></div>
+</div>
 
         <button type="submit">💾 Save Profile</button>
       </form>

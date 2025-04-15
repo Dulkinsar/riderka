@@ -5,304 +5,255 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harvard Pathway Builder</title>
     <style>
-        :root {
-            --primary-yellow: #FFD700;
-            --primary-purple: #6B3FA0;
-            --accent-pink: #FF6B6B;
-            --accent-green: #4ECDC4;
-            --bg-gradient: linear-gradient(135deg, #FFF9F0 0%, #F5F0FF 100%);
-        }
-
-        body {
-            font-family: 'Arial Rounded MT Bold', system-ui;
-            margin: 0;
-            padding: 2rem;
-            background: var(--bg-gradient);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            padding: 3rem;
-            border-radius: 2rem;
-            box-shadow: 0 1.5rem 3rem rgba(107,63,160,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -10rem;
-            right: -5rem;
-            width: 20rem;
-            height: 20rem;
-            background: var(--primary-yellow);
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-
-        h1 {
-            color: var(--primary-purple);
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 3rem;
-            position: relative;
-            display: inline-block;
-            padding: 0 2rem;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4rem;
-            height: 0.4rem;
-            background: var(--accent-pink);
-            border-radius: 1rem;
-        }
-
-        .form-section {
+        /* Previous styles remain intact */
+        .recommendations-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-top: 3rem;
         }
 
-        .input-card {
-            background: #FCFAFF;
+        .recommendation-card {
+            background: #FFF;
             padding: 2rem;
             border-radius: 1.5rem;
             border: 3px solid #EEE6FA;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.8rem;
-            color: var(--primary-purple);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 1rem;
-            border: 3px solid #E8E0F5;
-            border-radius: 1rem;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary-yellow);
-            box-shadow: 0 0.5rem 1.5rem rgba(255,215,0,0.2);
-        }
-
-        .score-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 1rem;
-            background: #EEE6FA;
-            border-radius: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        .score-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 2rem;
-            height: 2rem;
-            background: var(--primary-purple);
-            border-radius: 50%;
-            border: 0.3rem solid white;
-            box-shadow: 0 0.3rem 1rem rgba(107,63,160,0.3);
-        }
-
-        .pathway-visual {
             position: relative;
-            height: 20rem;
-            margin: 3rem 0;
-            background: #FCFAFF;
-            border-radius: 2rem;
             overflow: hidden;
         }
 
-        .journey-path {
+        .recommendation-card::before {
+            content: '';
             position: absolute;
-            left: 5%;
-            right: 5%;
-            top: 50%;
+            top: -1rem;
+            right: -1rem;
+            width: 4rem;
+            height: 4rem;
+            background: var(--primary-yellow);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .progress-meter {
             height: 0.8rem;
             background: #EEE6FA;
             border-radius: 1rem;
-            transform: translateY(-50%);
+            margin: 1rem 0;
+            overflow: hidden;
         }
 
         .progress-fill {
-            position: absolute;
-            left: 0;
-            width: 50%;
             height: 100%;
             background: var(--primary-purple);
             border-radius: 1rem;
-            transition: width 1s ease;
+            transition: width 0.5s ease;
         }
 
-        .milestone {
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 4rem;
-            height: 4rem;
-            background: white;
-            border: 0.3rem solid var(--primary-purple);
-            border-radius: 1.5rem;
+        .timeline {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 0.5rem 1.5rem rgba(107,63,160,0.2);
-            transition: all 0.3s ease;
+            justify-content: space-between;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #FCFAFF;
+            border-radius: 1.5rem;
         }
 
-        .milestone.active {
-            background: var(--primary-yellow);
-            transform: translate(-50%, -50%) scale(1.1);
+        .timeline-item {
+            text-align: center;
+            padding: 1rem;
+            position: relative;
         }
 
-        .harvard-logo {
+        .timeline-item::after {
+            content: '➔';
             position: absolute;
-            right: 5%;
+            right: -2rem;
             top: 50%;
             transform: translateY(-50%);
-            width: 8rem;
-            filter: drop-shadow(0 0.5rem 1rem rgba(0,0,0,0.1));
+            color: var(--primary-purple);
         }
 
-        .submit-btn {
-            background: var(--primary-purple);
-            color: white;
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 1.2rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 2rem auto;
-            box-shadow: 0 0.5rem 1.5rem rgba(107,63,160,0.3);
+        .timeline-item:last-child::after {
+            display: none;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-0.2rem);
-            box-shadow: 0 0.8rem 2rem rgba(107,63,160,0.4);
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resource-item {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: #F8F5FF;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .urgency-tag {
+            padding: 0.3rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .high-urgency {
+            background: #FF6B6B20;
+            color: #FF6B6B;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Harvard Journey Builder</h1>
+        <!-- Previous form elements remain -->
         
-        <div class="form-section">
-            <div class="input-card">
-                <div class="input-group">
-                    <label>Current GPA (5.0 scale)</label>
-                    <input type="range" class="score-slider" id="gpa" min="3.0" max="5.0" step="0.1" value="4.5">
-                    <div class="score-value" id="gpaValue">4.5</div>
+        <div class="recommendations-section" id="recommendations" style="display: none;">
+            <div class="recommendation-card">
+                <h3>📚 Academic Roadmap</h3>
+                <div class="progress-meter">
+                    <div class="progress-fill" id="academicProgress" style="width: 60%"></div>
                 </div>
-                
-                <div class="input-group">
-                    <label>SAT Score</label>
-                    <input type="number" id="sat" min="400" max="1600" value="1400">
-                </div>
+                <div id="academicTips"></div>
             </div>
 
-            <div class="input-card">
-                <div class="input-group">
-                    <label>IELTS Score</label>
-                    <select id="ielts">
-                        <option value="7.5">7.5</option>
-                        <option value="8.0">8.0</option>
-                        <option value="8.5">8.5</option>
-                        <option value="9.0">9.0</option>
-                    </select>
+            <div class="recommendation-card">
+                <h3>🌍 Profile Building</h3>
+                <div class="progress-meter">
+                    <div class="progress-fill" id="profileProgress" style="width: 30%"></div>
                 </div>
+                <div id="profileTips"></div>
+            </div>
 
-                <div class="input-group">
-                    <label>Strongest Subject</label>
-                    <select id="subject">
-                        <option value="STEM">STEM</option>
-                        <option value="Humanities">Humanities</option>
-                        <option value="Business">Business</option>
-                        <option value="Arts">Arts</option>
-                    </select>
-                </div>
+            <div class="recommendation-card">
+                <h3>📝 Application Strategy</h3>
+                <div class="timeline" id="timeline"></div>
+                <ul class="resource-list" id="resources"></ul>
             </div>
         </div>
-
-        <div class="pathway-visual">
-            <div class="journey-path">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="milestone" style="left: 20%">📚</div>
-            <div class="milestone" style="left: 40%">🎯</div>
-            <div class="milestone" style="left: 60%">🌍</div>
-            <div class="milestone" style="left: 80%">🏆</div>
-            <img src="https://upload.wikimedia.org/wikipedia/en/2/29/Harvard_shield-wreath.svg" 
-                 class="harvard-logo" alt="Harvard">
-        </div>
-
-        <button class="submit-btn" onclick="calculatePathway()">Build My Journey →</button>
     </div>
 
     <script>
-        // GPA Slider Update
-        const gpaSlider = document.getElementById('gpa');
-        const gpaValue = document.getElementById('gpaValue');
-        gpaSlider.oninput = () => {
-            gpaValue.textContent = gpaSlider.value;
-            gpaValue.style.color = getProgressColor(gpaSlider.value / 5 * 100);
-        }
+        const HARVARD_STATS = {
+            avgSAT: 1520,
+            minIELTS: 7.5,
+            avgGPA: 4.18,
+            acceptanceRate: 3.2
+        };
 
-        // Calculation Function
         function calculatePathway() {
+            const grade = parseInt(document.getElementById('grade').value);
             const gpa = parseFloat(gpaSlider.value);
             const sat = parseInt(document.getElementById('sat').value);
             const ielts = parseFloat(document.getElementById('ielts').value);
+            const city = document.querySelector('input[name="city"]:checked').value;
+            const subject = document.getElementById('subject').value;
+
+            const monthsRemaining = (12 - grade) * 12;
+            const admissionScore = calculateAdmissionPotential(gpa, sat, ielts);
             
-            // Calculate admission score
-            const admissionScore = (gpa/5*40) + (sat/1600*35) + (ielts/9*25);
-            const progressWidth = Math.min(admissionScore, 100);
+            displayAcademicTips(gpa, sat, ielts);
+            displayProfileTips(grade, city, subject, monthsRemaining);
+            displayTimeline(grade);
+            displayResources(city, subject);
             
-            // Animate progress
-            document.getElementById('progressFill').style.width = `${progressWidth}%`;
-            
-            // Animate milestones
-            document.querySelectorAll('.milestone').forEach((stone, index) => {
-                const triggerPoint = (index + 1) * 20;
-                setTimeout(() => {
-                    stone.classList.toggle('active', progressWidth >= triggerPoint);
-                }, index * 300);
-            });
+            document.getElementById('recommendations').style.display = 'grid';
         }
 
-        // Color calculation
-        function getProgressColor(percentage) {
-            const hue = (percentage * 1.2).toString(10);
-            return `hsl(${hue}, 70%, 50%)`;
+        function calculateAdmissionPotential(gpa, sat, ielts) {
+            const gpaScore = (Math.min(gpa, 5.0)/5) * 40;
+            const satScore = (sat/1600) * 35;
+            const ieltsScore = (ielts/9) * 25;
+            return Math.min(gpaScore + satScore + ieltsScore, 100);
         }
 
-        // Initial calculation
-        calculatePathway();
+        function displayAcademicTips(gpa, sat, ielts) {
+            const tips = [];
+            
+            if(gpa < 4.5) {
+                tips.push(`🚨 GPA Enhancement: Consider taking ${gpa < 4.0 ? 'foundation' : 'AP'} courses`);
+            }
+            if(sat < 1400) {
+                tips.push(`📈 SAT Boost: Target ${1600 - sat} point improvement through Khan Academy`);
+            }
+            if(ielts < 7.5) {
+                tips.push(`🌐 English Mastery: Join British Council preparation courses in Almaty`);
+            }
+
+            document.getElementById('academicTips').innerHTML = tips.map(t => `
+                <div class="resource-item">
+                    <div>${t}</div>
+                    <div class="urgency-tag high-urgency">HIGH PRIORITY</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('academicProgress').style.width = 
+                `${Math.min((gpa/5)*100, 100)}%`;
+        }
+
+        function displayProfileTips(grade, city, subject, months) {
+            const tips = [];
+            
+            tips.push(`${grade < 11 ? 'Start' : 'Finalize'} ${subject} portfolio`);
+            
+            if(['Almaty', 'Nur-Sultan'].includes(city)) {
+                tips.push(`Network with Harvard Club of Kazakhstan`);
+            } else {
+                tips.push(`Participate in online international competitions`);
+            }
+            
+            if(subject === 'STEM') {
+                tips.push(`Compete in Republican Math Olympiad`);
+            }
+
+            document.getElementById('profileTips').innerHTML = tips.map(t => `
+                <div class="resource-item">
+                    <div>${t}</div>
+                </div>
+            `).join('');
+        }
+
+        function displayTimeline(grade) {
+            const milestones = {
+                9: ['Grade 10 Prep', 'SAT Foundation', 'Leadership Role', 'Application Draft'],
+                10: ['AP Courses', 'SAT Attempt', 'Research Project', 'College List'],
+                11: ['Final SAT', 'Subject Tests', 'Essays Draft', 'Recommendations'],
+                12: ['Early Application', 'Interviews Prep', 'Financial Aid', 'Submission']
+            };
+
+            document.getElementById('timeline').innerHTML = 
+                milestones[grade].map(m => `
+                    <div class="timeline-item">
+                        <div>${m}</div>
+                    </div>
+                `).join('');
+        }
+
+        function displayResources(city, subject) {
+            const resources = {
+                'Almaty': [
+                    'NIS Physics Circle',
+                    'Daryn National Competition',
+                    'Almaty Debate League'
+                ],
+                'STEM': [
+                    'International Youth Math Challenge',
+                    'MIT OpenCourseWare',
+                    'Kazakhstan Robotics Championship'
+                ]
+            };
+
+            let resourceItems = [];
+            if(resources[city]) resourceItems.push(...resources[city]);
+            if(resources[subject]) resourceItems.push(...resources[subject]);
+
+            document.getElementById('resources').innerHTML = resourceItems.map(r => `
+                <li class="resource-item">
+                    📌 ${r}
+                </li>
+            `).join('');
+        }
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework Submission</title>
+    <title>Homework Submission Portal</title>
     <style>
         :root {
             --primary-yellow: #ffc700;
@@ -12,149 +12,204 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 2rem;
+            padding: 40px 20px;
             background-color: var(--background);
         }
 
-        .submission-container {
+        .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: var(--primary-purple);
-            border-bottom: 3px solid var(--primary-yellow);
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 30px;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 10px;
             color: var(--primary-purple);
-            font-weight: 600;
+            font-weight: bold;
         }
 
-        textarea {
+        input, textarea {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--primary-purple);
-            border-radius: 8px;
-            min-height: 150px;
-            resize: vertical;
-            font-family: inherit;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
-        .file-input {
-            margin-top: 1rem;
+        input:focus, textarea:focus {
+            border-color: var(--primary-yellow);
+            outline: none;
         }
 
-        input[type="file"] {
-            width: 100%;
-            padding: 0.5rem;
-            border: 2px dashed var(--primary-purple);
-            border-radius: 8px;
-            background: rgba(107, 63, 160, 0.05);
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-purple);
         }
 
         .submit-btn {
-            background-color: var(--primary-yellow);
+            background: var(--primary-yellow);
             color: var(--primary-purple);
-            padding: 1rem 2rem;
+            padding: 15px 40px;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease;
             display: block;
-            width: 100%;
-            font-size: 1.1rem;
+            margin: 30px auto 0;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
+            transform: scale(1.05);
         }
 
-        .confirmation-message {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(107, 63, 160, 0.1);
-            border-left: 4px solid var(--primary-purple);
-            color: var(--primary-purple);
-            border-radius: 4px;
+        .form-note {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="submission-container">
-        <h1>📚 Homework Submission</h1>
-        
-        <form id="submissionForm">
+    <div class="container">
+        <h1>Homework Submission</h1>
+        <form id="homeworkForm">
             <div class="form-group">
-                <label for="textSubmission">Written Assignment</label>
-                <textarea 
-                    id="textSubmission" 
-                    placeholder="Write your assignment here..."
-                    required
-                ></textarea>
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" required>
             </div>
 
             <div class="form-group">
-                <label for="fileSubmission">Attach Files</label>
-                <input 
-                    type="file" 
-                    id="fileSubmission" 
-                    class="file-input"
-                    accept=".pdf,.doc,.docx,.txt"
-                >
+                <label for="homeworkTitle">Homework Title</label>
+                <input type="text" id="homeworkTitle" required>
             </div>
 
-            <button type="submit" class="submit-btn">🚀 Submit Homework</button>
-            <div class="confirmation-message" id="confirmationMessage">
-                ✅ Submission successful! Your work has been saved locally.
+            <div class="form-group">
+                <label for="homeworkContent">Your Submission</label>
+                <textarea id="homeworkContent" rows="8" required></textarea>
             </div>
+
+            <div class="form-group">
+                <label>Attach File</label>
+                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                    Click to upload file or drag and drop
+                    <input type="file" id="fileInput" hidden>
+                </div>
+                <div id="fileName" style="margin-top: 10px;"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Homework</button>
         </form>
+        <p class="form-note">Your submission will be saved locally for teacher review.</p>
     </div>
 
     <script>
-        document.getElementById('submissionForm').addEventListener('submit', function(e) {
+        const form = document.getElementById('homeworkForm');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        // Handle file input display
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                fileNameDisplay.textContent = `Selected file: ${this.files[0].name}`;
+            }
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Get form values
-            const textContent = document.getElementById('textSubmission').value;
-            const fileInput = document.getElementById('fileSubmission').files[0];
-            
-            // Create submission object
             const submission = {
-                text: textContent,
-                fileName: fileInput ? fileInput.name : 'No file attached',
-                timestamp: new Date().toISOString()
+                id: Date.now(),
+                studentName: document.getElementById('studentName').value,
+                homeworkTitle: document.getElementById('homeworkTitle').value,
+                content: document.getElementById('homeworkContent').value,
+                timestamp: new Date().toISOString(),
+                file: null
             };
 
-            // Save to localStorage
-            const submissions = JSON.parse(localStorage.getItem('homeworkSubmissions') || '[]');
-            submissions.push(submission);
-            localStorage.setItem('homeworkSubmissions', JSON.stringify(submissions));
+            // Handle file upload
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    submission.file = {
+                        name: file.name,
+                        type: file.type,
+                        data: e.target.result.split(',')[1] // Base64 encoded data
+                    };
+                    
+                    saveSubmission(submission);
+                };
+                
+                reader.readAsDataURL(file);
+            } else {
+                saveSubmission(submission);
+            }
+        });
 
-            // Show confirmation and reset form
-            document.getElementById('confirmationMessage').style.display = 'block';
-            this.reset();
+        function saveSubmission(submission) {
+            // Get existing submissions or create new array
+            const submissions = JSON.parse(localStorage.getItem('homeworkSubmissions')) || [];
             
-            // Hide confirmation after 5 seconds
-            setTimeout(() => {
-                document.getElementById('confirmationMessage').style.display = 'none';
-            }, 5000);
+            // Add new submission
+            submissions.push(submission);
+            
+            // Save back to localStorage
+            localStorage.setItem('homeworkSubmissions', JSON.stringify(submissions));
+            
+            alert('Homework submitted successfully!');
+            form.reset();
+            fileNameDisplay.textContent = '';
+        }
+
+        // Drag and drop functionality
+        const dropZone = document.querySelector('.file-upload');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = var(--primary-purple);
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ddd';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInput.files = e.dataTransfer.files;
+            fileNameDisplay.textContent = `Selected file: ${e.dataTransfer.files[0].name}`;
+            dropZone.style.borderColor = '#ddd';
         });
     </script>
 </body>

@@ -3,60 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Review Portal</title>
+    <title>Review Homework</title>
     <style>
         :root {
             --primary-yellow: #ffc700;
             --primary-purple: #6b3fa0;
-            --background: #f5f5f5;
         }
 
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 40px 20px;
-            background-color: var(--background);
+            padding: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: var(--primary-purple);
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5em;
+            margin-bottom: 30px;
         }
 
-        .submissions-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .submissions-list {
+            display: grid;
+            grid-gap: 20px;
         }
 
-        .submissions-table th,
-        .submissions-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 2px solid #eee;
+        .submission-card {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s ease;
         }
 
-        .submissions-table th {
-            background-color: var(--primary-purple);
-            color: white;
+        .submission-card:hover {
+            transform: translateY(-3px);
         }
 
-        .submissions-table tr:hover {
-            background-color: #fafafa;
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
         }
 
-        .view-btn {
+        .student-name {
+            color: var(--primary-purple);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .submission-date {
+            color: #666;
+        }
+
+        .download-btn {
             background: var(--primary-yellow);
             color: var(--primary-purple);
             padding: 8px 20px;
@@ -64,161 +72,64 @@
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.3s ease;
+            transition: opacity 0.2s ease;
         }
 
-        .view-btn:hover {
-            transform: scale(1.05);
+        .download-btn:hover {
+            opacity: 0.9;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 600px;
-            position: relative;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--primary-purple);
-        }
-
-        .file-download {
-            color: var(--primary-purple);
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            display: inline-block;
-        }
-
-        .file-download:hover {
-            text-decoration: underline;
+        .no-submissions {
+            text-align: center;
+            color: #666;
+            padding: 40px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Homework Submissions Review</h1>
-        <table class="submissions-table">
-            <thead>
-                <tr>
-                    <th>Submission Date</th>
-                    <th>Student Name</th>
-                    <th>Homework Title</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="submissionsBody">
-                <!-- Submissions will be populated here -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Modal for detailed view -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p><strong>Student:</strong> <span id="modalStudent"></span></p>
-            <p><strong>Submitted:</strong> <span id="modalDate"></span></p>
-            <div id="modalContent" style="margin: 20px 0;"></div>
-            <div id="modalFile"></div>
-        </div>
+        <h1>Homework Submissions</h1>
+        <div class="submissions-list" id="submissionsList"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function displaySubmissions() {
             const submissions = JSON.parse(localStorage.getItem('homeworkSubmissions')) || [];
-            const tbody = document.getElementById('submissionsBody');
+            const listElement = document.getElementById('submissionsList');
 
-            if (submissions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center">No submissions found</td></tr>`;
+            if(submissions.length === 0) {
+                listElement.innerHTML = '<div class="no-submissions">No submissions found</div>';
                 return;
             }
 
-            submissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(sub => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${new Date(sub.timestamp).toLocaleString()}</td>
-                    <td>${sub.studentName}</td>
-                    <td>${sub.homeworkTitle}</td>
-                    <td>
-                        <button class="view-btn" onclick="viewSubmission('${sub.id}')">View Details</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        });
-
-        function viewSubmission(submissionId) {
-            const submissions = JSON.parse(localStorage.getItem('homeworkSubmissions')) || [];
-            const submission = submissions.find(sub => sub.id === parseInt(submissionId));
-            
-            if (!submission) return;
-
-            document.getElementById('modalTitle').textContent = submission.homeworkTitle;
-            document.getElementById('modalStudent').textContent = submission.studentName;
-            document.getElementById('modalDate').textContent = new Date(submission.timestamp).toLocaleString();
-            document.getElementById('modalContent').innerHTML = submission.content.replace(/\n/g, '<br>');
-            
-            const fileSection = document.getElementById('modalFile');
-            fileSection.innerHTML = '';
-            if (submission.file) {
-                const downloadLink = document.createElement('a');
-                downloadLink.className = 'file-download';
-                downloadLink.href = '#';
-                downloadLink.innerHTML = '📎 Download Attached File';
-                downloadLink.onclick = () => downloadFile(submission.file);
-                fileSection.appendChild(downloadLink);
-            }
-
-            document.getElementById('detailModal').style.display = 'flex';
+            listElement.innerHTML = submissions.map(submission => `
+                <div class="submission-card">
+                    <div class="submission-header">
+                        <span class="student-name">${submission.studentName}</span>
+                        <span class="submission-date">${new Date(submission.submittedAt).toLocaleDateString()}</span>
+                    </div>
+                    <h3>${submission.title}</h3>
+                    <p>${submission.text}</p>
+                    ${submission.fileData ? 
+                        `<button class="download-btn" onclick="downloadFile('${submission.fileName}', '${submission.fileData}')">
+                            Download ${submission.fileName}
+                        </button>` : 
+                        '<em>No file attached</em>'}
+                </div>
+            `).join('');
         }
 
-        function closeModal() {
-            document.getElementById('detailModal').style.display = 'none';
-        }
-
-        function downloadFile(fileData) {
-            const byteCharacters = atob(fileData.data);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], { type: fileData.type });
-            
+        function downloadFile(fileName, data) {
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = fileData.name;
+            link.href = data;
+            link.download = fileName;
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('detailModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
+        // Initial load
+        displaySubmissions();
     </script>
 </body>
 </html>

@@ -8,108 +8,202 @@
         :root {
             --primary-yellow: #ffc700;
             --primary-purple: #6b3fa0;
+            --accent-orange: #ff5e1a;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f5ff 100%);
+            min-height: 100vh;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 12px 24px rgba(107,63,160,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--primary-yellow);
+            border-radius: 50%;
+            opacity: 0.2;
         }
 
         h1 {
             color: var(--primary-purple);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent-orange);
+            border-radius: 2px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--primary-purple);
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
         }
 
         input, textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 14px 20px;
+            border: 3px solid #e8e3f1;
+            border-radius: 12px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: #fcfaff;
         }
 
         input:focus, textarea:focus {
             border-color: var(--primary-yellow);
             outline: none;
+            box-shadow: 0 4px 12px rgba(255,199,0,0.2);
+            background: white;
         }
 
         .file-upload {
-            border: 2px dashed #ddd;
-            padding: 20px;
+            border: 3px dashed var(--primary-purple);
+            padding: 30px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 20px;
+            background: rgba(107,63,160,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            background: rgba(255,199,0,0.1);
+            border-color: var(--primary-yellow);
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-purple);
+            font-weight: 500;
+        }
+
+        .upload-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-yellow);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .submit-btn {
             background: var(--primary-yellow);
             color: var(--primary-purple);
-            padding: 15px 40px;
+            padding: 16px 50px;
             border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 800;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: block;
-            margin: 0 auto;
+            margin: 30px auto 0;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(255,199,0,0.3);
         }
 
         .submit-btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,199,0,0.4);
+        }
+
+        .selected-file {
+            margin-top: 15px;
+            color: var(--primary-purple);
+            font-weight: 500;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                margin: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Submit Homework</h1>
+        <h1>Homework Submission</h1>
         <form id="homeworkForm">
             <div class="form-group">
                 <label for="studentName">Your Name</label>
-                <input type="text" id="studentName" required>
+                <input type="text" id="studentName" placeholder="Enter your name" required>
             </div>
 
             <div class="form-group">
                 <label for="homeworkTitle">Homework Title</label>
-                <input type="text" id="homeworkTitle" required>
+                <input type="text" id="homeworkTitle" placeholder="Enter homework title" required>
             </div>
 
             <div class="form-group">
                 <label for="homeworkText">Homework Text</label>
-                <textarea id="homeworkText" rows="6" required></textarea>
+                <textarea id="homeworkText" rows="6" placeholder="Type your homework here..." required></textarea>
             </div>
 
             <div class="form-group">
-                <div class="file-upload">
+                <div class="file-upload" onclick="document.getElementById('homeworkFile').click()">
+                    <label class="upload-label">
+                        <div class="upload-icon">📁</div>
+                        <span>Click to upload file or drag and drop</span>
+                        <span class="selected-file" id="fileName"></span>
+                    </label>
                     <input type="file" id="homeworkFile">
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Homework</button>
+            <button type="submit" class="submit-btn">Submit Homework →</button>
         </form>
     </div>
 
@@ -138,14 +232,44 @@
                 submissions.push(homeworkData);
                 localStorage.setItem('homeworkSubmissions', JSON.stringify(submissions));
 
-                alert('Homework submitted successfully!');
+                // Show styled alert
+                const alert = document.createElement('div');
+                alert.style.position = 'fixed';
+                alert.style.top = '20px';
+                alert.style.left = '50%';
+                alert.style.transform = 'translateX(-50%)';
+                alert.style.padding = '15px 30px';
+                alert.style.background = 'var(--primary-yellow)';
+                alert.style.color = 'var(--primary-purple)';
+                alert.style.borderRadius = '10px';
+                alert.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                alert.style.fontWeight = 'bold';
+                alert.innerText = '📚 Homework submitted successfully!';
+                document.body.appendChild(alert);
+
+                setTimeout(() => {
+                    document.body.removeChild(alert);
+                }, 3000);
+
                 document.getElementById('homeworkForm').reset();
+                document.getElementById('fileName').style.display = 'none';
             };
 
             if(fileInput.files[0]) {
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
                 reader.onload();
+            }
+        });
+
+        // File input change handler
+        document.getElementById('homeworkFile').addEventListener('change', function(e) {
+            const fileName = document.getElementById('fileName');
+            if(this.files[0]) {
+                fileName.textContent = `Selected file: ${this.files[0].name}`;
+                fileName.style.display = 'block';
+            } else {
+                fileName.style.display = 'none';
             }
         });
     </script>

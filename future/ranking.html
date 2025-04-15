@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Leaderboard</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f9f6fc;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(107, 63, 160, 0.1);
+        }
+
+        h1 {
+            color: #6b3fa0;
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ffc700;
+        }
+
+        th {
+            background-color: #6b3fa0;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f5f0fa;
+        }
+
+        tr:hover {
+            background-color: #fff6d6;
+        }
+
+        .rank {
+            font-weight: 700;
+            color: #ffc700;
+        }
+
+        .score {
+            font-weight: 600;
+            color: #6b3fa0;
+        }
+
+        tfoot td {
+            background-color: #6b3fa0;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Class Leaderboard</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Student Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <!-- Rows will be sorted automatically by JavaScript -->
+                <tr>
+                    <td class="rank">1</td>
+                    <td>Shakhnazar</td>
+                    <td class="score">12.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Laura</td>
+                    <td class="score">17.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Dalen</td>
+                    <td class="score">18.5</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Rayimbek</td>
+                    <td class="score">13.4</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Asyl</td>
+                    <td class="score">12.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Temirlan</td>
+                    <td class="score">15.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Yernur</td>
+                    <td class="score">8.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Nurtilek</td>
+                    <td class="score">11.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Kamila</td>
+                    <td class="score">13.7</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Sholpan</td>
+                    <td class="score">12.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Arystan</td>
+                    <td class="score">13</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>Arnur</td>
+                    <td class="score">11.7</td>
+                </tr>
+            </tbody>
+            <tfoot id="averageRow">
+                <tr>
+                    <td colspan="2">Average Score</td>
+                    <td class="score">0.0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        function updateLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            let totalScore = 0;
+
+            // Sort rows by score in descending order
+            rows.sort((a, b) => {
+                const scoreA = parseFloat(a.querySelector('.score').textContent);
+                const scoreB = parseFloat(b.querySelector('.score').textContent);
+                return scoreB - scoreA;
+            });
+
+            // Update ranks, calculate total, and re-insert sorted rows
+            rows.forEach((row, index) => {
+                const score = parseFloat(row.querySelector('.score').textContent);
+                totalScore += score;
+                row.querySelector('.rank').textContent = index + 1;
+                tbody.appendChild(row);
+            });
+
+            // Calculate and display average
+            const averageScore = totalScore / rows.length;
+            document.querySelector('#averageRow .score').textContent = 
+                averageScore.toFixed(2);
+        }
+
+        window.addEventListener('DOMContentLoaded', updateLeaderboard);
+    </script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT Math | Rideka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6b3fa0;
+      --secondary: #ffc700;
+      --accent: #ff3b53;
+      --blue: #4285f4;
+      --white: #ffffff;
+      --bg: #f8f5ff;
+      --shadow: 0 15px 40px rgba(0,0,0,0.12);
+      --radius-large: 24px;
+      --radius-medium: 16px;
+      --radius-small: 8px;
+    }
+
+    body {
+      font-family: 'Archivo', 'Segoe UI Emoji', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .lms-header {
+      background: var(--white);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo::before {
+      content: "🚀";
+      font-size: 2.5rem;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    /* Main Layout */
+    .course-container {
+      max-width: 1400px;
+      margin: 3rem auto;
+      padding: 0 3rem;
+    }
+
+    /* Course Header */
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+
+    .course-title {
+      font-size: 3rem;
+      color: var(--primary);
+      margin: 0;
+      position: relative;
+      display: inline-block;
+    }
+
+    .course-title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 80%;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+
+    .teacher-info {
+      text-align: right;
+    }
+
+    .teacher-name {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .teacher-contact {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--blue);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-progress {
+      height: 10px;
+      background: rgba(66, 133, 244, 0.1);
+      border-radius: 5px;
+      margin-top: 1.5rem;
+      overflow: hidden;
+    }
+
+    .stat-progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 5px;
+    }
+
+    /* Modules Section */
+    .modules-section h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    .modules-section h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 120px;
+      height: 5px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+
+    .module-card {
+      background: var(--white);
+      padding: 2rem;
+      margin: 1.5rem 0;
+      border-radius: var(--radius-medium);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-left: 6px solid var(--secondary);
+      transition: all 0.3s ease;
+    }
+
+    .module-card:hover {
+      transform: translateX(10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .module-title {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .module-status {
+      background: rgba(107, 63, 160, 0.1);
+      color: var(--primary);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .module-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .lesson-card {
+      background: rgba(107, 63, 160, 0.05);
+      padding: 1.5rem;
+      border-radius: var(--radius-small);
+      transition: all 0.3s ease;
+    }
+
+    .lesson-card:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    .lesson-title {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .lesson-meta {
+      display: flex;
+      gap: 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .course-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      
+      .teacher-info {
+        text-align: left;
+      }
+      
+      .course-container {
+        padding: 0 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="lms-header">
+    <a href="/" class="logo">RIDEKA</a>
+    <a href="/dashboard.html" class="back-link">← Back to Dashboard</a>
+  </header>
+
+  <div class="course-container">
+    <!-- Course Header -->
+    <div class="course-header">
+      <div>
+        <h1 class="course-title">SAT Math</h1>
+        <p style="font-size: 1.3rem; color: #666;">Master algebra, geometry, and advanced math concepts</p>
+      </div>
+      <div class="teacher-info">
+        <p class="teacher-name">Instructor: Mr. Johnson</p>
+        <p class="teacher-contact">johnson@rideka.edu | Office Hours: Mon/Wed 3-5PM</p>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>📚 Homeworks</h3>
+        <div class="stat-value">18/24</div>
+        <p>Completed assignments</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 75%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>📝 Bluebook Tests</h3>
+        <div class="stat-value">7/10</div>
+        <p>Practice tests completed</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 70%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>🎯 Attendance</h3>
+        <div class="stat-value">88%</div>
+        <p>Classes attended</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 88%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>📈 Performance</h3>
+        <div class="stat-value">650 → 720</div>
+        <p>Score improvement</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 65%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modules Section -->
+    <div class="modules-section">
+      <h2>Course Modules</h2>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">🔢 Algebra Fundamentals</h3>
+          <span class="module-status">In Progress</span>
+        </div>
+        <p>Master linear equations, inequalities, and algebraic word problems</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Linear Equations</h4>
+            <div class="lesson-meta">
+              <span>📹 45 min</span>
+              <span>✅ Completed</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Systems of Equations</h4>
+            <div class="lesson-meta">
+              <span>📹 52 min</span>
+              <span>✅ Completed</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Algebraic Word Problems</h4>
+            <div class="lesson-meta">
+              <span>📹 38 min</span>
+              <span>⏳ In Progress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">📐 Geometry & Trigonometry</h3>
+          <span class="module-status">Upcoming</span>
+        </div>
+        <p>Triangles, circles, trigonometry, and complex geometry problems</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Triangle Properties</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Circle Theorems</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">🧮 Advanced Math</h3>
+          <span class="module-status">Upcoming</span>
+        </div>
+        <p>Complex numbers, polynomials, and non-linear systems</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Quadratic Equations</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Polynomial Operations</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data for dynamic updates
+    const stats = {
+      homework: { completed: 18, total: 24 },
+      bluebook: { completed: 7, total: 10 },
+      attendance: 88,
+      score: { start: 650, current: 720 }
+    };
+
+    // Update stats on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Homework
+      document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = 
+        `${stats.homework.completed}/${stats.homework.total}`;
+      document.querySelector('.stat-card:nth-child(1) .stat-progress-fill').style.width = 
+        `${(stats.homework.completed / stats.homework.total) * 100}%`;
+      
+      // Bluebook
+      document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = 
+        `${stats.bluebook.completed}/${stats.bluebook.total}`;
+      document.querySelector('.stat-card:nth-child(2) .stat-progress-fill').style.width = 
+        `${(stats.bluebook.completed / stats.bluebook.total) * 100}%`;
+      
+      // Attendance
+      document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = 
+        `${stats.attendance}%`;
+      document.querySelector('.stat-card:nth-child(3) .stat-progress-fill').style.width = 
+        `${stats.attendance}%`;
+      
+      // Performance
+      document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = 
+        `${stats.score.start} → ${stats.score.current}`;
+    });
+  </script>
+</body>
+</html>

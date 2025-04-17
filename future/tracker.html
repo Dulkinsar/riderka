@@ -1,317 +1,906 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dulat the Great - Profile & Tracker</title>
-  <style>
-    :root {
-      --primary-purple: #6b3fa0;
-      --accent-yellow: #ffc700;
-      --energized-red: #ff3b53;
-      --clean-white: #fff;
-      --deep-shadow: 4px 4px 0 var(--primary-purple);
-    }
-
-    body {
-      font-family: 'Roboto', 'Segoe UI Emoji', sans-serif;
-      background: repeating-linear-gradient(45deg, #f8f5ff, #f8f5ff 20px, #f0ebfa 20px, #f0ebfa 40px);
-      margin: 0;
-      padding: 20px;
-      color: var(--primary-purple);
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: var(--clean-white);
-      border-radius: 30px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), var(--deep-shadow);
-      border: 4px solid var(--accent-yellow);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .container::before {
-      content: '';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 60px;
-      height: 60px;
-      background: var(--energized-red);
-      transform: rotate(45deg);
-      z-index: -1;
-    }
-
-    h1, h2 {
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin: 1.5rem 0;
-    }
-
-    .profile-pic {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid var(--primary-purple);
-      margin: 1rem auto;
-      box-shadow: var(--deep-shadow);
-    }
-
-    button, .use-coins-btn, .profile-nav {
-      background: var(--energized-red);
-      color: var(--clean-white);
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: 15px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: var(--deep-shadow);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-block;
-      margin: 0.5rem;
-    }
-
-    button:hover, .profile-nav:hover, .use-coins-btn:hover {
-      transform: translateY(2px);
-      box-shadow: 2px 2px 0 var(--primary-purple);
-    }
-
-    .avatar-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-
-    .avatar-choice {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: all 0.3s ease;
-    }
-
-    .avatar-choice.selected {
-      border-color: var(--primary-purple);
-      transform: scale(1.1);
-      box-shadow: var(--deep-shadow);
-    }
-
-    input[type="text"], textarea, input[type="file"] {
-      width: 100%;
-      padding: 1rem;
-      margin: 1rem 0;
-      border: 3px solid var(--primary-purple);
-      border-radius: 15px;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent-yellow);
-      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3);
-    }
-
-    .task-list {
-      margin: 2rem 0;
-    }
-
-    .task {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(107, 63, 160, 0.1);
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 15px;
-      border-left: 6px solid var(--primary-purple);
-    }
-
-    .task a {
-      color: var(--primary-purple);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .status {
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .complete { color: #2ecc71; }
-    .incomplete { color: var(--energized-red); }
-
-    #top-nav {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-
-    .bonus-popup {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      background: var(--accent-yellow);
-      color: var(--primary-purple);
-      padding: 1rem 2rem;
-      border-radius: 15px;
-      font-weight: 800;
-      box-shadow: var(--deep-shadow);
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      z-index: 999;
-    }
-
-    .bonus-popup.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    #viewer-section { display: none; }
-    #image-preview { text-align: center; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Progression Tracker | Premium Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B3FA0;
+            --secondary: #FFC700;
+            --bg: #F8F5FF;
+            --card: #FFFFFF;
+            --text: #2D2D2D;
+            --accent: #FF5E7D;
+            --complete: #2ECC71;
+            --inprogress: #F1C40F;
+            --notstarted: #E74C3C;
+            --shadow: 0 15px 40px rgba(0,0,0,0.12);
+            --radius-large: 20px;
+            --radius-medium: 14px;
+            --radius-small: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Archivo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 3rem;
+        }
+        
+        header {
+            background: var(--primary);
+            padding: 3rem 0 4rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 892.25 114.72 1200 0z" fill="%236B3FA0"></path></svg>');
+            background-size: cover;
+            transform: scaleY(1.5);
+        }
+        
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.2;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -1px;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-top: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 70%;
+            height: 6px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+        }
+        
+        h4 {
+            font-size: 1.4rem;
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 1rem auto 0;
+            line-height: 1.5;
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: var(--radius-large);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--secondary);
+        }
+        
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        
+        .progress-item {
+            padding: 2rem;
+            background: var(--card);
+            border-radius: var(--radius-medium);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .progress-item h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-item h3::before {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            margin-right: 12px;
+            border-radius: 50%;
+        }
+        
+        .progress-item p {
+            font-size: 1.1rem;
+            color: rgba(0,0,0,0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-options {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .status-option {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .status-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .status-option.complete {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--complete);
+            border-color: var(--complete);
+        }
+        
+        .status-option.in-progress {
+            background: rgba(241, 196, 15, 0.1);
+            color: var(--inprogress);
+            border-color: var(--inprogress);
+        }
+        
+        .status-option.not-started {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--notstarted);
+            border-color: var(--notstarted);
+        }
+        
+        .status-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(107, 63, 160, 0.2);
+        }
+        
+        .status-display {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        
+        .status-display.complete {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--complete);
+            border: 2px solid var(--complete);
+        }
+        
+        .status-display.in-progress {
+            background: rgba(241, 196, 15, 0.15);
+            color: var(--inprogress);
+            border: 2px solid var(--inprogress);
+        }
+        
+        .status-display.not-started {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--notstarted);
+            border: 2px solid var(--notstarted);
+        }
+        
+        /* Enhanced Points System */
+        .points-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .points-display {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            min-width: 250px;
+            justify-content: center;
+        }
+        
+        .points-display::before {
+            content: "★";
+            margin-right: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .points-breakdown {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: var(--radius-medium);
+            border-left: 6px solid var(--secondary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        .points-breakdown h4 {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+        }
+        
+        .points-breakdown h4::before {
+            content: "📊";
+            margin-right: 1rem;
+            font-size: 2rem;
+        }
+        
+        .points-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .points-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            border-radius: var(--radius-small);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .points-item span {
+            font-size: 1.1rem;
+        }
+        
+        .points-value {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.2rem;
+            background: rgba(107, 63, 160, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
+        
+        .points-total {
+            font-weight: 800;
+            color: var(--secondary);
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            text-align: right;
+            padding-right: 1rem;
+        }
+        
+        /* Celebration Animation */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(107, 63, 160, 0.96);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 3rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .celebration.active {
+            opacity: 1;
+        }
+        
+        .celebration-emoji {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: bounce 0.8s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0) rotate(-5deg); }
+            to { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        /* Enhanced Inputs */
+        .input-group {
+            margin: 1.5rem 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-small);
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(107, 63, 160, 0.15);
+        }
+        
+        /* Enhanced Timeline */
+        .timeline {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 3rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .timeline th {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .timeline td {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            vertical-align: middle;
+            background: white;
+        }
+        
+        .timeline tr:first-child td {
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .timeline tr:hover td {
+            background: #faf9ff;
+        }
+        
+        .timeline-status {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Motivation Section */
+        .motivation {
+            background: linear-gradient(135deg, var(--primary), #8E54E9);
+            color: white;
+            padding: 3rem;
+            border-radius: var(--radius-large);
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .motivation p {
+            font-size: 2rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            line-height: 1.4;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .card {
+                padding: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .progress-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .status-options {
+                flex-direction: column;
+            }
+            
+            .points-display {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="top-nav">
-    <a href="javascript:showViewer()" class="profile-nav">🌟 My Profile</a>
-  </div>
-
-  <div class="container" id="editor-section">
-    <h2>🎨 Edit Profile</h2>
-    <div class="avatar-options">
-      <img src="/images/papa.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/base.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/woman.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/vipka.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/boss.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/shynar.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/aknur.jpeg" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/beard.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/potter.png" class="avatar-choice" onclick="selectAvatar(this)">
-      <img src="/images/finance.png" class="avatar-choice" onclick="selectAvatar(this)">
+    <!-- Celebration Overlay -->
+    <div class="celebration" id="celebration">
+        <div class="celebration-emoji">🎉</div>
+        <div>Task Completed!</div>
+        <div id="points-earned" style="font-size: 4rem; margin-top: 2rem; color: var(--secondary);">+10 GC Points</div>
     </div>
-    <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)">
-    <div id="image-preview"></div>
+
+    <header>
+        <h1>University Application Tracker</h1>
+        <p class="subtitle">For Kazakhstani students pursuing American higher education</p>
+    </header>
     
-    <input type="text" id="nickname" placeholder="✨ Enter your nickname">
-    <textarea id="bio" rows="4" placeholder="📝 Write your bio..."></textarea>
-    <button onclick="saveProfile()">💾 Save Profile</button>
-  </div>
-
-  <div class="container" id="viewer-section">
-    <h2>🌟 Your Profile</h2>
-    <div class="profile-card">
-      <div id="viewer-image"></div>
-      <div class="profile-name" id="viewer-nickname"></div>
-      <div class="profile-bio" id="viewer-bio"></div>
+    <div class="container">
+        <div class="card">
+            <div class="points-header">
+                <h2>Your Application Journey</h2>
+                <div class="points-display" id="total-points">
+                    ★ GC Points: 0
+                </div>
+            </div>
+            <p style="font-size: 1.3rem; color: var(--text);">Track your progress, complete tasks, and earn GC Points to stay motivated!</p>
+            
+            <!-- Points Breakdown -->
+            <div class="points-breakdown">
+                <h4>Points Reward System</h4>
+                <div class="points-items">
+                    <div class="points-item">
+                        <span>Test Preparation</span>
+                        <span class="points-value">+20 pts</span>
+                    </div>
+                    <div class="points-item">
+                        <span>University Research</span>
+                        <span class="points-value">+15 pts</span>
+                    </div>
+                    <div class="points-item">
+                        <span>Application Documents</span>
+                        <span class="points-value">+25 pts</span>
+                    </div>
+                    <div class="points-item">
+                        <span>Deadlines Submission</span>
+                        <span class="points-value">+30 pts</span>
+                    </div>
+                    <div class="points-item">
+                        <span>Visa & Finances</span>
+                        <span class="points-value">+20 pts</span>
+                    </div>
+                    <div class="points-item">
+                        <span>Timeline Tasks</span>
+                        <span class="points-value">+10 pts each</span>
+                    </div>
+                </div>
+                <div class="points-total">Maximum Possible: 150 points</div>
+            </div>
+            
+            <div class="progress-grid">
+                <div class="progress-item" id="test-prep">
+                    <h3>Standardized Tests</h3>
+                    <p>SAT/ACT/TOEFL preparation and scores</p>
+                    <div class="status-options">
+                        <div class="status-option complete" data-status="complete">✅ Completed</div>
+                        <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                        <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                    </div>
+                    <div class="status-display not-started">Current Status: Not Started</div>
+                    <div class="input-group">
+                        <label>Target Test Scores</label>
+                        <input type="text" placeholder="Enter your target scores" id="target-score">
+                    </div>
+                    <div class="input-group">
+                        <label>Current Test Scores</label>
+                        <input type="text" placeholder="Enter your current scores" id="current-score">
+                    </div>
+                </div>
+                
+                <div class="progress-item" id="university-research">
+                    <h3>University Selection</h3>
+                    <p>Research and shortlist target schools</p>
+                    <div class="status-options">
+                        <div class="status-option complete" data-status="complete">✅ Completed</div>
+                        <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                        <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                    </div>
+                    <div class="status-display not-started">Current Status: Not Started</div>
+                    <div class="input-group">
+                        <label>Dream Schools (Reach)</label>
+                        <input type="text" placeholder="List your dream schools" id="dream-schools">
+                    </div>
+                    <div class="input-group">
+                        <label>Safety Schools</label>
+                        <input type="text" placeholder="List your safety schools" id="safety-schools">
+                    </div>
+                </div>
+                
+                <div class="progress-item" id="application-docs">
+                    <h3>Application Materials</h3>
+                    <p>Essays, recommendations, and documents</p>
+                    <div class="status-options">
+                        <div class="status-option complete" data-status="complete">✅ Completed</div>
+                        <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                        <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                    </div>
+                    <div class="status-display not-started">Current Status: Not Started</div>
+                </div>
+                
+                <div class="progress-item" id="deadlines">
+                    <h3>Application Deadlines</h3>
+                    <p>Track submission status for each school</p>
+                    <div class="status-options">
+                        <div class="status-option complete" data-status="complete">✅ Completed</div>
+                        <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                        <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                    </div>
+                    <div class="status-display not-started">Current Status: Not Started</div>
+                    <div class="input-group">
+                        <label>Submitted Applications</label>
+                        <input type="text" placeholder="List completed submissions" id="submitted-apps">
+                    </div>
+                    <div class="input-group">
+                        <label>Pending Applications</label>
+                        <input type="text" placeholder="List pending submissions" id="pending-apps">
+                    </div>
+                </div>
+                
+                <div class="progress-item" id="visa-finances">
+                    <h3>Visa & Funding</h3>
+                    <p>F-1 visa preparation and scholarships</p>
+                    <div class="status-options">
+                        <div class="status-option complete" data-status="complete">✅ Completed</div>
+                        <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                        <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                    </div>
+                    <div class="status-display not-started">Current Status: Not Started</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Application Timeline</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Follow this monthly checklist to stay on track</p>
+            
+            <table class="timeline">
+                <tr>
+                    <th>Month</th>
+                    <th>Key Tasks</th>
+                    <th>Update Status</th>
+                </tr>
+                <tr>
+                    <td><strong>June</strong></td>
+                    <td>
+                        <h4>Test Registration</h4>
+                        <p>Register for SAT/TOEFL exams</p>
+                    </td>
+                    <td>
+                        <div class="status-options">
+                            <div class="status-option complete" data-status="complete">✅ Completed</div>
+                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                        </div>
+                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>August</strong></td>
+                    <td>
+                        <h4>Essay Drafts</h4>
+                        <p>Finalize personal statement drafts</p>
+                    </td>
+                    <td>
+                        <div class="status-options">
+                            <div class="status-option complete" data-status="complete">✅ Completed</div>
+                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                        </div>
+                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>October</strong></td>
+                    <td>
+                        <h4>Recommendations</h4>
+                        <p>Request letters from teachers</p>
+                    </td>
+                    <td>
+                        <div class="status-options">
+                            <div class="status-option complete" data-status="complete">✅ Completed</div>
+                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                        </div>
+                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>December</strong></td>
+                    <td>
+                        <h4>Submit Applications</h4>
+                        <p>Complete all application submissions</p>
+                    </td>
+                    <td>
+                        <div class="status-options">
+                            <div class="status-option complete" data-status="complete">✅ Completed</div>
+                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                        </div>
+                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="motivation">
+            <p>"Every completed task brings you closer to your dream university. Stay consistent and celebrate your progress!"</p>
+        </div>
     </div>
-    <button onclick="editProfile()">✏️ Edit Profile</button>
-    <h2>🪙 GC Coins: <span id="coins">0</span></h2>
-    <a href="/use-gc-coins" class="use-coins-btn">🚀 Use GC Coins</a>
     
-    <div class="task-list">
-      <div class="task">
-        <a href="/tasks/personal-statement">📝 Write Common App Essay</a>
-        <span class="status incomplete">INCOMPLETE</span>
-        <button onclick="markComplete(this, 30)">✅ Complete</button>
-      </div>
-      <div class="task">
-        <a href="/tasks/recommendation-letters">📩 Request Recommendations</a>
-        <span class="status incomplete">INCOMPLETE</span>
-        <button onclick="markComplete(this, 20)">✅ Complete</button>
-      </div>
-      <div class="task">
-        <a href="/tasks/fafsa">💸 Submit FAFSA</a>
-        <span class="status incomplete">INCOMPLETE</span>
-        <button onclick="markComplete(this, 25)">✅ Complete</button>
-      </div>
-    </div>
-  </div>
+    <footer>
+        <p>© 2023 University Application Tracker | Designed for Kazakhstani Students</p>
+    </footer>
 
-  <div id="bonusPopup" class="bonus-popup">+30 GC Coins! 🏀 Hustle like LeBron!</div>
-
-  <script>
-    let totalCoins = parseInt(localStorage.getItem('gcCoins')) || 0;
-
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = function() {
-        const output = document.getElementById('image-preview');
-        output.innerHTML = `<img class="profile-pic" src="${reader.result}">`;
-        localStorage.setItem('profilePic', reader.result);
-        clearAvatarSelection();
-      };
-      if (event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
-    }
-
-    function selectAvatar(img) {
-      clearAvatarSelection();
-      img.classList.add('selected');
-      localStorage.setItem('profilePic', img.src);
-      document.getElementById('image-preview').innerHTML = `<img class="profile-pic" src="${img.src}">`;
-    }
-
-    function clearAvatarSelection() {
-      document.querySelectorAll('.avatar-choice').forEach(i => i.classList.remove('selected'));
-    }
-
-    function saveProfile() {
-      localStorage.setItem('nickname', document.getElementById('nickname').value);
-      localStorage.setItem('bio', document.getElementById('bio').value);
-      showViewer();
-    }
-
-    function showViewer() {
-      document.getElementById('editor-section').style.display = 'none';
-      document.getElementById('viewer-section').style.display = 'block';
-      document.getElementById('viewer-nickname').textContent = localStorage.getItem('nickname') || '🎯 No Nickname Set';
-      document.getElementById('viewer-bio').textContent = localStorage.getItem('bio') || '📌 No Bio Provided';
-      const pic = localStorage.getItem('profilePic');
-      document.getElementById('viewer-image').innerHTML = pic ? `<img class="profile-pic" src="${pic}">` : '🖼️ No Image';
-      document.getElementById('coins').textContent = totalCoins;
-    }
-
-    function editProfile() {
-      document.getElementById('editor-section').style.display = 'block';
-      document.getElementById('viewer-section').style.display = 'none';
-      document.getElementById('nickname').value = localStorage.getItem('nickname') || '';
-      document.getElementById('bio').value = localStorage.getItem('bio') || '';
-    }
-
-    function markComplete(button, bonus) {
-      const task = button.closest('.task');
-      const status = task.querySelector('.status');
-      status.textContent = 'COMPLETE 🎉';
-      status.classList.replace('incomplete', 'complete');
-      button.disabled = true;
-      totalCoins += bonus;
-      localStorage.setItem('gcCoins', totalCoins);
-      document.getElementById('coins').textContent = totalCoins;
-      
-      const popup = document.getElementById('bonusPopup');
-      popup.textContent = `+${bonus} GC Coins! 🏀 Hustle like LeBron!`;
-      popup.classList.add('show');
-      setTimeout(() => popup.classList.remove('show'), 3000);
-    }
-
-    window.onload = () => {
-      if (localStorage.getItem('nickname') || localStorage.getItem('bio') || localStorage.getItem('profilePic')) {
-        showViewer();
-      }
-      document.getElementById('coins').textContent = totalCoins;
-    }
-  </script>
+    <script>
+        // Points system configuration
+        const pointsConfig = {
+            'test-prep': 20,
+            'university-research': 15,
+            'application-docs': 25,
+            'deadlines': 30,
+            'visa-finances': 20,
+            'timeline-june': 10,
+            'timeline-august': 10,
+            'timeline-october': 10,
+            'timeline-december': 10
+        };
+        
+        // Initialize total points
+        let totalPoints = 0;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved points
+            const savedPoints = localStorage.getItem('totalPoints');
+            if (savedPoints) {
+                totalPoints = parseInt(savedPoints);
+                updatePointsDisplay();
+            }
+            
+            // Set up status option click handlers
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.closest('.progress-item, tr');
+                    const status = this.getAttribute('data-status');
+                    
+                    // Update visual selection
+                    const optionsContainer = this.closest('.status-options');
+                    optionsContainer.querySelectorAll('.status-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    
+                    // Find the status display element
+                    let statusDisplay;
+                    if (parent.classList.contains('progress-item')) {
+                        statusDisplay = parent.querySelector('.status-display');
+                    } else {
+                        // For timeline rows
+                        statusDisplay = parent.querySelector('.status-display');
+                    }
+                    
+                    // Update status display
+                    statusDisplay.className = `status-display ${status.replace(' ', '-')}`;
+                    statusDisplay.textContent = `Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+                    
+                    // Handle points for completed tasks
+                    if (status === 'complete') {
+                        let itemId;
+                        let points = 0;
+                        
+                        if (parent.classList.contains('progress-item')) {
+                            // Main progress items
+                            itemId = parent.id;
+                            points = pointsConfig[itemId] || 0;
+                        } else {
+                            // Timeline items
+                            const month = parent.querySelector('td:first-child').textContent.trim().toLowerCase();
+                            itemId = `timeline-${month}`;
+                            points = pointsConfig[itemId] || 0;
+                        }
+                        
+                        // Check if this task was already completed
+                        const wasCompleted = localStorage.getItem(itemId) === 'complete';
+                        
+                        if (!wasCompleted && points > 0) {
+                            totalPoints += points;
+                            localStorage.setItem('totalPoints', totalPoints);
+                            updatePointsDisplay();
+                            showCelebration(points);
+                        }
+                    }
+                    
+                    // Save status to localStorage
+                    if (parent.classList.contains('progress-item')) {
+                        localStorage.setItem(parent.id, status);
+                    } else {
+                        const month = parent.querySelector('td:first-child').textContent.trim().toLowerCase();
+                        localStorage.setItem(`timeline-${month}`, status);
+                    }
+                });
+            });
+            
+            // Load saved statuses
+            loadSavedStatuses();
+            
+            // Load saved input values
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                const savedValue = localStorage.getItem(input.id);
+                if (savedValue) {
+                    input.value = savedValue;
+                }
+                
+                input.addEventListener('change', function() {
+                    localStorage.setItem(this.id, this.value);
+                });
+            });
+        });
+        
+        function updatePointsDisplay() {
+            document.getElementById('total-points').textContent = `★ GC Points: ${totalPoints}`;
+        }
+        
+        function showCelebration(points) {
+            const celebration = document.getElementById('celebration');
+            const pointsEarned = document.getElementById('points-earned');
+            
+            pointsEarned.textContent = `+${points} Points!`;
+            celebration.classList.add('active');
+            
+            setTimeout(() => {
+                celebration.classList.remove('active');
+            }, 3000);
+        }
+        
+        function loadSavedStatuses() {
+            // Load progress items
+            document.querySelectorAll('.progress-item').forEach(item => {
+                const itemId = item.id;
+                const savedStatus = localStorage.getItem(itemId);
+                
+                if (savedStatus) {
+                    const option = item.querySelector(`.status-option[data-status="${savedStatus}"]`);
+                    if (option) {
+                        option.click();
+                    }
+                }
+            });
+            
+            // Load timeline items
+            document.querySelectorAll('.timeline tr').forEach(row => {
+                const monthCell = row.querySelector('td:first-child');
+                if (monthCell) {
+                    const month = monthCell.textContent.trim().toLowerCase();
+                    const savedStatus = localStorage.getItem(`timeline-${month}`);
+                    
+                    if (savedStatus) {
+                        const option = row.querySelector(`.status-option[data-status="${savedStatus}"]`);
+                        if (option) {
+                            option.click();
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>

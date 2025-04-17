@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GC Rewards Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B3FA0;
+            --secondary: #FFC700;
+            --bg: #F8F5FF;
+            --card: #FFFFFF;
+            --text: #2D2D2D;
+            --accent: #FF5E7D;
+            --shadow: 0 15px 40px rgba(0,0,0,0.12);
+            --radius-large: 24px;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 3rem;
+        }
+
+        header {
+            background: var(--primary);
+            padding: 3rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-wave {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 892.25 114.72 1200 0z" fill="%236B3FA0"></path></svg>');
+            background-size: cover;
+            transform: scaleY(1.5);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 3rem;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        .back-btn::before {
+            content: "←";
+            margin-right: 0.7rem;
+            font-size: 1.3em;
+        }
+
+        .points-display {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.6rem;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .points-display::before {
+            content: "★";
+            margin-right: 1rem;
+            font-size: 2rem;
+        }
+
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .reward-card {
+            background: white;
+            border-radius: var(--radius-large);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-color: var(--secondary);
+        }
+
+        .tag {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .reward-card h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .reward-card p {
+            font-size: 1.2rem;
+            color: rgba(0,0,0,0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .price {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .price::before {
+            content: "★";
+            margin-right: 0.8rem;
+        }
+
+        .redeem-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .redeem-btn:hover:not(:disabled) {
+            background: #5a2d8a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(107, 63, 160, 0.3);
+        }
+
+        .redeem-btn:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 3.5rem;
+            margin-top: 5rem;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .reward-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-btn {
+                position: static;
+                margin-bottom: 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-btn">Back to Tracker</a>
+        <h1>GC Rewards Store</h1>
+        <p class="subtitle">Redeem your hard-earned points for exclusive resources</p>
+        <div class="header-wave"></div>
+    </header>
+    
+    <div class="container">
+        <div style="text-align: center;">
+            <div class="points-display" id="store-points">
+                ★ Your Points: Loading...
+            </div>
+            <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto 3rem;">
+                You've earned these points by completing application tasks. 
+                Redeem them for valuable resources to support your university journey!
+            </p>
+        </div>
+        
+        <div class="reward-grid">
+            <div class="reward-card">
+                <div class="tag">POPULAR</div>
+                <h3>University Application Guide</h3>
+                <p>50-page PDF with insider tips for international students applying to top US universities, including sample essays and interview strategies.</p>
+                <div class="price">50 Points</div>
+                <button class="redeem-btn" data-cost="50">Redeem Now</button>
+            </div>
+            
+            <div class="reward-card">
+                <h3>Essay Review Credit</h3>
+                <p>Professional review of one college application essay by our education specialists with detailed feedback.</p>
+                <div class="price">75 Points</div>
+                <button class="redeem-btn" data-cost="75">Redeem Now</button>
+            </div>
+            
+            <div class="reward-card">
+                <div class="tag">BEST VALUE</div>
+                <h3>SAT Prep Course</h3>
+                <p>1-month access to premium SAT preparation materials, 10 practice tests, and video explanations.</p>
+                <div class="price">100 Points</div>
+                <button class="redeem-btn" data-cost="100">Redeem Now</button>
+            </div>
+            
+            <div class="reward-card">
+                <h3>University Webinar Pass</h3>
+                <p>Exclusive access to our "Applying to US Universities" webinar series featuring admissions officers.</p>
+                <div class="price">30 Points</div>
+                <button class="redeem-btn" data-cost="30">Redeem Now</button>
+            </div>
+            
+            <div class="reward-card">
+                <h3>Application Checklist</h3>
+                <p>Personalized application checklist tailored to your target schools with deadline reminders.</p>
+                <div class="price">25 Points</div>
+                <button class="redeem-btn" data-cost="25">Redeem Now</button>
+            </div>
+            
+            <div class="reward-card">
+                <div class="tag">NEW</div>
+                <h3>Mentorship Session</h3>
+                <p>30-minute video call with a current international student at a top US university for personalized advice.</p>
+                <div class="price">120 Points</div>
+                <button class="redeem-btn" data-cost="120">Redeem Now</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 University Progression Tracker | GC Rewards System</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load points from main tracker
+            const savedPoints = localStorage.getItem('totalPoints') || 0;
+            document.getElementById('store-points').textContent = `★ Your Points: ${savedPoints}`;
+            
+            // Update redeem buttons based on points
+            document.querySelectorAll('.redeem-btn').forEach(btn => {
+                const cost = parseInt(btn.getAttribute('data-cost'));
+                
+                if (savedPoints < cost) {
+                    btn.disabled = true;
+                    btn.textContent = `Need ${cost - savedPoints} more points`;
+                }
+                
+                btn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        alert(`Success! You've redeemed this reward for ${cost} points. Details will be emailed to you.`);
+                        // In full implementation: Deduct points and process reward
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

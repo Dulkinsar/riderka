@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduWave LMS</title>
+  <title>Rideka LMS</title>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -27,7 +27,7 @@
       line-height: 1.6;
     }
 
-    /* Header - 2x Larger */
+    /* Header */
     .lms-header {
       background: var(--white);
       padding: 1.5rem 3rem;
@@ -51,7 +51,7 @@
     }
 
     .logo::before {
-      content: "🌊";
+      content: "🚀";
       font-size: 2.5rem;
     }
 
@@ -80,7 +80,7 @@
       object-fit: cover;
     }
 
-    /* Main Layout - More Spacious */
+    /* Main Layout */
     .lms-container {
       display: grid;
       grid-template-columns: 300px 1fr;
@@ -90,7 +90,7 @@
       padding: 0 3rem;
     }
 
-    /* Navigation - Bigger & Bolder */
+    /* Navigation */
     .lms-nav {
       background: var(--white);
       padding: 2.5rem;
@@ -130,7 +130,7 @@
       padding-bottom: 4rem;
     }
 
-    /* Course Cards - Larger & More Interactive */
+    /* Course Cards */
     .course-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -201,7 +201,11 @@
       color: var(--primary);
     }
 
-    /* Activity Feed - Enhanced */
+    /* Activity Feed - Positioned Lower */
+    .activity-section {
+      margin-top: 5rem; /* Increased from 3rem */
+    }
+
     .activity-section h2 {
       font-size: 2.2rem;
       color: var(--primary);
@@ -288,7 +292,7 @@
 </head>
 <body>
   <header class="lms-header">
-    <a href="/" class="logo">EDUWAVE</a>
+    <a href="/" class="logo">RIDEKA</a>
     <a href="/profile" class="profile-link">
       <img src="profile.png" alt="Profile">
       <span>Dulat the Great</span>
@@ -308,8 +312,8 @@
     <main>
       <div class="course-grid">
         <div class="course-card">
-          <a href="/courses/math101">
-            <h3>Advanced Mathematics</h3>
+          <a href="/sat-math.html"> <!-- Changed link to SAT Math page -->
+            <h3>SAT Math</h3> <!-- Changed title -->
             <div class="progress-container">
               <div class="progress-label">
                 <span>Course Progress</span>
@@ -322,13 +326,14 @@
             <div class="course-meta">
               <span>📆 12 Weeks</span>
               <span>📚 15 Lessons</span>
+              <span>👨‍🏫 Mr. Johnson</span>
             </div>
           </a>
         </div>
 
         <div class="course-card">
-          <a href="/courses/eng201">
-            <h3>Modern Literature</h3>
+          <a href="/sat-verbal.html"> <!-- Changed link to SAT Verbal page -->
+            <h3>SAT Verbal</h3> <!-- Changed title -->
             <div class="progress-container">
               <div class="progress-label">
                 <span>Course Progress</span>
@@ -341,11 +346,13 @@
             <div class="course-meta">
               <span>📆 8 Weeks</span>
               <span>📚 10 Lessons</span>
+              <span>👩‍🏫 Dr. Smith</span>
             </div>
           </a>
         </div>
       </div>
 
+      <!-- Activity Section with increased top margin -->
       <div class="activity-section">
         <h2>Recent Activity</h2>
         <a href="/assignments/math-001" class="activity-item">
@@ -361,29 +368,29 @@
   </div>
 
   <script>
-    // Enhanced Course Data with More Details
+    // Course data with SAT-specific links
     const courses = [
       {
-        id: 'math101',
+        id: 'sat-math',
         title: 'SAT Math',
         progress: 65,
         duration: '12 Weeks',
         lessons: 15,
-        url: '/courses/math101',
-        teacher: 'Dr. Aisultan'
+        url: '/sat-math.html', // Direct link to SAT Math page
+        teacher: 'Mr. Johnson'
       },
       {
-        id: 'eng201',
+        id: 'sat-verbal',
         title: 'SAT Verbal',
         progress: 30,
         duration: '8 Weeks',
         lessons: 10,
-        url: '/courses/eng201',
-        teacher: 'Prof. Zhangir'
+        url: '/sat-verbal.html', // Direct link to SAT Verbal page
+        teacher: 'Dr. Smith'
       }
     ];
 
-    // Render Enhanced Courses
+    // Render Courses
     function renderCourses() {
       const container = document.querySelector('.course-grid');
       container.innerHTML = courses.map(course => `
@@ -409,18 +416,8 @@
       `).join('');
     }
 
-    // Initialize with animation
-    document.addEventListener('DOMContentLoaded', () => {
-      renderCourses();
-      
-      // Add animation class to elements after load
-      setTimeout(() => {
-        document.querySelectorAll('.course-card, .activity-item').forEach(el => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      }, 300);
-    });
+    // Initialize
+    document.addEventListener('DOMContentLoaded', renderCourses);
   </script>
 </body>
 </html>

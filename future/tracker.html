@@ -544,6 +544,109 @@
         <h1>University Application Tracker</h1>
         <p class="subtitle">For Kazakhstani students pursuing American higher education</p>
     </header>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Application Tracker with GC Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B3FA0;
+            --secondary: #FFC700;
+            --bg: #F8F5FF;
+            --card: #FFFFFF;
+            --text: #2D2D2D;
+            --accent: #FF5E7D;
+            --complete: #2ECC71;
+            --inprogress: #F1C40F;
+            --notstarted: #E74C3C;
+            --shadow: 0 15px 40px rgba(0,0,0,0.12);
+            --radius-large: 20px;
+            --radius-medium: 14px;
+            --radius-small: 8px;
+        }
+        
+        /* (Previous CSS styles remain the same until the new additions below) */
+        
+        /* New Header with GC Store */
+        .main-header {
+            background: var(--primary);
+            padding: 2rem 0 4rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
+        }
+        
+        .gc-store-btn {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .gc-store-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: #ffd700;
+        }
+        
+        .gc-store-btn::before {
+            content: "🛍️";
+            margin-right: 0.7rem;
+            font-size: 1.2em;
+        }
+        
+        /* Rest of your existing CSS remains the same */
+    </style>
+</head>
+<body>
+    <!-- Celebration Overlay -->
+    <div class="celebration" id="celebration">
+        <div class="celebration-emoji">🎉</div>
+        <div>Task Completed!</div>
+        <div id="points-earned" style="font-size: 4rem; margin-top: 2rem; color: var(--secondary);">+10 GC Points</div>
+    </div>
+
+    <!-- New Header with GC Store Button -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="gc-store.html" class="gc-store-btn">GC Store</a>
+            <h1>University Application Tracker</h1>
+            <p class="subtitle">For Kazakhstani students pursuing American higher education</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- (Rest of your existing HTML remains exactly the same) -->
+    </div>
+    
+    <footer>
+        <p>© 2023 University Application Tracker | GC Rewards System</p>
+    </footer>
+
+    <!-- (JavaScript remains exactly the same) -->
+</body>
+</html>
     
     <div class="container">
         <div class="card">

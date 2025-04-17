@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT Verbal | Rideka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6b3fa0;
+      --secondary: #ffc700;
+      --accent: #ff3b53;
+      --blue: #4285f4;
+      --white: #ffffff;
+      --bg: #f8f5ff;
+      --shadow: 0 15px 40px rgba(0,0,0,0.12);
+      --radius-large: 24px;
+      --radius-medium: 16px;
+      --radius-small: 8px;
+    }
+
+    body {
+      font-family: 'Archivo', 'Segoe UI Emoji', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .lms-header {
+      background: var(--white);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo::before {
+      content: "🚀";
+      font-size: 2.5rem;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    /* Main Layout */
+    .course-container {
+      max-width: 1400px;
+      margin: 3rem auto;
+      padding: 0 3rem;
+    }
+
+    /* Course Header */
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+
+    .course-title {
+      font-size: 3rem;
+      color: var(--primary);
+      margin: 0;
+      position: relative;
+      display: inline-block;
+    }
+
+    .course-title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 80%;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+
+    .teacher-info {
+      text-align: right;
+    }
+
+    .teacher-name {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .teacher-contact {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--blue);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-progress {
+      height: 10px;
+      background: rgba(66, 133, 244, 0.1);
+      border-radius: 5px;
+      margin-top: 1.5rem;
+      overflow: hidden;
+    }
+
+    .stat-progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 5px;
+    }
+
+    /* Modules Section */
+    .modules-section h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    .modules-section h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 120px;
+      height: 5px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+
+    .module-card {
+      background: var(--white);
+      padding: 2rem;
+      margin: 1.5rem 0;
+      border-radius: var(--radius-medium);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-left: 6px solid var(--secondary);
+      transition: all 0.3s ease;
+    }
+
+    .module-card:hover {
+      transform: translateX(10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .module-title {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .module-status {
+      background: rgba(107, 63, 160, 0.1);
+      color: var(--primary);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .module-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .lesson-card {
+      background: rgba(107, 63, 160, 0.05);
+      padding: 1.5rem;
+      border-radius: var(--radius-small);
+      transition: all 0.3s ease;
+    }
+
+    .lesson-card:hover {
+      background: rgba(107, 63, 160, 0.1);
+    }
+
+    .lesson-title {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .lesson-meta {
+      display: flex;
+      gap: 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .course-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      
+      .teacher-info {
+        text-align: left;
+      }
+      
+      .course-container {
+        padding: 0 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="lms-header">
+    <a href="/" class="logo">RIDEKA</a>
+    <a href="/dashboard.html" class="back-link">← Back to Dashboard</a>
+  </header>
+
+  <div class="course-container">
+    <!-- Course Header -->
+    <div class="course-header">
+      <div>
+        <h1 class="course-title">SAT Verbal</h1>
+        <p style="font-size: 1.3rem; color: #666;">Master reading comprehension, grammar, and rhetorical skills</p>
+      </div>
+      <div class="teacher-info">
+        <p class="teacher-name">Instructor: Dr. Williams</p>
+        <p class="teacher-contact">williams@rideka.edu | Office Hours: Tue/Thu 2-4PM</p>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>📚 Reading Passages</h3>
+        <div class="stat-value">32/50</div>
+        <p>Passages analyzed</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 64%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>✍️ Writing Drills</h3>
+        <div class="stat-value">45/60</div>
+        <p>Grammar exercises completed</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 75%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>📝 Practice Tests</h3>
+        <div class="stat-value">6/8</div>
+        <p>Full-length verbal sections</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 75%"></div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>📈 Score Trend</h3>
+        <div class="stat-value">580 → 680</div>
+        <p>Verbal score improvement</p>
+        <div class="stat-progress">
+          <div class="stat-progress-fill" style="width: 80%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modules Section -->
+    <div class="modules-section">
+      <h2>Course Modules</h2>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">📖 Reading Comprehension</h3>
+          <span class="module-status">In Progress</span>
+        </div>
+        <p>Master analysis of literature, history/social studies, and science passages</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Evidence-Based Reading</h4>
+            <div class="lesson-meta">
+              <span>📹 38 min</span>
+              <span>✅ Completed</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Vocabulary in Context</h4>
+            <div class="lesson-meta">
+              <span>📹 42 min</span>
+              <span>✅ Completed</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Dual Passages</h4>
+            <div class="lesson-meta">
+              <span>📹 35 min</span>
+              <span>⏳ In Progress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">✍️ Writing & Language</h3>
+          <span class="module-status">Upcoming</span>
+        </div>
+        <p>Grammar rules, punctuation, and rhetorical skills for editing tasks</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Standard English Conventions</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Expression of Ideas</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-header">
+          <h3 class="module-title">🧠 Advanced Analysis</h3>
+          <span class="module-status">Upcoming</span>
+        </div>
+        <p>Data interpretation, rhetorical analysis, and complex texts</p>
+        
+        <div class="module-content">
+          <div class="lesson-card">
+            <h4 class="lesson-title">Quantitative Information</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <h4 class="lesson-title">Historical Documents</h4>
+            <div class="lesson-meta">
+              <span>📹 0 min</span>
+              <span>🔒 Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data for dynamic updates
+    const stats = {
+      reading: { completed: 32, total: 50 },
+      writing: { completed: 45, total: 60 },
+      tests: { completed: 6, total: 8 },
+      score: { start: 580, current: 680 }
+    };
+
+    // Update stats on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Reading Passages
+      document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = 
+        `${stats.reading.completed}/${stats.reading.total}`;
+      document.querySelector('.stat-card:nth-child(1) .stat-progress-fill').style.width = 
+        `${(stats.reading.completed / stats.reading.total) * 100}%`;
+      
+      // Writing Drills
+      document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = 
+        `${stats.writing.completed}/${stats.writing.total}`;
+      document.querySelector('.stat-card:nth-child(2) .stat-progress-fill').style.width = 
+        `${(stats.writing.completed / stats.writing.total) * 100}%`;
+      
+      // Practice Tests
+      document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = 
+        `${stats.tests.completed}/${stats.tests.total}`;
+      document.querySelector('.stat-card:nth-child(3) .stat-progress-fill').style.width = 
+        `${(stats.tests.completed / stats.tests.total) * 100}%`;
+      
+      // Performance
+      document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = 
+        `${stats.score.start} → ${stats.score.current}`;
+      document.querySelector('.stat-card:nth-child(4) .stat-progress-fill').style.width = 
+        `${((stats.score.current - stats.score.start) / (800 - stats.score.start)) * 100}%`;
+    });
+  </script>
+</body>
+</html>

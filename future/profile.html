@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B3FA0;
+            --secondary: #FFC700;
+            --bg: #F8F5FF;
+            --card: #FFFFFF;
+            --text: #2D2D2D;
+            --accent: #FF5E7D;
+            --shadow: 0 15px 40px rgba(0,0,0,0.12);
+            --radius-large: 24px;
+            --radius-medium: 16px;
+            --radius-small: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        /* Header Styles */
+        .main-header {
+            background: var(--primary);
+            padding: 2rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-wave {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 892.25 114.72 1200 0z" fill="%236B3FA0"></path></svg>');
+            background-size: cover;
+            transform: scaleY(1.5);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 3rem;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        .back-btn::before {
+            content: "←";
+            margin-right: 0.7rem;
+            font-size: 1.3em;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 3rem;
+        }
+
+        /* Profile Builder Card */
+        .profile-card {
+            background: var(--card);
+            border-radius: var(--radius-large);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--secondary);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 70%;
+            height: 6px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px dashed rgba(0,0,0,0.1);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            margin-right: 12px;
+            border-radius: 50%;
+        }
+
+        /* Input Groups */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-small);
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(107, 63, 160, 0.15);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Checkbox Groups */
+        .checkbox-group {
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        /* Curriculum Selection */
+        .curriculum-options {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .curriculum-card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border-radius: var(--radius-medium);
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .curriculum-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .curriculum-card.selected {
+            border-color: var(--primary);
+            background: rgba(107, 63, 160, 0.05);
+            box-shadow: 0 8px 25px rgba(107, 63, 160, 0.1);
+        }
+
+        .curriculum-card h4 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .curriculum-card h4::before {
+            content: "✓";
+            margin-right: 0.8rem;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .curriculum-card.selected h4::before {
+            opacity: 1;
+        }
+
+        .curriculum-card p {
+            color: rgba(0,0,0,0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 1.3rem 3rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 3rem auto 0;
+            box-shadow: 0 8px 20px rgba(107, 63, 160, 0.2);
+        }
+
+        .submit-btn:hover {
+            background: #5a2d8a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(107, 63, 160, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 3.5rem;
+            margin-top: 5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container, .header-content {
+                padding: 0 2rem;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-btn {
+                position: static;
+                margin-bottom: 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .curriculum-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="back-btn">Back to Tracker</a>
+            <h1>Build Your Profile</h1>
+            <p class="subtitle">Complete your academic profile to strengthen your university applications</p>
+        </div>
+        <div class="header-wave"></div>
+    </header>
+    
+    <div class="container">
+        <form class="profile-card" id="profile-form">
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3>Personal Information</h3>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="school">Current School</label>
+                        <input type="text" id="school" placeholder="Enter your school name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="grad-year">Graduation Year</label>
+                        <input type="number" id="grad-year" placeholder="YYYY" min="2023" max="2030" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Scores -->
+            <div class="form-section">
+                <h3>Test Scores</h3>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="sat-score">SAT Score (out of 1600)</label>
+                        <input type="number" id="sat-score" placeholder="Enter your SAT score" min="400" max="1600">
+                    </div>
+                    <div class="input-group">
+                        <label for="act-score">ACT Score (out of 36)</label>
+                        <input type="number" id="act-score" placeholder="Enter your ACT score" min="1" max="36">
+                    </div>
+                    <div class="input-group">
+                        <label for="ielts-score">IELTS Score (out of 9)</label>
+                        <input type="number" id="ielts-score" placeholder="Enter your IELTS score" min="1" max="9" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="toefl-score">TOEFL Score (out of 120)</label>
+                        <input type="number" id="toefl-score" placeholder="Enter your TOEFL score" min="0" max="120">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic Curriculum -->
+            <div class="form-section">
+                <h3>Academic Curriculum</h3>
+                <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">Select your current curriculum:</p>
+                
+                <div class="curriculum-options">
+                    <div class="curriculum-card" data-curriculum="ib">
+                        <h4>International Baccalaureate (IB)</h4>
+                        <p>Diploma Programme with HL/SL subjects</p>
+                    </div>
+                    <div class="curriculum-card" data-curriculum="alevel">
+                        <h4>A-Levels</h4>
+                        <p>British curriculum with AS/A2 levels</p>
+                    </div>
+                    <div class="curriculum-card" data-curriculum="ap">
+                        <h4>Advanced Placement (AP)</h4>
+                        <p>American college-level courses</p>
+                    </div>
+                    <div class="curriculum-card" data-curriculum="national">
+                        <h4>National Curriculum</h4>
+                        <p>Other country-specific curriculum</p>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selected-curriculum" name="curriculum">
+                
+                <!-- IB Specific -->
+                <div id="ib-fields" class="input-group" style="display: none; margin-top: 2rem;">
+                    <label>IB Details</label>
+                    <div class="input-grid" style="margin-top: 1rem;">
+                        <div class="input-group">
+                            <label for="ib-predicted">Predicted IB Score</label>
+                            <input type="number" id="ib-predicted" placeholder="Out of 45" min="1" max="45">
+                        </div>
+                        <div class="input-group">
+                            <label for="ib-hl">Number of HL Subjects</label>
+                            <input type="number" id="ib-hl" placeholder="Typically 3-4" min="1" max="4">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- A-Level Specific -->
+                <div id="alevel-fields" class="input-group" style="display: none; margin-top: 2rem;">
+                    <label>A-Level Details</label>
+                    <div class="input-grid" style="margin-top: 1rem;">
+                        <div class="input-group">
+                            <label for="alevel-subjects">A-Level Subjects</label>
+                            <input type="text" id="alevel-subjects" placeholder="e.g. Math, Physics, Chemistry">
+                        </div>
+                        <div class="input-group">
+                            <label for="alevel-predicted">Predicted Grades</label>
+                            <input type="text" id="alevel-predicted" placeholder="e.g. A*A*A">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AP Specific -->
+                <div id="ap-fields" class="input-group" style="display: none; margin-top: 2rem;">
+                    <label>AP Details</label>
+                    <div class="input-grid" style="margin-top: 1rem;">
+                        <div class="input-group">
+                            <label for="ap-courses">AP Courses Taken</label>
+                            <input type="text" id="ap-courses" placeholder="e.g. AP Calculus, AP Physics">
+                        </div>
+                        <div class="input-group">
+                            <label for="ap-scores">AP Exam Scores</label>
+                            <input type="text" id="ap-scores" placeholder="e.g. 5, 4, 4">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- National Curriculum Specific -->
+                <div id="national-fields" class="input-group" style="display: none; margin-top: 2rem;">
+                    <label>National Curriculum Details</label>
+                    <div class="input-grid" style="margin-top: 1rem;">
+                        <div class="input-group">
+                            <label for="national-name">Curriculum Name</label>
+                            <input type="text" id="national-name" placeholder="e.g. Kazakhstani NIS">
+                        </div>
+                        <div class="input-group">
+                            <label for="national-gpa">GPA/Score</label>
+                            <input type="text" id="national-gpa" placeholder="Enter your GPA or score">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GPA -->
+            <div class="form-section">
+                <h3>GPA & Academic Performance</h3>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="gpa">Current GPA (out of 4.0/5.0)</label>
+                        <input type="number" id="gpa" placeholder="Enter your GPA" min="0" max="5" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="gpa-scale">GPA Scale</label>
+                        <select id="gpa-scale">
+                            <option value="">Select scale</option>
+                            <option value="4.0">4.0 Scale</option>
+                            <option value="5.0">5.0 Scale</option>
+                            <option value="other">Other Scale</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="class-rank">Class Rank (if available)</label>
+                        <input type="text" id="class-rank" placeholder="e.g. 5/120">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Essays -->
+            <div class="form-section">
+                <h3>College Essays</h3>
+                <div class="input-group">
+                    <label for="personal-statement">Personal Statement</label>
+                    <textarea id="personal-statement" placeholder="Paste your personal statement here (or upload below)"></textarea>
+                </div>
+                
+                <div class="input-grid" style="margin-top: 1.5rem;">
+                    <div class="input-group">
+                        <label for="essay-score">Essay Score (if evaluated)</label>
+                        <input type="number" id="essay-score" placeholder="Out of 10" min="1" max="10" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="essay-feedback">Essay Feedback</label>
+                        <input type="text" id="essay-feedback" placeholder="Brief feedback summary">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="essay-reviewed">
+                        <label for="essay-reviewed">My essay has been professionally reviewed</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extracurriculars -->
+            <div class="form-section">
+                <h3>Extracurricular Activities</h3>
+                <div class="input-group">
+                    <label>Select your top activities (select up to 5)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-sports">
+                            <label for="ec-sports">Sports</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-music">
+                            <label for="ec-music">Music/Arts</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-debate">
+                            <label for="ec-debate">Debate/Model UN</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-volunteer">
+                            <label for="ec-volunteer">Volunteer Work</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-research">
+                            <label for="ec-research">Research Projects</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-leadership">
+                            <label for="ec-leadership">Leadership Roles</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ec-other">
+                            <label for="ec-other">Other Activities</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 1.5rem;">
+                    <label for="ec-description">Activity Descriptions</label>
+                    <textarea id="ec-description" placeholder="Briefly describe your most significant activities (50-100 words each)"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Save Profile</button>
+        </form>
+    </div>
+    
+    <footer>
+        <p>© 2023 University Application Tracker | Profile Builder</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Curriculum Selection
+            const curriculumCards = document.querySelectorAll('.curriculum-card');
+            const selectedCurriculum = document.getElementById('selected-curriculum');
+            
+            curriculumCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove selected class from all cards
+                    curriculumCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+                    
+                    // Update hidden input value
+                    const curriculum = this.getAttribute('data-curriculum');
+                    selectedCurriculum.value = curriculum;
+                    
+                    // Hide all curriculum-specific fields
+                    document.getElementById('ib-fields').style.display = 'none';
+                    document.getElementById('alevel-fields').style.display = 'none';
+                    document.getElementById('ap-fields').style.display = 'none';
+                    document.getElementById('national-fields').style.display = 'none';
+                    
+                    // Show relevant fields
+                    if (curriculum === 'ib') {
+                        document.getElementById('ib-fields').style.display = 'block';
+                    } else if (curriculum === 'alevel') {
+                        document.getElementById('alevel-fields').style.display = 'block';
+                    } else if (curriculum === 'ap') {
+                        document.getElementById('ap-fields').style.display = 'block';
+                    } else if (curriculum === 'national') {
+                        document.getElementById('national-fields').style.display = 'block';
+                    }
+                });
+            });
+            
+            // Form Submission
+            const profileForm = document.getElementById('profile-form');
+            
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Save to localStorage
+                localStorage.setItem('studentProfile', JSON.stringify(data));
+                
+                // Show success message
+                alert('Profile saved successfully!');
+                
+                // Optional: Redirect back to tracker
+                // window.location.href = 'index.html';
+            });
+            
+            // Load saved profile if exists
+            const savedProfile = localStorage.getItem('studentProfile');
+            if (savedProfile) {
+                const profile = JSON.parse(savedProfile);
+                
+                // Populate form fields
+                for (const [key, value] of Object.entries(profile)) {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = value === 'on';
+                        } else {
+                            element.value = value;
+                        }
+                    }
+                }
+                
+                // Trigger curriculum selection if saved
+                if (profile.curriculum) {
+                    const card = document.querySelector(`.curriculum-card[data-curriculum="${profile.curriculum}"]`);
+                    if (card) card.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

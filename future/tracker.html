@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Progression Tracker | Premium Experience</title>
+    <title>University Progression Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,42 +17,36 @@
             --inprogress: #F1C40F;
             --notstarted: #E74C3C;
             --shadow: 0 15px 40px rgba(0,0,0,0.12);
-            --radius-large: 20px;
-            --radius-medium: 14px;
+            --radius-large: 24px;
+            --radius-medium: 16px;
             --radius-small: 8px;
         }
-        
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        
+
         body {
             font-family: 'Archivo', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0;
-            padding: 0;
             line-height: 1.6;
             font-size: 18px;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 3rem;
-        }
-        
-        header {
+
+        /* Header Styles */
+        .main-header {
             background: var(--primary);
-            padding: 3rem 0 4rem;
-            margin-bottom: 2rem;
+            padding: 2rem 0 5rem;
             position: relative;
             overflow: hidden;
             text-align: center;
+            margin-bottom: 2rem;
         }
-        
-        header::after {
-            content: "";
+
+        .header-wave {
             position: absolute;
             bottom: -30px;
             left: 0;
@@ -62,30 +56,100 @@
             background-size: cover;
             transform: scaleY(1.5);
         }
-        
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            margin: 0 0 1.5rem 0;
-            line-height: 1.2;
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
         }
-        
+
         h1 {
             font-size: 3.5rem;
             color: white;
-            text-align: center;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 1rem;
             letter-spacing: -1px;
         }
-        
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* GC Store Button */
+        .gc-store-btn {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .gc-store-btn:hover {
+            transform: translateY(-3px);
+            background: #ffd700;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        .gc-store-btn::before {
+            content: "🛍️";
+            margin-right: 0.7rem;
+            font-size: 1.3em;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 3rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius-large);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--secondary);
+        }
+
         h2 {
             font-size: 2.5rem;
             color: var(--primary);
-            margin-top: 3rem;
+            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
         }
-        
+
         h2::after {
             content: "";
             position: absolute;
@@ -96,82 +160,37 @@
             background: var(--secondary);
             border-radius: 3px;
         }
-        
-        h3 {
-            font-size: 1.8rem;
-        }
-        
-        h4 {
-            font-size: 1.4rem;
-        }
-        
-        .subtitle {
-            color: rgba(255,255,255,0.9);
-            text-align: center;
-            font-weight: 400;
-            position: relative;
-            z-index: 2;
-            font-size: 1.4rem;
-            max-width: 800px;
-            margin: 1rem auto 0;
-            line-height: 1.5;
-        }
-        
-        .card {
-            background: var(--card);
-            border-radius: var(--radius-large);
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        }
-        
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 12px;
-            height: 100%;
-            background: var(--secondary);
-        }
-        
+
+        /* Progress Grid */
         .progress-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2.5rem;
             margin-top: 2.5rem;
         }
-        
+
         .progress-item {
-            padding: 2rem;
-            background: var(--card);
+            background: white;
             border-radius: var(--radius-medium);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            border: 2px solid rgba(0,0,0,0.03);
         }
-        
+
         .progress-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
         }
-        
+
         .progress-item h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--primary);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
         }
-        
+
         .progress-item h3::before {
             content: "";
             display: inline-block;
@@ -181,183 +200,279 @@
             margin-right: 12px;
             border-radius: 50%;
         }
-        
+
         .progress-item p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: rgba(0,0,0,0.7);
             margin-bottom: 1.5rem;
         }
-        
+
+        /* Status System */
         .status-options {
             display: flex;
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
             flex-wrap: wrap;
         }
-        
+
         .status-option {
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             border: 3px solid transparent;
             flex: 1;
             text-align: center;
-            min-width: 120px;
+            min-width: 140px;
         }
-        
+
         .status-option:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
-        
+
         .status-option.complete {
-            background: rgba(46, 204, 113, 0.1);
+            background: rgba(46, 204, 113, 0.12);
             color: var(--complete);
             border-color: var(--complete);
         }
-        
+
         .status-option.in-progress {
-            background: rgba(241, 196, 15, 0.1);
+            background: rgba(241, 196, 15, 0.12);
             color: var(--inprogress);
             border-color: var(--inprogress);
         }
-        
+
         .status-option.not-started {
-            background: rgba(231, 76, 60, 0.1);
+            background: rgba(231, 76, 60, 0.12);
             color: var(--notstarted);
             border-color: var(--notstarted);
         }
-        
+
         .status-option.selected {
             background: var(--primary);
-            color: white;
+            color: white !important;
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(107, 63, 160, 0.2);
+            box-shadow: 0 8px 25px rgba(107, 63, 160, 0.2);
         }
-        
+
         .status-display {
             display: inline-flex;
             align-items: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            font-size: 1rem;
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
             font-weight: 700;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
+            border: 3px solid;
         }
-        
+
         .status-display.complete {
             background: rgba(46, 204, 113, 0.15);
             color: var(--complete);
-            border: 2px solid var(--complete);
+            border-color: var(--complete);
         }
-        
+
         .status-display.in-progress {
             background: rgba(241, 196, 15, 0.15);
             color: var(--inprogress);
-            border: 2px solid var(--inprogress);
+            border-color: var(--inprogress);
         }
-        
+
         .status-display.not-started {
             background: rgba(231, 76, 60, 0.15);
             color: var(--notstarted);
-            border: 2px solid var(--notstarted);
+            border-color: var(--notstarted);
         }
-        
-        /* Enhanced Points System */
+
+        /* Points System */
         .points-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 2rem;
         }
-        
+
         .points-display {
             background: var(--secondary);
             color: var(--primary);
-            padding: 1rem 2rem;
-            border-radius: 30px;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             display: flex;
             align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            min-width: 250px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-width: 280px;
             justify-content: center;
         }
-        
+
         .points-display::before {
             content: "★";
             margin-right: 1rem;
-            font-size: 1.8rem;
-        }
-        
-        .points-breakdown {
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(255,255,255,0.8);
-            border-radius: var(--radius-medium);
-            border-left: 6px solid var(--secondary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        
-        .points-breakdown h4 {
-            color: var(--primary);
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            font-size: 1.6rem;
-        }
-        
-        .points-breakdown h4::before {
-            content: "📊";
-            margin-right: 1rem;
             font-size: 2rem;
         }
-        
+
+        .points-breakdown {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.85);
+            border-radius: var(--radius-large);
+            border-left: 6px solid var(--secondary);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .points-breakdown h4 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .points-breakdown h4::before {
+            content: "📊";
+            margin-right: 1.2rem;
+            font-size: 2.2rem;
+        }
+
         .points-items {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
         }
-        
+
         .points-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-medium);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem;
-            border-radius: var(--radius-small);
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
-        
+
         .points-item span {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
-        
+
         .points-value {
             font-weight: 800;
             color: var(--primary);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             background: rgba(107, 63, 160, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
         }
-        
+
         .points-total {
             font-weight: 800;
             color: var(--secondary);
-            font-size: 1.8rem;
-            margin-top: 2rem;
+            font-size: 2rem;
+            margin-top: 2.5rem;
             text-align: right;
-            padding-right: 1rem;
+            padding-right: 1.5rem;
         }
-        
+
+        /* Inputs */
+        .input-group {
+            margin: 2rem 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1.3rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-small);
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(107, 63, 160, 0.15);
+        }
+
+        /* Timeline */
+        .timeline {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 3rem 0;
+            font-size: 1.2rem;
+        }
+
+        .timeline th {
+            background: var(--primary);
+            color: white;
+            padding: 1.8rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .timeline td {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            vertical-align: middle;
+            background: white;
+        }
+
+        .timeline tr:first-child td {
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .timeline tr:hover td {
+            background: #faf9ff;
+        }
+
+        .timeline h4 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline p {
+            color: rgba(0,0,0,0.7);
+        }
+
+        /* Motivation Section */
+        .motivation {
+            background: linear-gradient(135deg, var(--primary), #8E54E9);
+            color: white;
+            padding: 4rem;
+            border-radius: var(--radius-large);
+            text-align: center;
+            margin: 5rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .motivation p {
+            font-size: 2.2rem;
+            font-weight: 700;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+        }
+
         /* Celebration Animation */
         .celebration {
             position: fixed;
@@ -372,132 +487,41 @@
             align-items: center;
             z-index: 1000;
             color: white;
-            font-size: 3rem;
+            font-size: 3.5rem;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
         }
-        
+
         .celebration.active {
             opacity: 1;
         }
-        
+
         .celebration-emoji {
-            font-size: 8rem;
+            font-size: 9rem;
             margin-bottom: 2rem;
             animation: bounce 0.8s infinite alternate;
         }
-        
+
         @keyframes bounce {
             from { transform: translateY(0) rotate(-5deg); }
             to { transform: translateY(-30px) rotate(5deg); }
         }
-        
-        /* Enhanced Inputs */
-        .input-group {
-            margin: 1.5rem 0;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 1.2rem;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: var(--radius-small);
-            font-family: 'Archivo', sans-serif;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-        
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(107, 63, 160, 0.15);
-        }
-        
-        /* Enhanced Timeline */
-        .timeline {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 3rem 0;
-            font-size: 1.1rem;
-        }
-        
-        .timeline th {
-            background: var(--primary);
-            color: white;
-            padding: 1.5rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .timeline td {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            vertical-align: middle;
-            background: white;
-        }
-        
-        .timeline tr:first-child td {
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .timeline tr:hover td {
-            background: #faf9ff;
-        }
-        
-        .timeline-status {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        /* Motivation Section */
-        .motivation {
-            background: linear-gradient(135deg, var(--primary), #8E54E9);
-            color: white;
-            padding: 3rem;
-            border-radius: var(--radius-large);
-            text-align: center;
-            margin: 4rem 0;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-        
-        .motivation p {
-            font-size: 2rem;
-            font-weight: 600;
-            position: relative;
-            z-index: 2;
-            margin: 0;
-            line-height: 1.4;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
+
         /* Footer */
         footer {
             background: var(--primary);
             color: white;
             text-align: center;
-            padding: 3rem;
-            margin-top: 4rem;
-            font-size: 1.1rem;
+            padding: 3.5rem;
+            margin-top: 5rem;
+            font-size: 1.2rem;
         }
-        
-        /* Responsive Adjustments */
+
+        /* Responsive */
         @media (max-width: 1200px) {
-            .container {
-                padding: 2rem;
+            .container, .header-content {
+                padding: 0 2rem;
             }
             
             h1 {
@@ -508,7 +532,7 @@
                 padding: 2.5rem;
             }
         }
-        
+
         @media (max-width: 768px) {
             .progress-grid {
                 grid-template-columns: 1fr;
@@ -526,8 +550,18 @@
                 flex-direction: column;
             }
             
-            .points-display {
+            .points-display, .gc-store-btn {
                 width: 100%;
+                position: static;
+                margin-top: 1.5rem;
+            }
+            
+            .header-content {
+                padding-bottom: 2rem;
+            }
+            
+            .motivation p {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -537,130 +571,36 @@
     <div class="celebration" id="celebration">
         <div class="celebration-emoji">🎉</div>
         <div>Task Completed!</div>
-        <div id="points-earned" style="font-size: 4rem; margin-top: 2rem; color: var(--secondary);">+10 GC Points</div>
+        <div id="points-earned" style="font-size: 4.5rem; margin-top: 2rem; color: var(--secondary);">+10 GC Points</div>
     </div>
 
-    <header>
-        <h1>University Application Tracker</h1>
-        <p class="subtitle">For Kazakhstani students pursuing American higher education</p>
-    </header>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Application Tracker with GC Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6B3FA0;
-            --secondary: #FFC700;
-            --bg: #F8F5FF;
-            --card: #FFFFFF;
-            --text: #2D2D2D;
-            --accent: #FF5E7D;
-            --complete: #2ECC71;
-            --inprogress: #F1C40F;
-            --notstarted: #E74C3C;
-            --shadow: 0 15px 40px rgba(0,0,0,0.12);
-            --radius-large: 20px;
-            --radius-medium: 14px;
-            --radius-small: 8px;
-        }
-        
-        /* (Previous CSS styles remain the same until the new additions below) */
-        
-        /* New Header with GC Store */
-        .main-header {
-            background: var(--primary);
-            padding: 2rem 0 4rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            position: relative;
-        }
-        
-        .gc-store-btn {
-            position: absolute;
-            top: 2rem;
-            right: 3rem;
-            background: var(--secondary);
-            color: var(--primary);
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        
-        .gc-store-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background: #ffd700;
-        }
-        
-        .gc-store-btn::before {
-            content: "🛍️";
-            margin-right: 0.7rem;
-            font-size: 1.2em;
-        }
-        
-        /* Rest of your existing CSS remains the same */
-    </style>
-</head>
-<body>
-    <!-- Celebration Overlay -->
-    <div class="celebration" id="celebration">
-        <div class="celebration-emoji">🎉</div>
-        <div>Task Completed!</div>
-        <div id="points-earned" style="font-size: 4rem; margin-top: 2rem; color: var(--secondary);">+10 GC Points</div>
-    </div>
-
-    <!-- New Header with GC Store Button -->
+    <!-- Header with GC Store -->
     <header class="main-header">
         <div class="header-content">
-            <a href="gc-store.html" class="gc-store-btn">GC Store</a>
-            <h1>University Application Tracker</h1>
-            <p class="subtitle">For Kazakhstani students pursuing American higher education</p>
+            <a href="gc-store.html" class="gc-store-btn">GC Rewards Store</a>
+            <h1>University Progression Tracker</h1>
+            <p class="subtitle">For Kazakhstani students applying to American universities</p>
         </div>
+        <div class="header-wave"></div>
     </header>
     
     <div class="container">
-        <!-- (Rest of your existing HTML remains exactly the same) -->
-    </div>
-    
-    <footer>
-        <p>© 2023 University Application Tracker | GC Rewards System</p>
-    </footer>
-
-    <!-- (JavaScript remains exactly the same) -->
-</body>
-</html>
-    
-    <div class="container">
+        <!-- Main Tracking Card -->
         <div class="card">
             <div class="points-header">
-                <h2>Your Application Journey</h2>
+                <h2>Your Application Progress</h2>
                 <div class="points-display" id="total-points">
                     ★ GC Points: 0
                 </div>
             </div>
-            <p style="font-size: 1.3rem; color: var(--text);">Track your progress, complete tasks, and earn GC Points to stay motivated!</p>
+            
+            <p style="font-size: 1.4rem; margin-bottom: 1.5rem;">
+                Track each milestone and earn GC Points for completed tasks!
+            </p>
             
             <!-- Points Breakdown -->
             <div class="points-breakdown">
-                <h4>Points Reward System</h4>
+                <h4>Points Breakdown</h4>
                 <div class="points-items">
                     <div class="points-item">
                         <span>Test Preparation</span>
@@ -690,6 +630,7 @@
                 <div class="points-total">Maximum Possible: 150 points</div>
             </div>
             
+            <!-- Progress Grid -->
             <div class="progress-grid">
                 <div class="progress-item" id="test-prep">
                     <h3>Standardized Tests</h3>
@@ -772,86 +713,92 @@
             </div>
         </div>
         
+        <!-- Timeline Card -->
         <div class="card">
             <h2>Application Timeline</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Follow this monthly checklist to stay on track</p>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">Follow this monthly checklist to stay on track</p>
             
             <table class="timeline">
-                <tr>
-                    <th>Month</th>
-                    <th>Key Tasks</th>
-                    <th>Update Status</th>
-                </tr>
-                <tr>
-                    <td><strong>June</strong></td>
-                    <td>
-                        <h4>Test Registration</h4>
-                        <p>Register for SAT/TOEFL exams</p>
-                    </td>
-                    <td>
-                        <div class="status-options">
-                            <div class="status-option complete" data-status="complete">✅ Completed</div>
-                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
-                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
-                        </div>
-                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>August</strong></td>
-                    <td>
-                        <h4>Essay Drafts</h4>
-                        <p>Finalize personal statement drafts</p>
-                    </td>
-                    <td>
-                        <div class="status-options">
-                            <div class="status-option complete" data-status="complete">✅ Completed</div>
-                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
-                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
-                        </div>
-                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>October</strong></td>
-                    <td>
-                        <h4>Recommendations</h4>
-                        <p>Request letters from teachers</p>
-                    </td>
-                    <td>
-                        <div class="status-options">
-                            <div class="status-option complete" data-status="complete">✅ Completed</div>
-                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
-                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
-                        </div>
-                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>December</strong></td>
-                    <td>
-                        <h4>Submit Applications</h4>
-                        <p>Complete all application submissions</p>
-                    </td>
-                    <td>
-                        <div class="status-options">
-                            <div class="status-option complete" data-status="complete">✅ Completed</div>
-                            <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
-                            <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
-                        </div>
-                        <div class="status-display not-started" style="margin-top: 1rem;">Status: Not Started</div>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Key Tasks</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>June</strong></td>
+                        <td>
+                            <h4>Test Registration</h4>
+                            <p>Register for SAT/TOEFL exams</p>
+                        </td>
+                        <td>
+                            <div class="status-options">
+                                <div class="status-option complete" data-status="complete">✅ Completed</div>
+                                <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                                <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                            </div>
+                            <div class="status-display not-started" style="margin-top: 1.5rem;">Status: Not Started</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>August</strong></td>
+                        <td>
+                            <h4>Essay Drafts</h4>
+                            <p>Finalize personal statement drafts</p>
+                        </td>
+                        <td>
+                            <div class="status-options">
+                                <div class="status-option complete" data-status="complete">✅ Completed</div>
+                                <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                                <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                            </div>
+                            <div class="status-display not-started" style="margin-top: 1.5rem;">Status: Not Started</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>October</strong></td>
+                        <td>
+                            <h4>Recommendations</h4>
+                            <p>Request letters from teachers</p>
+                        </td>
+                        <td>
+                            <div class="status-options">
+                                <div class="status-option complete" data-status="complete">✅ Completed</div>
+                                <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                                <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                            </div>
+                            <div class="status-display not-started" style="margin-top: 1.5rem;">Status: Not Started</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>December</strong></td>
+                        <td>
+                            <h4>Submit Applications</h4>
+                            <p>Complete all application submissions</p>
+                        </td>
+                        <td>
+                            <div class="status-options">
+                                <div class="status-option complete" data-status="complete">✅ Completed</div>
+                                <div class="status-option in-progress" data-status="in-progress">⏳ In Progress</div>
+                                <div class="status-option not-started" data-status="not-started">❌ Not Started</div>
+                            </div>
+                            <div class="status-display not-started" style="margin-top: 1.5rem;">Status: Not Started</div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         
+        <!-- Motivation Section -->
         <div class="motivation">
             <p>"Every completed task brings you closer to your dream university. Stay consistent and celebrate your progress!"</p>
         </div>
     </div>
     
     <footer>
-        <p>© 2023 University Application Tracker | Designed for Kazakhstani Students</p>
+        <p>© 2023 University Progression Tracker | GC Rewards System</p>
     </footer>
 
     <script>

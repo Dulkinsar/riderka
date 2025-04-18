@@ -5,52 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Leaderboard</title>
     <style>
+        :root {
+            --memphis-red: #E31C3D;
+            --memphis-blue: #0071BC;
+            --memphis-yellow: #FFD100;
+            --memphis-teal: #00B5AD;
+            --memphis-purple: #7C2587;
+            --corporate-gray: #F5F5F5;
+            --corporate-dark: #333333;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+            --progress-green: #4CAF50;
+            --progress-orange: #FF9800;
+        }
+        
         body {
-            background-color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--corporate-gray);
+            font-family: 'Montserrat', 'Arial', sans-serif;
             margin: 0;
             padding: 30px;
-            color: #333333;
+            color: var(--corporate-dark);
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 30px;
-            background-color: #f9f6fc;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(107, 63, 160, 0.1);
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
         }
 
         h1 {
-            color: #6b3fa0;
+            color: var(--memphis-red);
             text-align: center;
-            font-size: 2.8em;
-            margin-bottom: 30px;
+            font-size: 2.6em;
+            margin-bottom: 25px;
             font-weight: 700;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--memphis-red), var(--memphis-blue));
+        }
+
+        h2 {
+            color: var(--memphis-blue);
+            margin-top: 40px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--memphis-yellow);
+            text-align: center;
+            font-size: 1.8em;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             background-color: white;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 2px solid #ffc700;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
         }
 
         th {
-            background-color: #6b3fa0;
+            background: linear-gradient(135deg, var(--memphis-blue), var(--memphis-teal));
             color: white;
             padding: 18px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 600;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        th:not(:last-child):after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 15%;
+            height: 70%;
+            width: 2px;
+            background: rgba(255,255,255,0.3);
         }
 
         td {
@@ -60,140 +110,411 @@
             font-weight: 500;
         }
 
-        tr:nth-child(even) {
-            background-color: #f5f0fa;
+        tr:last-child td {
+            border-bottom: none;
         }
 
-        tr:hover {
-            background-color: #fff6d6;
-        }
-
-        .rank {
-            font-weight: 700;
-            color: #ffc700;
-        }
-
-        .score {
-            font-weight: 600;
-            color: #6b3fa0;
-        }
-
-        tfoot td {
-            background-color: #6b3fa0;
-            color: white;
+        /* Column-specific styling */
+        td:nth-child(1) { /* Rank */
+            background-color: rgba(227,28,61,0.08);
+            color: var(--memphis-red);
             font-weight: 700;
             font-size: 1.1em;
+        }
+
+        td:nth-child(2) { /* Name */
+            background-color: rgba(255,209,0,0.08);
+            color: #8E6C00;
+            text-align: left;
+            padding-left: 25px;
+            font-weight: 600;
+        }
+
+        td:nth-child(3) { /* Score */
+            background-color: rgba(0,181,173,0.12);
+            color: var(--memphis-teal);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        td:nth-child(4) { /* Team */
+            background-color: rgba(124,37,135,0.08);
+            color: var(--memphis-purple);
+            font-weight: 600;
+        }
+
+        td:nth-child(5) { /* Streak */
+            background-color: rgba(0,113,188,0.08);
+            color: var(--memphis-blue);
+            font-weight: 700;
+        }
+
+        td:nth-child(6) { /* Win Chance */
+            background-color: rgba(0,113,188,0.15);
+            color: var(--memphis-blue);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        td:nth-child(7) { /* Progress */
+            background-color: rgba(76,175,80,0.08);
+            color: var(--progress-green);
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        tr:hover td {
+            background-color: rgba(0,113,188,0.05) !important;
+        }
+
+        /* Team ranking table */
+        .team-ranking th {
+            background: linear-gradient(135deg, var(--memphis-purple), #5A1B66);
+        }
+
+        .team-ranking td:nth-child(4) { /* Members */
+            background-color: rgba(124,37,135,0.08);
+            color: var(--memphis-purple);
+        }
+
+        .team-ranking td:nth-child(5) { /* Win Chance */
+            background-color: rgba(0,113,188,0.15);
+            color: var(--memphis-blue);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .team-ranking td:nth-child(6) { /* Progress */
+            background-color: rgba(76,175,80,0.08);
+            color: var(--progress-green);
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .team-ranking tr:nth-child(1) td {
+            background-color: rgba(255,215,0,0.15);
+            color: #8E6C00;
+        }
+        
+        .team-ranking tr:nth-child(2) td {
+            background-color: rgba(192,192,192,0.15);
+            color: #606060;
+        }
+        
+        .team-ranking tr:nth-child(3) td {
+            background-color: rgba(205,127,50,0.15);
+            color: #7A4B1A;
+        }
+
+        .team-ranking tr:nth-child(4) td {
+            background-color: rgba(227,28,61,0.08);
+            color: var(--memphis-red);
+        }
+
+        .team-average {
+            color: var(--memphis-red) !important;
+            font-weight: 700 !important;
+        }
+
+        /* Small number styling */
+        .small-number {
+            font-size: 0.85em;
+            color: #555;
+            font-weight: 600;
+        }
+
+        /* Memphis decorative elements */
+        .memphis-decoration {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            right: 50px;
+            background: radial-gradient(circle, var(--memphis-red), transparent 70%);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            left: 50px;
+            background: linear-gradient(45deg, var(--memphis-blue), transparent);
+            transform: rotate(30deg);
         }
     </style>
 </head>
 <body>
+    <div class="memphis-decoration decoration-1"></div>
+    <div class="memphis-decoration decoration-2"></div>
+    
     <div class="container">
-        <h1>Class Leaderboard</h1>
+        <h1>CLASS LEADERBOARD</h1>
         <table>
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Student Name</th>
                     <th>Score</th>
+                    <th>Team</th>
+                    <th>Streak</th>
+                    <th>Win Chance</th>
+                    <th>Progress</th>
                 </tr>
             </thead>
             <tbody id="leaderboardBody">
-                <!-- Rows will be sorted automatically by JavaScript -->
                 <tr>
                     <td class="rank">1</td>
-                    <td>Shakhnazar</td>
-                    <td class="score">12.2</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
                     <td>Laura</td>
-                    <td class="score">17.6</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td>Dalen</td>
-                    <td class="score">18.5</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td>Rayimbek</td>
-                    <td class="score">13.4</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td>Asyl</td>
-                    <td class="score">12.2</td>
+                    <td class="score">26.8</td>
+                    <td>NIS</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">13.6%</td>
+                    <td class="small-number">+9.2</td>
                 </tr>
                 <tr>
                     <td class="rank">2</td>
                     <td>Temirlan</td>
-                    <td class="score">15.2</td>
+                    <td class="score">23.7</td>
+                    <td>NIS</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">9.9%</td>
+                    <td class="small-number">+8.5</td>
                 </tr>
                 <tr>
-                    <td class="rank">2</td>
-                    <td>Yernur</td>
-                    <td class="score">8.6</td>
+                    <td class="rank">3</td>
+                    <td>Rayimbek</td>
+                    <td class="score">23.4</td>
+                    <td>KTL</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">9.6%</td>
+                    <td class="small-number">+10.0</td>
                 </tr>
                 <tr>
-                    <td class="rank">2</td>
-                    <td>Nurtilek</td>
-                    <td class="score">11.6</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
+                    <td class="rank">4</td>
                     <td>Kamila</td>
-                    <td class="score">13.7</td>
+                    <td class="score">22.9</td>
+                    <td>РФМШ</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">9.2%</td>
+                    <td class="small-number">+9.2</td>
                 </tr>
                 <tr>
-                    <td class="rank">2</td>
-                    <td>Sholpan</td>
-                    <td class="score">12.6</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
+                    <td class="rank">5</td>
                     <td>Arystan</td>
-                    <td class="score">13</td>
+                    <td class="score">22.2</td>
+                    <td>KTL</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">8.5%</td>
+                    <td class="small-number">+9.2</td>
                 </tr>
                 <tr>
-                    <td class="rank">2</td>
+                    <td class="rank">6</td>
+                    <td>Shakhnazar</td>
+                    <td class="score">22.2</td>
+                    <td>KTL</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">8.5%</td>
+                    <td class="small-number">+10.0</td>
+                </tr>
+                <tr>
+                    <td class="rank">7</td>
+                    <td>Sholpan</td>
+                    <td class="score">21.8</td>
+                    <td>Private</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">8.2%</td>
+                    <td class="small-number">+9.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">8</td>
+                    <td>Asyl</td>
+                    <td class="score">21.4</td>
+                    <td>Private</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">7.9%</td>
+                    <td class="small-number">+9.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">9</td>
                     <td>Arnur</td>
-                    <td class="score">11.7</td>
+                    <td class="score">20.2</td>
+                    <td>NIS</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">7.3%</td>
+                    <td class="small-number">+8.5</td>
+                </tr>
+                <tr>
+                    <td class="rank">10</td>
+                    <td>Nurtilek</td>
+                    <td class="score">19.4</td>
+                    <td>KTL</td>
+                    <td class="streak">3</td>
+                    <td class="win-chance">6.4%</td>
+                    <td class="small-number">+7.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">11</td>
+                    <td>Dalen</td>
+                    <td class="score">19.2</td>
+                    <td>Private</td>
+                    <td class="streak">1</td>
+                    <td class="win-chance">6.3%</td>
+                    <td class="small-number">+19.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">12</td>
+                    <td>Yernur</td>
+                    <td class="score">15</td>
+                    <td>РФМШ</td>
+                    <td class="streak">1</td>
+                    <td class="win-chance">&lt;4.8%</td>
+                    <td class="small-number">+6.4</td>
                 </tr>
             </tbody>
-            <tfoot id="averageRow">
+        </table>
+        
+        <h2>TEAM RANKINGS</h2>
+        <table class="team-ranking">
+            <thead>
                 <tr>
-                    <td colspan="2">Average Score</td>
-                    <td class="score">0.0</td>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Average Score</th>
+                    <th>Members</th>
+                    <th>Win Chance</th>
+                    <th>Progress</th>
                 </tr>
-            </tfoot>
+            </thead>
+            <tbody id="teamRankingBody">
+                <tr>
+                    <td class="rank">1</td>
+                    <td>NIS</td>
+                    <td class="score team-average">23.50</td>
+                    <td>Laura, Temirlan, Arnur</td>
+                    <td class="win-chance">48%</td>
+                    <td class="small-number">+0.84</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>KTL</td>
+                    <td class="score team-average">21.80</td>
+                    <td>Rayimbek, Shakhnazar, Arystan, Nurtilek</td>
+                    <td class="win-chance">39%</td>
+                    <td class="small-number">+0.72</td>
+                </tr>
+                <tr>
+                    <td class="rank">3</td>
+                    <td>Private School</td>
+                    <td class="score team-average">20.80</td>
+                    <td>Sholpan, Asyl, Dalen</td>
+                    <td class="win-chance">9%</td>
+                    <td class="small-number">+0.46</td>
+                </tr>
+                <tr>
+                    <td class="rank">4</td>
+                    <td>РФМШ</td>
+                    <td class="score team-average">18.90</td>
+                    <td>Kamila, Yernur</td>
+                    <td class="win-chance">4%</td>
+                    <td class="small-number">+0.38</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
     <script>
+        // Team data with average scores and win chances
+        const teams = [
+            {
+                name: "NIS",
+                average: 23.50,
+                members: "Laura, Temirlan, Arnur",
+                winChance: "48%",
+                progress: "+0.84"
+            },
+            {
+                name: "KTL",
+                average: 21.80,
+                members: "Rayimbek, Shakhnazar, Arystan, Nurtilek",
+                winChance: "39%",
+                progress: "+0.72"
+            },
+            {
+                name: "Private School",
+                average: 20.80,
+                members: "Sholpan, Asyl, Dalen",
+                winChance: "9%",
+                progress: "+0.46"
+            },
+            {
+                name: "РФМШ",
+                average: 18.90,
+                members: "Kamila, Yernur",
+                winChance: "4%",
+                progress: "+0.38"
+            }
+        ];
+
+        // Student data with win chances
+        const students = [
+            { name: "Laura", score: 26.8, team: "NIS", streak: 3, winChance: "13.61%", progress: "+9.2" },
+            { name: "Temirlan", score: 23.7, team: "NIS", streak: 3, winChance: "9.98%", progress: "+8.5" },
+            { name: "Rayimbek", score: 23.4, team: "KTL", streak: 3, winChance: "9.69%", progress: "+10.0" },
+            { name: "Kamila", score: 22.9, team: "РФМШ", streak: 3, winChance: "9.22%", progress: "+9.2" },
+            { name: "Arystan", score: 22.2, team: "KTL", streak: 3, winChance: "8.59%", progress: "+9.2" },
+            { name: "Shakhnazar", score: 22.2, team: "KTL", streak: 3, winChance: "8.59%", progress: "+10.0" },
+            { name: "Sholpan", score: 21.8, team: "Private", streak: 3, winChance: "8.25%", progress: "+9.2" },
+            { name: "Asyl", score: 21.4, team: "Private", streak: 3, winChance: "7.93%", progress: "+9.2" },
+            { name: "Arnur", score: 20.2, team: "NIS", streak: 3, winChance: "7.03%", progress: "+8.5" },
+            { name: "Nurtilek", score: 19.4, team: "KTL", streak: 3, winChance: "6.49%", progress: "+7.8" },
+            { name: "Dalen", score: 19.2, team: "Private", streak: 1, winChance: "6.36%", progress: "+19.2" },
+            { name: "Yernur", score: 15, team: "РФМШ", streak: 1, winChance: "4.18%", progress: "+6.4" }
+        ];
+
         function updateLeaderboard() {
             const tbody = document.getElementById('leaderboardBody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            let totalScore = 0;
-
-            // Sort rows by score in descending order
-            rows.sort((a, b) => {
-                const scoreA = parseFloat(a.querySelector('.score').textContent);
-                const scoreB = parseFloat(b.querySelector('.score').textContent);
-                return scoreB - scoreA;
-            });
-
-            // Update ranks, calculate total, and re-insert sorted rows
-            rows.forEach((row, index) => {
-                const score = parseFloat(row.querySelector('.score').textContent);
-                totalScore += score;
-                row.querySelector('.rank').textContent = index + 1;
+            tbody.innerHTML = '';
+            
+            // Sort students by score (descending)
+            const sortedStudents = [...students].sort((a, b) => b.score - a.score);
+            
+            // Update student leaderboard
+            sortedStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank">${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td class="score">${student.score}</td>
+                    <td>${student.team}</td>
+                    <td class="streak">${student.streak}</td>
+                    <td class="win-chance">${student.winChance}</td>
+                    <td class="small-number">${student.progress}</td>
+                `;
                 tbody.appendChild(row);
             });
 
-            // Calculate and display average
-            const averageScore = totalScore / rows.length;
-            document.querySelector('#averageRow .score').textContent = 
-                averageScore.toFixed(2);
+            // Sort teams by average score (descending)
+            const sortedTeams = [...teams].sort((a, b) => b.average - a.average);
+            
+            // Update team rankings
+            const teamTbody = document.getElementById('teamRankingBody');
+            teamTbody.innerHTML = '';
+            
+            sortedTeams.forEach((team, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank">${index + 1}</td>
+                    <td>${team.name}</td>
+                    <td class="score team-average">${team.average.toFixed(2)}</td>
+                    <td>${team.members}</td>
+                    <td class="win-chance">${team.winChance}</td>
+                    <td class="small-number">${team.progress}</td>
+                `;
+                teamTbody.appendChild(row);
+            });
         }
 
         window.addEventListener('DOMContentLoaded', updateLeaderboard);

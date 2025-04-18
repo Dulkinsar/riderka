@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal Setting | RIDEKA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6b3fa0; /* Vibrant purple */
+      --secondary: #ffc700; /* Memphis yellow */
+      --white: #ffffff;
+      --black: #000000;
+      --bg: #f8f5ff;
+      --shadow: 0 20px 50px rgba(0,0,0,0.2);
+      --radius-large: 30px;
+      --radius-medium: 20px;
+    }
+
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      font-size: 24px;
+      line-height: 1.4;
+      color: var(--black);
+    }
+
+    /* HEADER - Bold Memphis style */
+    .lms-header {
+      background: var(--white);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      border-bottom: 8px solid var(--secondary);
+    }
+
+    .logo {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+
+    .back-link {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      background: var(--secondary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 199, 0, 0.4);
+    }
+
+    /* MAIN CONTAINER */
+    .goal-container {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 4rem;
+    }
+
+    /* FORM SECTION - Big inputs */
+    .form-section {
+      background: var(--white);
+      padding: 4rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      margin-bottom: 4rem;
+      border: 4px solid var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+      border-color: var(--secondary);
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 80%;
+      height: 8px;
+      background: var(--secondary);
+      border-radius: 4px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1.5rem;
+      font-size: 1.5rem;
+      font-family: 'Archivo', sans-serif;
+      border: 4px solid var(--primary);
+      border-radius: var(--radius-medium);
+      background: rgba(107, 63, 160, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3);
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b3fa0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1.5rem center;
+      background-size: 1.5rem;
+    }
+
+    .submit-button {
+      grid-column: span 2;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 2rem;
+      font-size: 1.8rem;
+      font-weight: 900;
+      border-radius: var(--radius-medium);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+    }
+
+    .submit-button:hover {
+      background: var(--secondary);
+      color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(107, 63, 160, 0.3);
+    }
+
+    /* RESULTS SECTION - Bold cards */
+    .results-section {
+      display: none; /* Hidden until submission */
+      background: var(--white);
+      padding: 4rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      border: 4px solid var(--secondary);
+    }
+
+    .recommendation-card {
+      background: white;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      border-radius: var(--radius-medium);
+      border-left: 8px solid var(--primary);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .recommendation-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .recommendation-desc {
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: var(--secondary);
+      color: var(--black);
+      font-weight: 900;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .submit-button {
+        grid-column: span 1;
+      }
+      .goal-container {
+        padding: 0 2rem;
+      }
+      .form-section {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="lms-header">
+    <a href="/" class="logo">RIDEKA</a>
+    <a href="/dashboard.html" class="back-link">← BACK TO DASHBOARD</a>
+  </header>
+
+  <div class="goal-container">
+    <!-- Goal Setting Form -->
+    <div class="form-section" id="goal-form">
+      <h2 class="section-title">SET YOUR ACADEMIC GOALS</h2>
+      
+      <div class="form-grid">
+        <!-- Academic System -->
+        <div class="form-group">
+          <label class="form-label">ACADEMIC SYSTEM</label>
+          <select class="form-input form-select">
+            <option value="">Select your curriculum</option>
+            <option value="ap">AP (Advanced Placement)</option>
+            <option value="ib">IB (International Baccalaureate)</option>
+            <option value="alevel">A-Levels</option>
+            <option value="national">National Curriculum</option>
+          </select>
+        </div>
+        
+        <!-- Target GPA -->
+        <div class="form-group">
+          <label class="form-label">TARGET GPA (4.0 SCALE)</label>
+          <input type="number" min="0" max="4" step="0.1" class="form-input" placeholder="e.g. 3.8">
+        </div>
+        
+        <!-- SAT Score -->
+        <div class="form-group">
+          <label class="form-label">TARGET SAT SCORE</label>
+          <input type="number" min="400" max="1600" class="form-input" placeholder="e.g. 1450">
+        </div>
+        
+        <!-- English Proficiency -->
+        <div class="form-group">
+          <label class="form-label">ENGLISH TEST SCORE</label>
+          <select class="form-input form-select">
+            <option value="">Select test type</option>
+            <option value="ielts">IELTS</option>
+            <option value="toefl">TOEFL</option>
+            <option value="duolingo">Duolingo English Test</option>
+          </select>
+          <input type="number" min="0" max="9" step="0.5" class="form-input" style="margin-top: 1rem;" placeholder="Score (e.g. 7.5)">
+        </div>
+        
+        <!-- Budget -->
+        <div class="form-group">
+          <label class="form-label">ANNUAL BUDGET (USD)</label>
+          <input type="number" min="0" class="form-input" placeholder="e.g. 50000">
+        </div>
+        
+        <!-- Preferred Countries -->
+        <div class="form-group">
+          <label class="form-label">PREFERRED COUNTRIES</label>
+          <select class="form-input form-select" multiple>
+            <option value="us">United States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="canada">Canada</option>
+            <option value="australia">Australia</option>
+            <option value="europe">Europe</option>
+          </select>
+        </div>
+        
+        <button class="submit-button" id="submit-goals">GET RECOMMENDATIONS →</button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="results-section">
+      <h2 class="section-title">YOUR PERSONALIZED RECOMMENDATIONS</h2>
+      
+      <div class="recommendation-card">
+        <div class="priority-badge">TOP PRIORITY</div>
+        <h3 class="recommendation-title">SAT PREP PLAN</h3>
+        <p class="recommendation-desc">
+          Based on your target score of <strong>1450</strong>, we recommend:
+          <ul>
+            <li>8-week intensive prep course (4hrs/week)</li>
+            <li>Focus on Math section (current estimated: 680)</li>
+            <li>Take 3 practice tests before exam date</li>
+          </ul>
+        </p>
+      </div>
+      
+      <div class="recommendation-card">
+        <div class="priority-badge">ACADEMIC FIT</div>
+        <h3 class="recommendation-title">UNIVERSITY MATCHES</h3>
+        <p class="recommendation-desc">
+          Best matches for <strong>3.8 GPA</strong> and <strong>$50k budget</strong>:
+          <ul>
+            <li>University of Michigan (25% acceptance)</li>
+            <li>University of Toronto (43% acceptance)</li>
+            <li>University of Amsterdam (4% acceptance)</li>
+          </ul>
+        </p>
+      </div>
+      
+      <div class="recommendation-card">
+        <div class="priority-badge">ENGLISH PROFICIENCY</div>
+        <h3 class="recommendation-title">IELTS IMPROVEMENT</h3>
+        <p class="recommendation-desc">
+          To reach your target <strong>7.5 IELTS</strong>:
+          <ul>
+            <li>Join weekly speaking club</li>
+            <li>Practice writing essays (2/week)</li>
+            <li>Take mock test every 3 weeks</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('submit-goals').addEventListener('click', function() {
+      // In a real app, this would process the form data and generate recommendations
+      // For this demo, we'll just show the results section
+      
+      document.getElementById('goal-form').style.display = 'none';
+      document.getElementById('results-section').style.display = 'block';
+      
+      // Scroll to results
+      document.getElementById('results-section').scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+
+    // Multi-select dropdown enhancement
+    const multiSelect = document.querySelector('select[multiple]');
+    multiSelect.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      
+      const option = e.target;
+      if (option.tagName === 'OPTION') {
+        option.selected = !option.selected;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -2,446 +2,619 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Scholarship Search - Dulat the Great</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>Opportunity Finder | RIDEKA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #ffc700;
-      --secondary: #6b3fa0;
-      --bg: #fdfdfd;
-      --card-bg: #ffffff;
-      --text: #333333;
-    }
-
-    * {
-      box-sizing: border-box;
+      --primary: #6b3fa0; /* Memphis purple */
+      --secondary: #ffc700; /* Memphis yellow */
+      --white: #ffffff;
+      --black: #000000;
+      --bg: #f8f5ff;
+      --shadow: 0 20px 50px rgba(0,0,0,0.2);
+      --radius-large: 30px;
+      --radius-medium: 20px;
     }
 
     body {
-       font-family: 'Stapel';
-      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+      font-family: 'Archivo', sans-serif;
+      background: var(--bg);
       margin: 0;
       padding: 0;
-      background-color: var(--bg);
-      color: var(--text);
+      font-size: 24px;
+      line-height: 1.4;
+      color: var(--black);
     }
 
-    header {
-      background-color: var(--card-bg);
-      border-bottom: 4px solid var(--primary);
-      text-align: center;
-      padding: 3rem 1rem;
+    /* HEADER */
+    .lms-header {
+      background: var(--white);
+      padding: 2rem 3rem;
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      border-bottom: 8px solid var(--secondary);
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--secondary);
+    .logo {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -1px;
     }
 
-    header p {
-      margin-top: 0.5rem;
-      font-size: 1.1rem;
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 3rem auto;
-      background-color: var(--card-bg);
-      padding: 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    }
-
-    .search-bar input {
-      padding: 1rem;
-      width: 100%;
-      font-size: 1rem;
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      margin-bottom: 2rem;
-      outline: none;
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    select {
-      padding: 0.8rem;
-      border: 2px solid var(--secondary);
-      border-radius: 10px;
-      font-size: 1rem;
-      background-color: #f4f0fc;
-      color: var(--text);
-    }
-
-    .scholarship {
-      background-color: #fff;
-      padding: 1.8rem;
-      margin-top: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-      border-left: 6px solid var(--primary);
-      transition: transform 0.2s ease;
-    }
-
-    .scholarship:hover {
-      transform: translateY(-4px);
-    }
-
-    .scholarship h2 {
-      margin-top: 0;
+    .back-link {
       font-size: 1.5rem;
-      color: var(--secondary);
+      font-weight: 800;
+      color: var(--primary);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      background: var(--secondary);
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
 
-    .scholarship p {
-      margin: 0.5rem 0;
-      line-height: 1.6;
-      color: #555;
+    .back-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 199, 0, 0.4);
     }
 
-    .tag {
+    /* MAIN CONTAINER */
+    .opportunity-container {
+      max-width: 1400px;
+      margin: 0 auto 6rem auto;
+      padding: 0 4rem;
+    }
+
+    /* SEARCH SECTION */
+    .search-section {
+      background: var(--white);
+      padding: 4rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      margin-bottom: 5rem;
+      border: 4px solid var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .search-section:hover {
+      border-color: var(--secondary);
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 4rem;
+      position: relative;
       display: inline-block;
-      background-color: var(--secondary);
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 80%;
+      height: 8px;
+      background: var(--secondary);
+      border-radius: 4px;
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .search-group {
+      margin-bottom: 3rem;
+    }
+
+    .search-label {
+      display: block;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1.5rem;
+      font-size: 1.5rem;
+      font-family: 'Archivo', sans-serif;
+      border: 4px solid var(--primary);
+      border-radius: var(--radius-medium);
+      background: rgba(107, 63, 160, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px rgba(255, 199, 0, 0.3);
+    }
+
+    .search-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b3fa0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1.5rem center;
+      background-size: 1.5rem;
+    }
+
+    .search-button {
+      grid-column: span 3;
+      background: var(--primary);
       color: white;
-      padding: 0.35rem 0.8rem;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      margin-right: 0.4rem;
-      margin-top: 0.5rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      border: none;
+      padding: 2rem;
+      font-size: 1.8rem;
+      font-weight: 900;
+      border-radius: var(--radius-medium);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+    }
+
+    .search-button:hover {
+      background: var(--secondary);
+      color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(107, 63, 160, 0.3);
+    }
+
+    /* RESULTS SECTION */
+    .results-section {
+      display: none;
+      background: var(--white);
+      padding: 4rem;
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+      border: 4px solid var(--secondary);
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .results-tabs {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .results-tab {
+      padding: 1rem 2rem;
+      background: rgba(107, 63, 160, 0.1);
+      border-radius: 50px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .results-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .opportunity-card {
+      background: white;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      border-radius: var(--radius-medium);
+      border-left: 8px solid var(--primary);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .opportunity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    .opportunity-type {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: var(--secondary);
+      color: var(--black);
+      font-weight: 900;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+
+    .opportunity-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .opportunity-org {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .opportunity-desc {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .opportunity-meta {
+      display: flex;
+      gap: 2rem;
+      font-weight: 800;
+    }
+
+    .opportunity-deadline {
+      color: var(--primary);
+    }
+
+    .opportunity-amount {
+      color: #00a000;
+    }
+
+    .apply-button {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 50px;
+      font-weight: 900;
+      text-decoration: none;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .apply-button:hover {
+      background: var(--secondary);
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    /* LOADING STATE */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .spinner {
+      border: 6px solid rgba(107, 63, 160, 0.1);
+      border-top: 6px solid var(--primary);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-right: 2rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .search-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .search-button {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .opportunity-container {
+        padding: 0 2rem;
+      }
+      .search-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-button {
+        grid-column: span 1;
+      }
+      .section-title {
+        font-size: 2.5rem;
+      }
     }
   </style>
 </head>
 <body>
-
-
-  <header>
-    <h1>Scholarships to change the game</h1>
-    <p>In honor of LeBron James – Loyalty. Vision. Legacy.</p>
+  <header class="lms-header">
+    <a href="/" class="logo">RIDEKA</a>
+    <a href="/dashboard.html" class="back-link">← BACK TO DASHBOARD</a>
   </header>
 
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="🔍 Search scholarships...">
+  <div class="opportunity-container">
+    <!-- Search Section -->
+    <div class="search-section">
+      <h2 class="section-title">FIND INTERNSHIPS & SCHOLARSHIPS</h2>
+      
+      <div class="search-grid">
+        <!-- Field of Study -->
+        <div class="search-group">
+          <label class="search-label">FIELD OF STUDY</label>
+          <input type="text" class="search-input" placeholder="e.g. Computer Science" id="field-input">
+        </div>
+        
+        <!-- Location -->
+        <div class="search-group">
+          <label class="search-label">LOCATION</label>
+          <select class="search-input search-select" id="location-select">
+            <option value="">Anywhere</option>
+            <option value="US">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="remote">Remote Only</option>
+          </select>
+        </div>
+        
+        <!-- Opportunity Type -->
+        <div class="search-group">
+          <label class="search-label">TYPE</label>
+          <select class="search-input search-select" id="type-select">
+            <option value="all">All Opportunities</option>
+            <option value="internship">Internships Only</option>
+            <option value="scholarship">Scholarships Only</option>
+          </select>
+        </div>
+        
+        <!-- Deadline -->
+        <div class="search-group">
+          <label class="search-label">DEADLINE</label>
+          <select class="search-input search-select" id="deadline-select">
+            <option value="all">Any Deadline</option>
+            <option value="30">Next 30 Days</option>
+            <option value="60">Next 60 Days</option>
+            <option value="90">Next 90 Days</option>
+          </select>
+        </div>
+        
+        <!-- Amount/Award -->
+        <div class="search-group">
+          <label class="search-label">MINIMUM AWARD</label>
+          <select class="search-input search-select" id="amount-select">
+            <option value="0">Any Amount</option>
+            <option value="1000">$1,000+</option>
+            <option value="5000">$5,000+</option>
+            <option value="10000">$10,000+</option>
+          </select>
+        </div>
+        
+        <!-- Keywords -->
+        <div class="search-group">
+          <label class="search-label">KEYWORDS</label>
+          <input type="text" class="search-input" placeholder="e.g. Women in STEM" id="keyword-input">
+        </div>
+        
+        <button class="search-button" id="search-button">SEARCH OPPORTUNITIES →</button>
+      </div>
     </div>
 
-    <div class="filters">
-      <select id="regionFilter">
-        <option value="">🌍 All Regions</option>
-        <option value="North America">North America</option>
-        <option value="Europe">Europe</option>
-        <option value="Asia">Asia</option>
-        <option value="Africa">Africa</option>
-      </select>
-      <select id="coverageFilter">
-        <option value="">💰 All Coverage</option>
-        <option value="Full">Full</option>
-        <option value="Partial">Partial</option>
-      </select>
-      <select id="ethnicFilter">
-        <option value="">🧬 All Ethnicities</option>
-        <option value="African American">African American</option>
-        <option value="Asian">Asian</option>
-        <option value="Latino">Latino</option>
-        <option value="Indigenous">Indigenous</option>
-      </select>
-      <select id="genderFilter">
-        <option value="">⚧️ All Genders</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Non-binary">Non-binary</option>
-      </select>
+    <!-- Loading State -->
+    <div class="loading" id="loading" style="display: none;">
+      <div class="spinner"></div>
+      <span>Searching opportunities...</span>
     </div>
 
-    <div id="scholarshipList"></div>
+    <!-- Results Section -->
+    <div class="results-section" id="results-section">
+      <div class="results-header">
+        <h2 class="section-title">SEARCH RESULTS</h2>
+        <div class="results-tabs">
+          <div class="results-tab active" data-tab="all">All</div>
+          <div class="results-tab" data-tab="internship">Internships</div>
+          <div class="results-tab" data-tab="scholarship">Scholarships</div>
+        </div>
+      </div>
+      
+      <div id="results-container">
+        <!-- Results will be populated by JavaScript -->
+      </div>
+    </div>
   </div>
 
   <script>
-    window.scholarshipData = window.scholarshipData || [
-      {
-        title: "Tech Excellence Scholarship",
-        provider: "TechWorld Foundation",
-        deadline: "June 30, 2025",
-        amount: "$5,000",
-        region: "North America",
-        coverage: "Full",
-        ethnicity: "African American",
-        gender: "Female"
-      },
-      {
-        title: "Future Leaders Award",
-        provider: "Global Education Trust",
-        deadline: "August 15, 2025",
-        amount: "$3,000",
-        region: "Europe",
-        coverage: "Partial",
-        ethnicity: "Asian",
-        gender: "Male"
-      },
-      {
-        title: "Diversity in STEM Scholarship",
-        provider: "STEM Forward",
-        deadline: "May 1, 2025",
-        amount: "$4,500",
-        region: "Asia",
-        coverage: "Full",
-        ethnicity: "Latino",
-        gender: "Non-binary"
-      },
-  {
-    "title": "Elevate: Boosting Diversity in STEM Scholarship",
-    "provider": "Australian Academy of Technological Sciences & Engineering (ATSE)",
-    "deadline": "September 1, 2025",
-    "amount": "Varies",
-    "region": "Asia",
-    "coverage": "Full",
-    "ethnicity": "Indigenous",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "AISES A.T. Anderson Scholarship",
-    "provider": "American Indian Science and Engineering Society (AISES)",
-    "deadline": "April 30, 2025",
-    "amount": "$1,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Indigenous",
-    "gender": "Male"
-  },
-  {
-    "title": "ACS Scholars Program",
-    "provider": "American Chemical Society",
-    "deadline": "March 1, 2025",
-    "amount": "Up to $5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Latino",
-    "gender": "Female"
-  },
-  {
-    "title": "Maureen L. & Howard N. Blitman, P.E., Scholarship",
-    "provider": "National Society of Professional Engineers (NSPE)",
-    "deadline": "April 1, 2025",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "African American",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "HITEC Scholarship",
-    "provider": "HITEC Foundation",
-    "deadline": "Varies",
-    "amount": "Up to $5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Latino",
-    "gender": "Male"
-  },
-  {
-    "title": "For A Bright Future – STEM Scholarship",
-    "provider": "For A Bright Future",
-    "deadline": "Varies",
-    "amount": "Up to $10,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Asian",
-    "gender": "Female"
-  },
-  {
-    "title": "NextEra Energy Foundation (NEEF) Scholarship",
-    "provider": "NextEra Energy Foundation Inc.",
-    "deadline": "Varies",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Indigenous",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "Madam C.J. Walker Scholarship",
-    "provider": "Mary Kay Inc. / Society of Cosmetic Chemists (SCC)",
-    "deadline": "Varies",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "African American",
-    "gender": "Female"
-  },
-  {
-    "title": "AROC AI/ML Scholarship",
-    "provider": "AROC",
-    "deadline": "Varies",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "African American",
-    "gender": "Male"
-  },
-  {
-    "title": "Shell Incentive Fund Scholarship",
-    "provider": "Shell Oil Company",
-    "deadline": "Varies",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Latino",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "LPA Interdisciplinary Diversity Scholarship",
-    "provider": "LPA, Inc.",
-    "deadline": "Varies",
-    "amount": "$5,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Asian",
-    "gender": "Female"
-  },
-  {
-    "title": "Agile Mile Scholarship Program",
-    "provider": "Agile Mile, Inc.",
-    "deadline": "Varies",
-    "amount": "$2,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "African American",
-    "gender": "Male"
-  },
-  {
-    "title": "William A. Lewis Scholarship",
-    "provider": "Edwards_Lewis Family",
-    "deadline": "Varies",
-    "amount": "$1,500",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "African American",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "Ralph W. Shrader Graduate Diversity Scholarship",
-    "provider": "AFCEA International",
-    "deadline": "Varies",
-    "amount": "$3,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Latino",
-    "gender": "Female"
-  },
-  {
-    "title": "SACNAS Travel Scholarship",
-    "provider": "Society for Advancement of Chicanos/Hispanics & Native Americans in Science (SACNAS)",
-    "deadline": "March 28, 2025",
-    "amount": "Varies",
-    "region": "North America",
-    "coverage": "Full",
-    "ethnicity": "Latino",
-    "gender": "Male"
-  },
-  {
-    "title": "AtkinsRéalis Foundation Scholarship for Minorities in STEM",
-    "provider": "AtkinsRéalis Foundation",
-    "deadline": "April 30, 2025",
-    "amount": "Varies",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Asian",
-    "gender": "Non-binary"
-  },
-  {
-    "title": "Elevate: Boosting Diversity in STEM Scholarship",
-    "provider": "Australian Academy of Technological Sciences & Engineering (ATSE)",
-    "deadline": "September 1, 2025",
-    "amount": "Varies",
-    "region": "North America",
-    "coverage": "Full",
-    "ethnicity": "Indigenous",
-    "gender": "Female"
-  },
-  {
-    "title": "AISES A.T. Anderson Scholarship",
-    "provider": "American Indian Science and Engineering Society (AISES)",
-    "deadline": "April 30, 2025",
-    "amount": "$1,000",
-    "region": "North America",
-    "coverage": "Partial",
-    "ethnicity": "Indigenous",
-    "gender": "Non-binary"
-  },
- 
-    ::contentReference[oaicite:0]{index=0}
+    // API Endpoints
+    const API_ENDPOINTS = {
+      internships: 'https://api.usa.gov/jobs/search.json?query=internship',
+      scholarships: 'https://api.scholarshipowl.com/v1/scholarships' // Mock endpoint
+    };
 
-    ];
+    // DOM Elements
+    const searchButton = document.getElementById('search-button');
+    const resultsSection = document.getElementById('results-section');
+    const resultsContainer = document.getElementById('results-container');
+    const loadingElement = document.getElementById('loading');
+    const tabs = document.querySelectorAll('.results-tab');
 
-    function displayScholarships(data) {
-      const list = document.getElementById('scholarshipList');
-      list.innerHTML = '';
+    // Tab Switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        filterResults(tab.dataset.tab);
+      });
+    });
 
-      if (!data || data.length === 0) {
-        list.innerHTML = '<p>No scholarships found.</p>';
+    // Search Function
+    searchButton.addEventListener('click', async () => {
+      const field = document.getElementById('field-input').value;
+      const location = document.getElementById('location-select').value;
+      const type = document.getElementById('type-select').value;
+      
+      loadingElement.style.display = 'flex';
+      resultsSection.style.display = 'none';
+      
+      try {
+        // In a real app, you would use actual API calls with proper authentication
+        // For demo purposes, we're using mock data
+        const mockData = await fetchMockData(field, location, type);
+        displayResults(mockData);
+        
+        loadingElement.style.display = 'none';
+        resultsSection.style.display = 'block';
+        
+        // Scroll to results
+        window.scrollTo({
+          top: resultsSection.offsetTop - 100,
+          behavior: 'smooth'
+        });
+      } catch (error) {
+        console.error('Search failed:', error);
+        loadingElement.style.display = 'none';
+        alert('Failed to load opportunities. Please try again.');
+      }
+    });
+
+    // Mock API Fetch (replace with real API calls)
+    async function fetchMockData(field, location, type) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          // Mock internship data (similar to what you'd get from DOL API)
+          const mockInternships = [
+            {
+              id: 1,
+              type: 'internship',
+              title: `${field || 'Tech'} Summer Internship Program`,
+              organization: 'Google',
+              description: `Join our ${field || 'tech'} team for a 10-week paid internship. Open to current students with a passion for innovation.`,
+              location: location === 'remote' ? 'Remote' : 'Mountain View, CA',
+              deadline: '2023-11-15',
+              paid: true,
+              url: 'https://careers.google.com'
+            },
+            {
+              id: 2,
+              type: 'internship',
+              title: 'Data Science Research Assistant',
+              organization: 'Stanford University',
+              description: 'Work with professors on cutting-edge research projects in data science and machine learning.',
+              location: 'Stanford, CA',
+              deadline: '2023-12-01',
+              paid: true,
+              url: 'https://stanford.edu'
+            }
+          ];
+          
+          // Mock scholarship data (similar to ScholarshipOwl API)
+          const mockScholarships = [
+            {
+              id: 101,
+              type: 'scholarship',
+              title: `${field || 'STEM'} Excellence Scholarship`,
+              organization: 'National Science Foundation',
+              description: `$5,000 award for ${field || 'STEM'} students demonstrating academic excellence and leadership potential.`,
+              amount: 5000,
+              deadline: '2024-02-15',
+              url: 'https://nsf.gov'
+            },
+            {
+              id: 102,
+              type: 'scholarship',
+              title: 'International Student Achievement Award',
+              organization: 'Global Education Foundation',
+              description: '$10,000 renewable scholarship for outstanding international students.',
+              amount: 10000,
+              deadline: '2024-03-01',
+              url: 'https://globaled.org'
+            }
+          ];
+          
+          // Filter based on search type
+          let results = [];
+          if (type === 'internship') {
+            results = mockInternships;
+          } else if (type === 'scholarship') {
+            results = mockScholarships;
+          } else {
+            results = [...mockInternships, ...mockScholarships];
+          }
+          
+          // Filter by field if specified
+          if (field) {
+            results = results.filter(item => 
+              item.title.toLowerCase().includes(field.toLowerCase()) || 
+              item.description.toLowerCase().includes(field.toLowerCase())
+            );
+          }
+          
+          resolve(results);
+        }, 1500); // Simulate network delay
+      });
+    }
+
+    // Display Results
+    function displayResults(opportunities) {
+      resultsContainer.innerHTML = '';
+      
+      if (opportunities.length === 0) {
+        resultsContainer.innerHTML = '<p style="font-size: 1.5rem; font-weight: 800;">No opportunities found. Try different search criteria.</p>';
         return;
       }
-
-      data.forEach(scholarship => {
-        const div = document.createElement('div');
-        div.className = 'scholarship';
-        div.innerHTML = `
-          <h2>${scholarship.title}</h2>
-          <p><strong>Provider:</strong> ${scholarship.provider}</p>
-          <p><strong>Deadline:</strong> ${scholarship.deadline}</p>
-          <p><strong>Amount:</strong> ${scholarship.amount}</p>
-          <div class="tags">
-            <span class="tag">${scholarship.region}</span>
-            <span class="tag">${scholarship.coverage} Coverage</span>
-            <span class="tag">${scholarship.ethnicity}</span>
-            <span class="tag">${scholarship.gender}</span>
+      
+      opportunities.forEach(opp => {
+        const card = document.createElement('div');
+        card.className = `opportunity-card ${opp.type}`;
+        
+        const typeBadge = opp.type === 'internship' ? 'INTERNSHIP' : 'SCHOLARSHIP';
+        const amountDisplay = opp.amount ? `$${opp.amount.toLocaleString()}` : 'Paid Position';
+        
+        card.innerHTML = `
+          <div class="opportunity-type">${typeBadge}</div>
+          <h3 class="opportunity-title">${opp.title}</h3>
+          <div class="opportunity-org">${opp.organization}</div>
+          <p class="opportunity-desc">${opp.description}</p>
+          <div class="opportunity-meta">
+            ${opp.location ? `<span>📍 ${opp.location}</span>` : ''}
+            <span class="opportunity-deadline">⏰ Deadline: ${formatDate(opp.deadline)}</span>
+            <span class="opportunity-amount">💰 ${amountDisplay}</span>
           </div>
+          <a href="${opp.url}" target="_blank" class="apply-button">APPLY NOW</a>
         `;
-        list.appendChild(div);
+        
+        resultsContainer.appendChild(card);
       });
     }
 
-    function filterScholarships() {
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const region = document.getElementById('regionFilter').value;
-      const coverage = document.getElementById('coverageFilter').value;
-      const ethnicity = document.getElementById('ethnicFilter').value;
-      const gender = document.getElementById('genderFilter').value;
-
-      const filtered = window.scholarshipData.filter(s => {
-        return (
-          (s.title.toLowerCase().includes(keyword) || s.provider.toLowerCase().includes(keyword)) &&
-          (!region || s.region === region) &&
-          (!coverage || s.coverage === coverage) &&
-          (!ethnicity || s.ethnicity === ethnicity) &&
-          (!gender || s.gender === gender)
-        );
+    // Filter Results by Type
+    function filterResults(type) {
+      const cards = document.querySelectorAll('.opportunity-card');
+      
+      cards.forEach(card => {
+        if (type === 'all') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = card.classList.contains(type) ? 'block' : 'none';
+        }
       });
-
-      displayScholarships(filtered);
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('searchInput').addEventListener('input', filterScholarships);
-      document.getElementById('regionFilter').addEventListener('change', filterScholarships);
-      document.getElementById('coverageFilter').addEventListener('change', filterScholarships);
-      document.getElementById('ethnicFilter').addEventListener('change', filterScholarships);
-      document.getElementById('genderFilter').addEventListener('change', filterScholarships);
+    // Helper: Format Date
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-US', options);
+    }
 
-      displayScholarships(window.scholarshipData);
-    });
+    /* 
+     * For real implementation, you would:
+     * 1. Register for ScholarshipOwl API (https://scholarshipowl.com/developers/)
+     * 2. Get API keys for DOL Internship API
+     * 3. Implement proper error handling
+     * 4. Add pagination for large result sets
+     */
   </script>
-
 </body>
 </html>

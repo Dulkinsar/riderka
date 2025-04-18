@@ -5,7 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harvard Pathway Builder</title>
     <style>
-        /* Previous styles remain intact */
+        :root {
+            --primary-purple: #6a1b9a;
+            --primary-yellow: #ffd600;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f5ff;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        h1 {
+            color: var(--primary-purple);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 1rem;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #4a148c;
+            transform: translateY(-2px);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .radio-option {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .radio-option input {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: block;
+            padding: 1rem;
+            background: #f3e5f5;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .radio-option input:checked + label {
+            background: var(--primary-purple);
+            color: white;
+        }
+        
         .recommendations-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -62,6 +153,7 @@
             text-align: center;
             padding: 1rem;
             position: relative;
+            flex: 1;
         }
 
         .timeline-item::after {
@@ -107,7 +199,63 @@
 </head>
 <body>
     <div class="container">
-        <!-- Previous form elements remain -->
+        <h1>Harvard Pathway Builder</h1>
+        
+        <div class="form-group">
+            <label for="grade">Current Grade Level</label>
+            <select id="grade">
+                <option value="9">Grade 9</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="gpa">Current GPA (out of 5.0)</label>
+            <input type="range" id="gpaSlider" min="0" max="5" step="0.1" value="3.5">
+            <input type="number" id="gpa" min="0" max="5" step="0.1" value="3.5">
+        </div>
+        
+        <div class="form-group">
+            <label for="sat">SAT Score (out of 1600)</label>
+            <input type="number" id="sat" min="400" max="1600" value="1200">
+        </div>
+        
+        <div class="form-group">
+            <label for="ielts">IELTS Score (out of 9)</label>
+            <input type="number" id="ielts" min="0" max="9" step="0.5" value="6.5">
+        </div>
+        
+        <div class="form-group">
+            <label>City</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="almaty" name="city" value="Almaty" checked>
+                    <label for="almaty">Almaty</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="nur-sultan" name="city" value="Nur-Sultan">
+                    <label for="nur-sultan">Nur-Sultan</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="other" name="city" value="Other">
+                    <label for="other">Other</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="subject">Preferred Subject Area</label>
+            <select id="subject">
+                <option value="STEM">STEM</option>
+                <option value="Humanities">Humanities</option>
+                <option value="Social Sciences">Social Sciences</option>
+                <option value="Arts">Arts</option>
+            </select>
+        </div>
+        
+        <button onclick="calculatePathway()">Generate My Harvard Pathway</button>
         
         <div class="recommendations-section" id="recommendations" style="display: none;">
             <div class="recommendation-card">
@@ -141,6 +289,18 @@
             avgGPA: 4.18,
             acceptanceRate: 3.2
         };
+
+        // Sync GPA slider and input
+        const gpaSlider = document.getElementById('gpaSlider');
+        const gpaInput = document.getElementById('gpa');
+        
+        gpaSlider.addEventListener('input', function() {
+            gpaInput.value = this.value;
+        });
+        
+        gpaInput.addEventListener('input', function() {
+            gpaSlider.value = this.value;
+        });
 
         function calculatePathway() {
             const grade = parseInt(document.getElementById('grade').value);
@@ -212,6 +372,9 @@
                     <div>${t}</div>
                 </div>
             `).join('');
+            
+            document.getElementById('profileProgress').style.width = 
+                `${Math.min((grade/12)*100, 100)}%`;
         }
 
         function displayTimeline(grade) {

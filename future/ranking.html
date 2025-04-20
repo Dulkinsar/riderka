@@ -39,15 +39,18 @@
             overflow: hidden;
         }
 
+        h1, h2 {
+            text-align: center;
+            padding-bottom: 15px;
+            position: relative;
+        }
+
         h1 {
             color: var(--memphis-red);
-            text-align: center;
             font-size: 2.6em;
             margin-bottom: 25px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            position: relative;
-            padding-bottom: 15px;
         }
 
         h1:after {
@@ -64,9 +67,7 @@
         h2 {
             color: var(--memphis-blue);
             margin-top: 40px;
-            padding-bottom: 10px;
             border-bottom: 2px solid var(--memphis-yellow);
-            text-align: center;
             font-size: 1.8em;
         }
 
@@ -115,14 +116,14 @@
         }
 
         /* Column-specific styling */
-        td:nth-child(1) { /* Rank */
+        td.rank {
             background-color: rgba(227,28,61,0.08);
             color: var(--memphis-red);
             font-weight: 700;
             font-size: 1.1em;
         }
 
-        td:nth-child(2) { /* Name */
+        td:first-child:not(.rank) { /* Name column */
             background-color: rgba(255,209,0,0.08);
             color: #8E6C00;
             text-align: left;
@@ -130,33 +131,33 @@
             font-weight: 600;
         }
 
-        td:nth-child(3) { /* Score */
+        td.score {
             background-color: rgba(0,181,173,0.12);
             color: var(--memphis-teal);
             font-weight: 700;
             font-size: 1.1em;
         }
 
-        td:nth-child(4) { /* Team */
+        td:nth-child(4):not(.team-average) { /* Team column */
             background-color: rgba(124,37,135,0.08);
             color: var(--memphis-purple);
             font-weight: 600;
         }
 
-        td:nth-child(5) { /* Streak */
+        td.streak {
             background-color: rgba(0,113,188,0.08);
             color: var(--memphis-blue);
             font-weight: 700;
         }
 
-        td:nth-child(6) { /* Win Chance */
+        td.win-chance {
             background-color: rgba(0,113,188,0.15);
             color: var(--memphis-blue);
             font-weight: 700;
             font-size: 1.1em;
         }
 
-        td:nth-child(7) { /* Progress */
+        td.small-number {
             background-color: rgba(76,175,80,0.08);
             color: var(--progress-green);
             font-weight: 700;
@@ -172,25 +173,12 @@
             background: linear-gradient(135deg, var(--memphis-purple), #5A1B66);
         }
 
-        .team-ranking td:nth-child(4) { /* Members */
-            background-color: rgba(124,37,135,0.08);
-            color: var(--memphis-purple);
+        .team-average {
+            color: var(--memphis-red) !important;
+            font-weight: 700 !important;
         }
 
-        .team-ranking td:nth-child(5) { /* Win Chance */
-            background-color: rgba(0,113,188,0.15);
-            color: var(--memphis-blue);
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .team-ranking td:nth-child(6) { /* Progress */
-            background-color: rgba(76,175,80,0.08);
-            color: var(--progress-green);
-            font-weight: 700;
-            font-size: 0.9em;
-        }
-
+        /* Medal rows */
         .team-ranking tr:nth-child(1) td {
             background-color: rgba(255,215,0,0.15);
             color: #8E6C00;
@@ -209,18 +197,6 @@
         .team-ranking tr:nth-child(4) td {
             background-color: rgba(227,28,61,0.08);
             color: var(--memphis-red);
-        }
-
-        .team-average {
-            color: var(--memphis-red) !important;
-            font-weight: 700 !important;
-        }
-
-        /* Small number styling */
-        .small-number {
-            font-size: 0.85em;
-            color: #555;
-            font-weight: 600;
         }
 
         /* Memphis decorative elements */
@@ -252,7 +228,7 @@
     
     <div class="container">
         <h1>CLASS LEADERBOARD</h1>
-        <table>
+        <table id="leaderboard">
             <thead>
                 <tr>
                     <th>Rank</th>
@@ -264,120 +240,11 @@
                     <th>Progress</th>
                 </tr>
             </thead>
-            <tbody id="leaderboardBody">
-                <tr>
-                    <td class="rank">1</td>
-                    <td>Laura</td>
-                    <td class="score">51.9</td>
-                    <td>NIS</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">13.6%</td>
-                    <td class="small-number">+10.8</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td>Temirlan</td>
-                    <td class="score">32.5</td>
-                    <td>NIS</td>
-                    <td class="streak">3</td>
-                    <td class="win-chance">9.9%</td>
-                    <td class="small-number">+8.5</td>
-                </tr>
-                <tr>
-                    <td class="rank">4</td>
-                    <td>Rayimbek</td>
-                    <td class="score">53.5</td>
-                    <td>KTL</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">9.6%</td>
-                    <td class="small-number">+10.0</td>
-                </tr>
-                <tr>
-                    <td class="rank">4</td>
-                    <td>Kamila</td>
-                    <td class="score">51.5</td>
-                    <td>РФМШ</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">9.2%</td>
-                    <td class="small-number">+9.7</td>
-                </tr>
-                <tr>
-                    <td class="rank">5</td>
-                    <td>Arystan</td>
-                    <td class="score">49.4</td>
-                    <td>KTL</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">8.5%</td>
-                    <td class="small-number">+11.1</td>
-                </tr>
-                <tr>
-                    <td class="rank">6</td>
-                    <td>Shakhnazar</td>
-                    <td class="score">48.5</td>
-                    <td>KTL</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">8.5%</td>
-                    <td class="small-number">+8.2</td>
-                </tr>
-                <tr>
-                    <td class="rank">7</td>
-                    <td>Sholpan</td>
-                    <td class="score">48.1</td>
-                    <td>Private</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">8.2%</td>
-                    <td class="small-number">+10.8</td>
-                </tr>
-                <tr>
-                    <td class="rank">8</td>
-                    <td>Asyl</td>
-                    <td class="score">49.3</td>
-                    <td>Private</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">7.9%</td>
-                    <td class="small-number">+11.1</td>
-                </tr>
-                <tr>
-                    <td class="rank">9</td>
-                    <td>Arnur</td>
-                    <td class="score">46.4</td>
-                    <td>NIS</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">7.3%</td>
-                    <td class="small-number">+9.1</td>
-                </tr>
-                <tr>
-                    <td class="rank">10</td>
-                    <td>Nurtilek</td>
-                    <td class="score">46.2</td>
-                    <td>KTL</td>
-                    <td class="streak">4</td>
-                    <td class="win-chance">6.4%</td>
-                    <td class="small-number">+10.2</td>
-                </tr>
-                <tr>
-                    <td class="rank">11</td>
-                    <td>Dalen</td>
-                    <td class="score">45.7</td>
-                    <td>Private</td>
-                    <td class="streak">2</td>
-                    <td class="win-chance">6.3%</td>
-                    <td class="small-number">+11.7</td>
-                </tr>
-                <tr>
-                    <td class="rank">12</td>
-                    <td>Yernur</td>
-                    <td class="score">24.4</td>
-                    <td>РФМШ</td>
-                    <td class="streak">1</td>
-                    <td class="win-chance">&lt;4.8%</td>
-                    <td class="small-number">+6.4</td>
-                </tr>
-            </tbody>
+            <tbody id="leaderboardBody"></tbody>
         </table>
         
         <h2>TEAM RANKINGS</h2>
-        <table class="team-ranking">
+        <table class="team-ranking" id="teamRanking">
             <thead>
                 <tr>
                     <th>Rank</th>
@@ -388,136 +255,112 @@
                     <th>Progress</th>
                 </tr>
             </thead>
-            <tbody id="teamRankingBody">
-                <tr>
-                    <td class="rank">1</td>
-                    <td>NIS</td>
-                    <td class="score team-average">23.50</td>
-                    <td>Laura, Temirlan, Arnur</td>
-                    <td class="win-chance">48%</td>
-                    <td class="small-number">+0.84</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
-                    <td>KTL</td>
-                    <td class="score team-average">21.80</td>
-                    <td>Rayimbek, Shakhnazar, Arystan, Nurtilek</td>
-                    <td class="win-chance">39%</td>
-                    <td class="small-number">+0.72</td>
-                </tr>
-                <tr>
-                    <td class="rank">3</td>
-                    <td>Private School</td>
-                    <td class="score team-average">20.80</td>
-                    <td>Sholpan, Asyl, Dalen</td>
-                    <td class="win-chance">9%</td>
-                    <td class="small-number">+0.46</td>
-                </tr>
-                <tr>
-                    <td class="rank">4</td>
-                    <td>РФМШ</td>
-                    <td class="score team-average">18.90</td>
-                    <td>Kamila, Yernur</td>
-                    <td class="win-chance">4%</td>
-                    <td class="small-number">+0.38</td>
-                </tr>
-            </tbody>
+            <tbody id="teamRankingBody"></tbody>
         </table>
     </div>
 
     <script>
-        // Team data with average scores and win chances
-        const teams = [
-            {
-                name: "NIS",
-                average: 23.50,
-                members: "Laura, Temirlan, Arnur",
-                winChance: "48%",
-                progress: "+0.84"
-            },
-            {
-                name: "KTL",
-                average: 21.80,
-                members: "Rayimbek, Shakhnazar, Arystan, Nurtilek",
-                winChance: "39%",
-                progress: "+0.72"
-            },
-            {
-                name: "Private School",
-                average: 20.80,
-                members: "Sholpan, Asyl, Dalen",
-                winChance: "9%",
-                progress: "+0.46"
-            },
-            {
-                name: "РФМШ",
-                average: 18.90,
-                members: "Kamila, Yernur",
-                winChance: "4%",
-                progress: "+0.38"
-            }
-        ];
+        // Data structure combining both students and teams
+        const data = {
+            students: [
+                { name: "Laura", score: 51.9, team: "NIS", streak: 4, winChance: "12.5%", progress: "+14.3" },
+                { name: "Temirlan", score: 31.5, team: "NIS", streak: 0, winChance: "1.63%", progress: "+8.8" },
+                { name: "Rayimbek", score: 53.5, team: "KTL", streak: 4, winChance: "14.7%", progress: "+19.0" },
+                { name: "Kamila", score: 51.5, team: "РФМШ", streak: 4, winChance: "12.0%", progress: "+18.9" },
+                { name: "Arystan", score: 49.4, team: "KTL", streak: 4, winChance: "9.7%", progress: "+16.1" },
+                { name: "Shakhnazar", score: 48.5, team: "KTL", streak: 4, winChance: "8.9%", progress: "+18.1" },
+                { name: "Sholpan", score: 48.1, team: "Private", streak: 4, winChance: "8.5%", progress: "+15.5" },
+                { name: "Asyl", score: 49.3, team: "Private", streak: 4, winChance: "9.6%", progress: "+16.9" },
+                { name: "Arnur", score: 46.4, team: "NIS", streak: 4, winChance: "7.2%", progress: "+17.1" },
+                { name: "Nurtilek", score: 46.2, team: "KTL", streak: 4, winChance: "7.1%", progress: "+16.6" },
+                { name: "Dalen", score: 45.7, team: "Private", streak: 2, winChance: "6.7%", progress: "+14.8" },
+                { name: "Yernur", score: 24.4, team: "РФМШ", streak: 0, winChance: "0.08%", progress: "+9.4" }
+            ],
+            teams: [
+                {
+                    name: "NIS",
+                    average: 23.50,
+                    members: "Laura, Temirlan, Arnur",
+                    winChance: "48%",
+                    progress: "+0.84"
+                },
+                {
+                    name: "KTL",
+                    average: 21.80,
+                    members: "Rayimbek, Shakhnazar, Arystan, Nurtilek",
+                    winChance: "39%",
+                    progress: "+0.72"
+                },
+                {
+                    name: "Private School",
+                    average: 20.80,
+                    members: "Sholpan, Asyl, Dalen",
+                    winChance: "9%",
+                    progress: "+0.46"
+                },
+                {
+                    name: "РФМШ",
+                    average: 18.90,
+                    members: "Kamila, Yernur",
+                    winChance: "4%",
+                    progress: "+0.38"
+                }
+            ]
+        };
 
-        // Student data with win chances
-        const students = [
-            { name: "Laura", score: 51.9, team: "NIS", streak: 4, winChance: "12.5%", progress: "+14.3" },
-            { name: "Temirlan", score: 31.5, team: "NIS", streak: 0, winChance: "1.63%", progress: "+8.8" },
-            { name: "Rayimbek", score: 53.5, team: "KTL", streak: 4, winChance: "14.7%", progress: "+19.0" },
-            { name: "Kamila", score: 51.5, team: "РФМШ", streak: 4, winChance: "12.0%", progress: "+18.9" },
-            { name: "Arystan", score: 49.4, team: "KTL", streak: 4, winChance: "9.7%", progress: "+16.1" },
-            { name: "Shakhnazar", score: 48.5, team: "KTL", streak: 4, winChance: "8.9%", progress: "+18.1" },
-            { name: "Sholpan", score: 48.1, team: "Private", streak: 4, winChance: "8.5%", progress: "+15.5" },
-            { name: "Asyl", score: 49.3, team: "Private", streak: 4, winChance: "9.6%", progress: "+16.9" },
-            { name: "Arnur", score: 46.4, team: "NIS", streak: 4, winChance: "7.2%", progress: "+17.1" },
-            { name: "Nurtilek", score: 46.2, team: "KTL", streak: 4, winChance: "7.1%", progress: "+16.6" },
-            { name: "Dalen", score: 45.7, team: "Private", streak: 2, winChance: "6.7%", progress: "+14.8" },
-            { name: "Yernur", score: 24.4, team: "РФМШ", streak: 0, winChance: "0.08%", progress: "+9.4" }
-        ];
+        function generateTableRow(template, item, index = null) {
+            return template.replace(/\${(\w+)}/g, (_, key) => {
+                if (key === 'rank') return index + 1;
+                return item[key] || '';
+            });
+        }
 
         function updateLeaderboard() {
-            const tbody = document.getElementById('leaderboardBody');
-            tbody.innerHTML = '';
+            const studentTemplate = `
+                <td class="rank">${'${rank}'}</td>
+                <td>${'${name}'}</td>
+                <td class="score">${'${score}'}</td>
+                <td>${'${team}'}</td>
+                <td class="streak">${'${streak}'}</td>
+                <td class="win-chance">${'${winChance}'}</td>
+                <td class="small-number">${'${progress}'}</td>
+            `;
             
-            // Sort students by score (descending)
-            const sortedStudents = [...students].sort((a, b) => b.score - a.score);
+            const teamTemplate = `
+                <td class="rank">${'${rank}'}</td>
+                <td>${'${name}'}</td>
+                <td class="score team-average">${'${average.toFixed(2)}'}</td>
+                <td>${'${members}'}</td>
+                <td class="win-chance">${'${winChance}'}</td>
+                <td class="small-number">${'${progress}'}</td>
+            `;
             
             // Update student leaderboard
-            sortedStudents.forEach((student, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="rank">${index + 1}</td>
-                    <td>${student.name}</td>
-                    <td class="score">${student.score}</td>
-                    <td>${student.team}</td>
-                    <td class="streak">${student.streak}</td>
-                    <td class="win-chance">${student.winChance}</td>
-                    <td class="small-number">${student.progress}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Sort teams by average score (descending)
-            const sortedTeams = [...teams].sort((a, b) => b.average - a.average);
+            const studentTbody = document.getElementById('leaderboardBody');
+            studentTbody.innerHTML = '';
+            
+            data.students
+                .sort((a, b) => b.score - a.score)
+                .forEach((student, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = generateTableRow(studentTemplate, student, index);
+                    studentTbody.appendChild(row);
+                });
             
             // Update team rankings
             const teamTbody = document.getElementById('teamRankingBody');
             teamTbody.innerHTML = '';
             
-            sortedTeams.forEach((team, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="rank">${index + 1}</td>
-                    <td>${team.name}</td>
-                    <td class="score team-average">${team.average.toFixed(2)}</td>
-                    <td>${team.members}</td>
-                    <td class="win-chance">${team.winChance}</td>
-                    <td class="small-number">${team.progress}</td>
-                `;
-                teamTbody.appendChild(row);
-            });
+            data.teams
+                .sort((a, b) => b.average - a.average)
+                .forEach((team, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = generateTableRow(teamTemplate, team, index);
+                    teamTbody.appendChild(row);
+                });
         }
 
-        window.addEventListener('DOMContentLoaded', updateLeaderboard);
+        document.addEventListener('DOMContentLoaded', updateLeaderboard);
     </script>
 </body>
 </html>

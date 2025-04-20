@@ -115,7 +115,6 @@
             border-bottom: none;
         }
 
-        /* Column-specific styling */
         td.rank {
             background-color: rgba(227,28,61,0.08);
             color: var(--memphis-red);
@@ -123,7 +122,7 @@
             font-size: 1.1em;
         }
 
-        td:first-child:not(.rank) { /* Name column */
+        td:first-child:not(.rank) {
             background-color: rgba(255,209,0,0.08);
             color: #8E6C00;
             text-align: left;
@@ -138,7 +137,7 @@
             font-size: 1.1em;
         }
 
-        td:nth-child(4):not(.team-average) { /* Team column */
+        td:nth-child(4):not(.team-average) {
             background-color: rgba(124,37,135,0.08);
             color: var(--memphis-purple);
             font-weight: 600;
@@ -168,7 +167,6 @@
             background-color: rgba(0,113,188,0.05) !important;
         }
 
-        /* Team ranking table */
         .team-ranking th {
             background: linear-gradient(135deg, var(--memphis-purple), #5A1B66);
         }
@@ -178,7 +176,6 @@
             font-weight: 700 !important;
         }
 
-        /* Medal rows */
         .team-ranking tr:nth-child(1) td {
             background-color: rgba(255,215,0,0.15);
             color: #8E6C00;
@@ -199,7 +196,6 @@
             color: var(--memphis-red);
         }
 
-        /* Memphis decorative elements */
         .memphis-decoration {
             position: absolute;
             width: 120px;
@@ -260,55 +256,83 @@
     </div>
 
     <script>
-        // Data structure combining both students and teams
-        const data = {
-            students: [
-                { name: "Laura", score: 51.9, team: "NIS", streak: 4, winChance: "12.5%", progress: "+14.3" },
-                { name: "Temirlan", score: 31.5, team: "NIS", streak: 0, winChance: "1.63%", progress: "+8.8" },
-                { name: "Rayimbek", score: 53.5, team: "KTL", streak: 4, winChance: "14.7%", progress: "+19.0" },
-                { name: "Kamila", score: 51.5, team: "РФМШ", streak: 4, winChance: "12.0%", progress: "+18.9" },
-                { name: "Arystan", score: 49.4, team: "KTL", streak: 4, winChance: "9.7%", progress: "+16.1" },
-                { name: "Shakhnazar", score: 48.5, team: "KTL", streak: 4, winChance: "8.9%", progress: "+18.1" },
-                { name: "Sholpan", score: 48.1, team: "Private", streak: 4, winChance: "8.5%", progress: "+15.5" },
-                { name: "Asyl", score: 49.3, team: "Private", streak: 4, winChance: "9.6%", progress: "+16.9" },
-                { name: "Arnur", score: 46.4, team: "NIS", streak: 4, winChance: "7.2%", progress: "+17.1" },
-                { name: "Nurtilek", score: 46.2, team: "KTL", streak: 4, winChance: "7.1%", progress: "+16.6" },
-                { name: "Dalen", score: 45.7, team: "Private", streak: 2, winChance: "6.7%", progress: "+14.8" },
-                { name: "Yernur", score: 24.4, team: "РФМШ", streak: 0, winChance: "0.08%", progress: "+9.4" }
-            ],
-            teams: [
-                {
-                    name: "NIS",
-                    average: 23.50,
-                    members: "Laura, Temirlan, Arnur",
-                    winChance: "48%",
-                    progress: "+0.84"
-                },
-                {
-                    name: "KTL",
-                    average: 21.80,
-                    members: "Rayimbek, Shakhnazar, Arystan, Nurtilek",
-                    winChance: "39%",
-                    progress: "+0.72"
-                },
-                {
-                    name: "Private School",
-                    average: 20.80,
-                    members: "Sholpan, Asyl, Dalen",
-                    winChance: "9%",
-                    progress: "+0.46"
-                },
-                {
-                    name: "РФМШ",
-                    average: 18.90,
-                    members: "Kamila, Yernur",
-                    winChance: "4%",
-                    progress: "+0.38"
+        // Student data
+        const students = [
+            { name: "Laura", score: 51.9, team: "NIS", streak: 4, winChance: "12.5%", progress: "+14.3" },
+            { name: "Temirlan", score: 31.5, team: "NIS", streak: 0, winChance: "1.63%", progress: "+8.8" },
+            { name: "Rayimbek", score: 53.5, team: "KTL", streak: 4, winChance: "14.7%", progress: "+19.0" },
+            { name: "Kamila", score: 51.5, team: "РФМШ", streak: 4, winChance: "12.0%", progress: "+18.9" },
+            { name: "Arystan", score: 49.4, team: "KTL", streak: 4, winChance: "9.7%", progress: "+16.1" },
+            { name: "Shakhnazar", score: 48.5, team: "KTL", streak: 4, winChance: "8.9%", progress: "+18.1" },
+            { name: "Sholpan", score: 48.1, team: "Private", streak: 4, winChance: "8.5%", progress: "+15.5" },
+            { name: "Asyl", score: 49.3, team: "Private", streak: 4, winChance: "9.6%", progress: "+16.9" },
+            { name: "Arnur", score: 46.4, team: "NIS", streak: 4, winChance: "7.2%", progress: "+17.1" },
+            { name: "Nurtilek", score: 46.2, team: "KTL", streak: 4, winChance: "7.1%", progress: "+16.6" },
+            { name: "Dalen", score: 45.7, team: "Private", streak: 2, winChance: "6.7%", progress: "+14.8" },
+            { name: "Yernur", score: 24.4, team: "РФМШ", streak: 0, winChance: "0.08%", progress: "+9.4" }
+        ];
+
+        // Calculate team averages dynamically
+        function calculateTeamAverages() {
+            const teamMap = {};
+            
+            // Group students by team and calculate totals
+            students.forEach(student => {
+                if (!teamMap[student.team]) {
+                    teamMap[student.team] = {
+                        totalScore: 0,
+                        memberCount: 0,
+                        members: []
+                    };
                 }
-            ]
-        };
+                teamMap[student.team].totalScore += student.score;
+                teamMap[student.team].memberCount++;
+                teamMap[student.team].members.push(student.name);
+            });
+            
+            // Convert to array format with calculated averages
+            return Object.keys(teamMap).map(teamName => {
+                const teamData = teamMap[teamName];
+                return {
+                    name: teamName,
+                    average: teamData.totalScore / teamData.memberCount,
+                    members: teamData.members.join(", "),
+                    // These could also be calculated if you have formulas
+                    winChance: calculateWinChance(teamName),
+                    progress: calculateTeamProgress(teamName)
+                };
+            });
+        }
+
+        // Placeholder functions for team calculations
+        function calculateWinChance(teamName) {
+            // This is a placeholder - implement your actual win chance calculation
+            const chances = {
+                "NIS": "48%",
+                "KTL": "39%",
+                "Private": "9%",
+                "РФМШ": "4%"
+            };
+            return chances[teamName] || "0%";
+        }
+
+        function calculateTeamProgress(teamName) {
+            // This is a placeholder - implement your actual progress calculation
+            const progress = {
+                "NIS": "+0.84",
+                "KTL": "+0.72",
+                "Private": "+0.46",
+                "РФМШ": "+0.38"
+            };
+            return progress[teamName] || "+0.00";
+        }
 
         function generateTableRow(template, item, index = null) {
+            // Format numbers with toFixed if needed
+            if (item.average !== undefined) {
+                item.formattedAverage = item.average.toFixed(2);
+            }
+            
             return template.replace(/\${(\w+)}/g, (_, key) => {
                 if (key === 'rank') return index + 1;
                 return item[key] || '';
@@ -316,6 +340,9 @@
         }
 
         function updateLeaderboard() {
+            // Calculate team averages dynamically
+            const teams = calculateTeamAverages();
+            
             const studentTemplate = `
                 <td class="rank">${'${rank}'}</td>
                 <td>${'${name}'}</td>
@@ -329,7 +356,7 @@
             const teamTemplate = `
                 <td class="rank">${'${rank}'}</td>
                 <td>${'${name}'}</td>
-                <td class="score team-average">${'${average.toFixed(2)}'}</td>
+                <td class="score team-average">${'${formattedAverage}'}</td>
                 <td>${'${members}'}</td>
                 <td class="win-chance">${'${winChance}'}</td>
                 <td class="small-number">${'${progress}'}</td>
@@ -339,7 +366,7 @@
             const studentTbody = document.getElementById('leaderboardBody');
             studentTbody.innerHTML = '';
             
-            data.students
+            students
                 .sort((a, b) => b.score - a.score)
                 .forEach((student, index) => {
                     const row = document.createElement('tr');
@@ -351,7 +378,7 @@
             const teamTbody = document.getElementById('teamRankingBody');
             teamTbody.innerHTML = '';
             
-            data.teams
+            teams
                 .sort((a, b) => b.average - a.average)
                 .forEach((team, index) => {
                     const row = document.createElement('tr');

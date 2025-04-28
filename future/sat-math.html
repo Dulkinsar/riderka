@@ -11,79 +11,99 @@
             padding: 30px;
             background: #f0f0f0;
             text-align: center;
-            min-width: 1000px;
+            min-width: 1100px;
         }
-        .map-container {
+        .map-wrapper {
+            position: relative;
             display: inline-block;
             margin: 30px auto;
+        }
+        #world-map-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .map-container {
+            position: relative;
             background: white;
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            z-index: 1;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(32, 16px); /* Larger tiles */
-            grid-gap: 3px; /* Increased gap */
+            grid-template-columns: repeat(49, 14px);
+            grid-gap: 3px;
             margin: 15px;
         }
         .tile {
-            width: 16px;  /* 77% larger than before */
-            height: 16px; /* 77% larger than before */
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             transition: transform 0.2s;
-            border-radius: 3px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             border: 1px solid rgba(0,0,0,0.05);
+            background-color: rgba(255,255,255,0.7);
+            position: relative;
+            z-index: 2;
         }
         .tile:hover {
-            transform: scale(1.3);
-            z-index: 2;
+            transform: scale(1.4);
+            z-index: 3;
         }
         .legend {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             margin: 30px 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .student-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
+            gap: 10px;
+            padding: 8px 12px;
             background: white;
             border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .color-box {
-            width: 28px;
-            height: 28px;
-            border-radius: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
         }
         input[type="number"] {
-            width: 80px;
-            padding: 8px;
+            width: 70px;
+            padding: 6px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 14px;
         }
         #totalPoints {
             font-weight: bold;
             margin: 25px;
-            font-size: 1.4em;
+            font-size: 1.3em;
             color: #333;
         }
         button {
-            padding: 12px 30px;
+            padding: 10px 25px;
             background: #4CAF50;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1em;
             transition: all 0.2s;
-            margin: 20px;
+            margin: 15px;
         }
         button:hover {
             background: #45a049;
@@ -92,20 +112,25 @@
     </style>
 </head>
 <body>
-    <h1>Percentage Conquest Map</h1>
+    <h1>Percentage Conquest Map (49×24)</h1>
     <p>Enter points for each student. Map shares update automatically!</p>
     
     <div class="legend" id="legend"></div>
     <div id="totalPoints">Total Points: 0</div>
     
-    <div class="map-container">
-        <div class="grid" id="map"></div>
+    <div class="map-wrapper">
+        <!-- World map background image -->
+        <img id="world-map-bg" src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="World map">
+        
+        <!-- Interactive conquest grid -->
+        <div class="map-container">
+            <div class="grid" id="map"></div>
+        </div>
     </div>
 
     <button onclick="resetAll()">Reset All</button>
 
     <script>
-        // (Keep the JavaScript exactly the same as previous version)
         const STUDENTS = [
             {color: '#FF0000', name: 'Student 1', points: 0},
             {color: '#00FF00', name: 'Student 2', points: 0},
@@ -121,7 +146,9 @@
             {color: '#FFC0CB', name: 'Student 12', points: 0}
         ];
 
-        const TOTAL_TILES = 32 * 32;
+        const COLS = 49;
+        const ROWS = 24;
+        const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
 
         // Initialize
@@ -172,12 +199,17 @@
             let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
             let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
 
-            // Distribute remaining tiles
-            distribution.forEach((d, i) => {
-                const decimal = (d.share * TOTAL_TILES) % 1;
-                tileCounts[i] += remainingTiles > 0 && decimal > Math.random() ? 1 : 0;
-                remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
-            });
+            // Distribute remaining tiles to students with highest decimal remainders
+            const studentsWithRemainders = distribution.map((d, i) => ({
+                index: i,
+                remainder: (d.share * TOTAL_TILES) % 1
+            })).sort((a, b) => b.remainder - a.remainder);
+
+            for (let i = 0; i < remainingTiles; i++) {
+                if (i < studentsWithRemainders.length) {
+                    tileCounts[studentsWithRemainders[i].index]++;
+                }
+            }
 
             // Assign tiles
             let tileIndex = 0;
@@ -188,7 +220,7 @@
                 }
             });
 
-            // Clear remaining tiles
+            // Clear remaining tiles if any
             while(tileIndex < TOTAL_TILES) {
                 tiles[tileIndex].style.backgroundColor = '';
                 tileIndex++;

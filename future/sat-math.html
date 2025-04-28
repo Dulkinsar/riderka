@@ -21,11 +21,11 @@
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
             transform-origin: top left;
-            transform: scale(0.8); /* Scaling to fit viewport */
+            transform: scale(0.8);
         }
         #world-map {
-            width: 4900px; /* 10x original width */
-            height: 2400px; /* 10x original height */
+            width: 4900px;
+            height: 2400px;
             display: block;
             background: #e0f7ff;
         }
@@ -36,8 +36,8 @@
             width: 4900px;
             height: 2400px;
             display: grid;
-            grid-template-columns: repeat(490, 10px); /* 490 columns */
-            grid-template-rows: repeat(240, 10px); /* 240 rows */
+            grid-template-columns: repeat(490, 10px);
+            grid-template-rows: repeat(240, 10px);
             gap: 1px;
         }
         .tile {
@@ -50,7 +50,7 @@
             border: 1px solid rgba(0,0,0,0.2);
             box-shadow: 0 0 3px rgba(0,0,0,0.1);
         }
-        .controls {
+        .control-panel {
             position: fixed;
             top: 20px;
             left: 20px;
@@ -59,9 +59,34 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             z-index: 100;
+            max-width: 300px;
+            text-align: left;
+        }
+        .student-control {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 5px;
+            border-radius: 4px;
+            background: #f8f8f8;
+        }
+        .student-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .student-color.selected {
+            border: 3px solid #000;
+        }
+        .student-points {
+            width: 60px;
+            margin-left: auto;
+            padding: 3px;
         }
         .zoom-controls {
-            margin-top: 10px;
+            margin: 15px 0;
         }
         button {
             padding: 8px 15px;
@@ -73,24 +98,41 @@
             cursor: pointer;
         }
         input[type="range"] {
-            width: 150px;
-            margin: 0 10px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        #totalPoints {
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 8px;
+            background: #e9f7ef;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="controls">
+    <div class="control-panel">
         <h2>World Conquest (490×240)</h2>
+        
         <div>
             <label>Map Opacity: <span id="opacityValue">70</span>%</label>
             <input type="range" id="opacityControl" min="0" max="100" value="70">
         </div>
+        
+        <div id="totalPoints">Total Points: 0</div>
+        
+        <div id="studentControls">
+            <!-- Student controls will be added here by JavaScript -->
+        </div>
+        
         <div class="zoom-controls">
             <button onclick="zoomOut()">-</button>
             <span id="zoomLevel">80%</span>
             <button onclick="zoomIn()">+</button>
         </div>
+        
         <button onclick="resetAll()">Reset All</button>
+        <button onclick="distributeTerritories()">Auto-Distribute</button>
     </div>
 
     <div class="map-wrapper" id="mapWrapper">
@@ -130,6 +172,47 @@
         const map = document.getElementById('map');
         const opacityControl = document.getElementById('opacityControl');
         const zoomLevelDisplay = document.getElementById('zoomLevel');
+        const studentControls = document.getElementById('studentControls');
+        const totalPointsDisplay = document.getElementById('totalPoints');
+
+        // Create student controls
+        function createStudentControls() {
+            studentControls.innerHTML = '';
+            STUDENTS.forEach((student, index) => {
+                const control = document.createElement('div');
+                control.className = 'student-control';
+                control.innerHTML = `
+                    <div class="student-color" style="background:${student.color}" 
+                         onclick="selectStudent(${index})"></div>
+                    <span>${student.name}</span>
+                    <input type="number" class="student-points" value="${student.points}" min="0"
+                           onchange="updateStudentPoints(${index}, this.value)">
+                `;
+                studentControls.appendChild(control);
+            });
+        }
+
+        // Select student
+        function selectStudent(index) {
+            selectedColor = STUDENTS[index].color;
+            document.querySelectorAll('.student-color').forEach(el => 
+                el.classList.remove('selected'));
+            document.querySelectorAll('.student-color')[index].classList.add('selected');
+        }
+
+        // Update student points
+        function updateStudentPoints(index, value) {
+            STUDENTS[index].points = Math.max(0, parseInt(value) || 0);
+            updateTotalPoints();
+            saveState();
+        }
+
+        // Calculate total points
+        function updateTotalPoints() {
+            const total = STUDENTS.reduce((sum, s) => sum + s.points, 0);
+            totalPointsDisplay.textContent = `Total Points: ${total}`;
+            return total;
+        }
 
         // Create grid
         function createGrid() {
@@ -162,6 +245,47 @@
             }
         }
 
+        // Distribute territories based on points
+        function distributeTerritories() {
+            const totalPoints = updateTotalPoints();
+            if (totalPoints === 0) return;
+            
+            // Calculate distribution
+            const distribution = STUDENTS.map(student => ({
+                color: student.color,
+                share: student.points / totalPoints
+            }));
+            
+            // Calculate tile counts
+            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
+            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+            
+            // Distribute remaining tiles to students with highest remainders
+            const studentsWithRemainders = distribution.map((d, i) => ({
+                index: i,
+                remainder: (d.share * TOTAL_TILES) % 1
+            })).sort((a, b) => b.remainder - a.remainder);
+            
+            for (let i = 0; i < remainingTiles; i++) {
+                if (i < studentsWithRemainders.length) {
+                    tileCounts[studentsWithRemainders[i].index]++;
+                }
+            }
+            
+            // Assign tiles
+            let tileIndex = 0;
+            distribution.forEach((d, i) => {
+                for(let j = 0; j < tileCounts[i]; j++) {
+                    tileOwners[tileIndex] = d.color;
+                    tiles[tileIndex].style.backgroundColor = d.color;
+                    tiles[tileIndex].classList.add('owned');
+                    tileIndex++;
+                }
+            });
+            
+            saveState();
+        }
+
         // Zoom functions
         function zoomIn() {
             currentZoom = Math.min(1.5, currentZoom + 0.1);
@@ -176,6 +300,7 @@
         function updateZoom() {
             mapWrapper.style.transform = `scale(${currentZoom})`;
             zoomLevelDisplay.textContent = `${Math.round(currentZoom * 100)}%`;
+            saveState();
         }
 
         // Opacity control
@@ -185,25 +310,10 @@
             saveState();
         });
 
-        // Initialize color selection
-        document.addEventListener('keydown', function(e) {
-            if (e.key >= '1' && e.key <= '9') {
-                const index = parseInt(e.key) - 1;
-                if (index < STUDENTS.length) {
-                    selectedColor = STUDENTS[index].color;
-                    alert(`Selected ${STUDENTS[index].name}`);
-                }
-            } else if (e.key === '0') {
-                if (STUDENTS.length >= 10) {
-                    selectedColor = STUDENTS[9].color;
-                    alert(`Selected ${STUDENTS[9].name}`);
-                }
-            }
-        });
-
         // Save/load state
         function saveState() {
             localStorage.setItem('hdMapState', JSON.stringify({
+                students: STUDENTS,
                 tileOwners,
                 opacity: opacityControl.value,
                 zoom: currentZoom
@@ -213,25 +323,42 @@
         function loadState() {
             const saved = localStorage.getItem('hdMapState');
             if (saved) {
-                const { tileOwners: savedOwners, opacity, zoom } = JSON.parse(saved);
+                const { students, tileOwners: savedOwners, opacity, zoom } = JSON.parse(saved);
+                
+                // Update students
+                if (students) {
+                    STUDENTS.forEach((s, i) => {
+                        s.points = students[i]?.points || 0;
+                    });
+                }
+                
+                // Update tiles
                 tileOwners = savedOwners || Array(TOTAL_TILES).fill(null);
+                
+                // Update UI
                 opacityControl.value = opacity || 70;
                 worldMap.style.opacity = (opacity || 70) / 100;
                 document.getElementById('opacityValue').textContent = opacity || 70;
                 currentZoom = zoom || 0.8;
                 updateZoom();
+                updateTotalPoints();
+                createStudentControls();
             }
         }
 
         function resetAll() {
-            if (confirm("Reset all territories?")) {
+            if (confirm("Reset all points and territories?")) {
+                STUDENTS.forEach(s => s.points = 0);
                 tileOwners = Array(TOTAL_TILES).fill(null);
                 createGrid();
+                createStudentControls();
+                updateTotalPoints();
                 saveState();
             }
         }
 
         // Initial setup
+        createStudentControls();
         createGrid();
         loadState();
         updateZoom();

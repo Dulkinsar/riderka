@@ -2,66 +2,228 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>World Layout for Dulat the Great</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Conquest Map</title>
     <style>
-        canvas {
-            background: #001d3d;
-            display: block;
-            margin: 0 auto;
-            border: 2px solid white;
-        }
         body {
-            background: black;
-            color: white;
-            text-align: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background: #f0f0f0;
+            text-align: center;
+            min-width: 1000px;
+        }
+        .map-container {
+            display: inline-block;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(32, 16px); /* Larger tiles */
+            grid-gap: 3px; /* Increased gap */
+            margin: 15px;
+        }
+        .tile {
+            width: 16px;  /* 77% larger than before */
+            height: 16px; /* 77% larger than before */
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .tile:hover {
+            transform: scale(1.3);
+            z-index: 2;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        .student-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .color-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        #totalPoints {
+            font-weight: bold;
+            margin: 25px;
+            font-size: 1.4em;
+            color: #333;
+        }
+        button {
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.2s;
+            margin: 20px;
+        }
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <h1>World Map Boxes for Dulat the Great (6'1.5") 🌍🏀 (LeBron James Forever!)</h1>
-    <canvas id="worldMap" width="1000" height="500"></canvas>
+    <h1>Percentage Conquest Map</h1>
+    <p>Enter points for each student. Map shares update automatically!</p>
+    
+    <div class="legend" id="legend"></div>
+    <div id="totalPoints">Total Points: 0</div>
+    
+    <div class="map-container">
+        <div class="grid" id="map"></div>
+    </div>
+
+    <button onclick="resetAll()">Reset All</button>
 
     <script>
-        const canvas = document.getElementById('worldMap');
-        const ctx = canvas.getContext('2d');
+        // (Keep the JavaScript exactly the same as previous version)
+        const STUDENTS = [
+            {color: '#FF0000', name: 'Student 1', points: 0},
+            {color: '#00FF00', name: 'Student 2', points: 0},
+            {color: '#0000FF', name: 'Student 3', points: 0},
+            {color: '#FFFF00', name: 'Student 4', points: 0},
+            {color: '#FF00FF', name: 'Student 5', points: 0},
+            {color: '#00FFFF', name: 'Student 6', points: 0},
+            {color: '#FFA500', name: 'Student 7', points: 0},
+            {color: '#A52A2A', name: 'Student 8', points: 0},
+            {color: '#808080', name: 'Student 9', points: 0},
+            {color: '#008000', name: 'Student 10', points: 0},
+            {color: '#800080', name: 'Student 11', points: 0},
+            {color: '#FFC0CB', name: 'Student 12', points: 0}
+        ];
 
-        const rows = 32;
-        const cols = 64; // Wider because the world is wider than tall
-        const boxWidth = canvas.width / cols;
-        const boxHeight = canvas.height / rows;
+        const TOTAL_TILES = 32 * 32;
+        let tiles = [];
 
-        const image = new Image();
-        image.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1024px-World_map_-_low_resolution.svg.png'; // simple world map
+        // Initialize
+        const legend = document.getElementById('legend');
+        const map = document.getElementById('map');
 
-        image.onload = function() {
-            // Draw the image on a hidden canvas to read pixels
-            const hiddenCanvas = document.createElement('canvas');
-            hiddenCanvas.width = canvas.width;
-            hiddenCanvas.height = canvas.height;
-            const hiddenCtx = hiddenCanvas.getContext('2d');
-            hiddenCtx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        // Create legend
+        STUDENTS.forEach((student, index) => {
+            const item = document.createElement('div');
+            item.className = 'student-item';
+            item.innerHTML = `
+                <div class="color-box" style="background:${student.color}"></div>
+                <input type="number" 
+                       value="${student.points}" 
+                       min="0" 
+                       data-index="${index}"
+                       oninput="updatePoints(${index}, this.value)">
+                <span>${student.name}</span>
+            `;
+            legend.appendChild(item);
+        });
 
-            // Now draw the grid with land/ocean detection
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    const x = col * boxWidth;
-                    const y = row * boxHeight;
+        // Create map
+        for(let i = 0; i < TOTAL_TILES; i++) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            map.appendChild(tile);
+            tiles.push(tile);
+        }
 
-                    // Sample the center pixel of the box
-                    const pixelData = hiddenCtx.getImageData(x + boxWidth/2, y + boxHeight/2, 1, 1).data;
-                    const [r, g, b] = pixelData;
+        function updatePoints(studentIndex, value) {
+            STUDENTS[studentIndex].points = Math.max(0, parseInt(value) || 0);
+            updateMap();
+            saveState();
+        }
 
-                    let isLand = (r < 200 && g < 200 && b < 200); // crude detection: land is darker
+        function updateMap() {
+            const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
+            document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
 
-                    ctx.fillStyle = isLand ? "#00ff00" : "#003366"; // Green for land, dark blue for water
-                    ctx.fillRect(x, y, boxWidth, boxHeight);
+            // Calculate distribution
+            const distribution = STUDENTS.map(student => ({
+                color: student.color,
+                share: totalPoints > 0 ? student.points / totalPoints : 0
+            }));
 
-                    ctx.strokeStyle = "black";
-                    ctx.strokeRect(x, y, boxWidth, boxHeight);
+            // Distribute tiles
+            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
+            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+
+            // Distribute remaining tiles
+            distribution.forEach((d, i) => {
+                const decimal = (d.share * TOTAL_TILES) % 1;
+                tileCounts[i] += remainingTiles > 0 && decimal > Math.random() ? 1 : 0;
+                remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+            });
+
+            // Assign tiles
+            let tileIndex = 0;
+            distribution.forEach((d, i) => {
+                for(let j = 0; j < tileCounts[i]; j++) {
+                    tiles[tileIndex].style.backgroundColor = d.color;
+                    tileIndex++;
                 }
+            });
+
+            // Clear remaining tiles
+            while(tileIndex < TOTAL_TILES) {
+                tiles[tileIndex].style.backgroundColor = '';
+                tileIndex++;
             }
-        };
+        }
+
+        function resetAll() {
+            STUDENTS.forEach(s => s.points = 0);
+            document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
+            updateMap();
+            saveState();
+        }
+
+        // Save/load state
+        function saveState() {
+            localStorage.setItem('mapState', JSON.stringify({
+                students: STUDENTS,
+                totalPoints: STUDENTS.reduce((sum, s) => sum + s.points, 0)
+            }));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('mapState');
+            if (saved) {
+                const { students } = JSON.parse(saved);
+                STUDENTS.forEach((s, i) => {
+                    s.points = students[i].points;
+                    document.querySelectorAll('input[type="number"]')[i].value = s.points;
+                });
+                updateMap();
+            }
+        }
+
+        // Initial load
+        loadState();
     </script>
 </body>
 </html>

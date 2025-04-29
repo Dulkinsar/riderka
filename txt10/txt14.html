@@ -3,197 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inspirational Quotes</title>
+    <title>UK Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background: #f0f0f0;
             text-align: center;
-            background-color: #f4f4f4;
-            padding: 50px;
-            line-height: 2;
         }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 70px;
-        }
-        .box-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 70%;
-            margin-bottom: 70px;
-        }
-        .box {
-            background: white;
-            padding: 40px;
-            border-radius: 10px 10px 0 0;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            width: 100%;
+        .map-wrapper {
             position: relative;
-            line-height: 2;
+            display: inline-block;
+            margin: 30px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
-        .tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            display: none;
-            z-index: 10;
-        }
-        .confirmation {
-            position: absolute;
-            background: white;
-            padding: 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-            display: none;
-            z-index: 11;
-            font-size: 14px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-        .buttons-container {
-            display: flex;
-            justify-content: space-between;
-            background: #ddd;
-            padding: 15px;
-            border-radius: 0 0 10px 10px;
+        #world-map {
             width: 100%;
+            display: block;
+            background: #e0f7ff;
         }
-        .buttons {
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(41, 1fr);
+            grid-template-rows: repeat(60, 1fr);
+            gap: 1px;
+            padding: 2px;
+        }
+        .tile {
+            background-color: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            border-radius: 1px;
+        }
+        .tile.owned {
+            border: 1px solid rgba(0,0,0,0.3);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        .tile.ocean {
+            background-color: rgba(173, 216, 230, 0.3) !important;
+            pointer-events: none;
+        }
+        .legend {
             display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px auto;
+            max-width: 900px;
+        }
+        .student-item {
+            display: flex;
+            align-items: center;
             gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .color-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        input[type="number"] {
+            width: 70px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #totalPoints {
+            font-weight: bold;
+            margin: 25px;
+            font-size: 1.3em;
+            color: #333;
         }
         button {
-            padding: 8px 12px;
+            padding: 10px 25px;
+            background: #4CAF50;
+            color: white;
             border: none;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
-            border-radius: 5px;
+            font-size: 1em;
+            transition: all 0.2s;
+            margin: 15px;
         }
-        .like { background-color: #4CAF50; color: white; }
-        .dislike { background-color: #f44336; color: white; }
-        .clear { background-color: #2196F3; color: white; }
-        .unclear { background-color: #FF9800; color: white; }
-        .wordbank {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 50%;
-            margin-top: 20px;
-            text-align: left;
-            line-height: 2;
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
         }
-
-        .word{
-            cursor: pointer;
+        .controls {
+            margin-bottom: 20px;
+        }
+        #opacityControl {
+            width: 200px;
+            margin: 0 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Test 1</h1>
-    <div class="container">
-        <div class="box-container">
-            <div class="box">
-                <p id="quote1">I am intelligent beyond measure, capable of great achievements, and worthy of every success that I so ardently pursue.</p>
-            </div>
-            <div class="buttons-container">
-                <div class="buttons">
-                    <button class="like">Like</button>
-                    <button class="dislike">Dislike</button>
-                </div>
-                <div class="buttons">
-                    <button class="clear">Clear</button>
-                    <button class="unclear">Unclear</button>
-                </div>
-            </div>
-        </div>
+    <h1>UK Conquest Map (41×60)</h1>
+    <p>Enter points for each student. Territories will appear only on land areas!</p>
+    
+    <div class="controls">
+        <label for="opacityControl">Map Visibility: </label>
+        <input type="range" id="opacityControl" min="0" max="100" value="70">
+        <span id="opacityValue">70%</span>
+    </div>
+    
+    <div class="legend" id="legend"></div>
+    <div id="totalPoints">Total Points: 0</div>
+    
+    <div class="map-wrapper">
+        <img id="world-map" src="https://www.needpix.com/photo/download/173812/united-kingdom-great-britain-black-map-uk-britain-geography-silhouette" alt="UK map" crossorigin="anonymous">
+        <div class="grid-overlay" id="map"></div>
     </div>
 
-    <h1>Test 2</h1>
-    <div class="container">
-        <div class="box-container">
-            <div class="box">
-                <p id="quote2">I am Le Brone James.</p>
-            </div>
-            <div class="buttons-container">
-                <div class="buttons">
-                    <button class="like">Like</button>
-                    <button class="dislike">Dislike</button>
-                </div>
-                <div class="buttons">
-                    <button class="clear">Clear</button>
-                    <button class="unclear">Unclear</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="wordbank" id="wordbank">
-        <h3>Word Bank</h3>
-        <ul id="wordList"></ul>
-    </div>
-
-    <div class="tooltip" id="tooltip"></div>
-    <div class="confirmation" id="confirmation">
-        <p>Add to Word Bank?</p>
-        <button id="confirmYes">Yes</button>
-        <button id="confirmNo">No</button>
-    </div>
+    <button onclick="resetAll()">Reset All</button>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let selectedWord = "";
-            const tooltip = document.getElementById("tooltip");
-            const confirmation = document.getElementById("confirmation");
-            const confirmYes = document.getElementById("confirmYes");
-            const confirmNo = document.getElementById("confirmNo");
-            const wordList = document.getElementById("wordList");
-            
-            function addTooltipEffect(quoteId) {
-                const quoteBox = document.getElementById(quoteId);
-                quoteBox.innerHTML = quoteBox.textContent.split(" ").map(word => `<span class='word'>${word}</span>`).join(" ");
-                
-                document.querySelectorAll(`#${quoteId} .word`).forEach(word => {
-                    word.addEventListener("mouseenter", function(event) {
-                        tooltip.style.display = "block";
-                        tooltip.innerHTML = `<strong>${this.textContent}</strong><br><span style='color:gray'>(Definition here)</span>`;
-                        tooltip.style.left = (event.pageX + 10) + "px";
-                        tooltip.style.top = (event.pageY - 30) + "px";
-                    });
-                    word.addEventListener("mouseleave", function() {
-                        tooltip.style.display = "none";
-                    });
-                    word.addEventListener("click", function(event) {
-                        selectedWord = this.textContent.trim();
-                        confirmation.style.display = "block";
-                        confirmation.style.left = event.pageX + "px";
-                        confirmation.style.top = (event.pageY - 50) + "px";
-                    });
-                });
-            }
-            
-            confirmYes.addEventListener("click", function() {
-                if (selectedWord !== "" && ![...wordList.children].some(li => li.textContent === selectedWord)) {
-                    const newWord = document.createElement("li");
-                    newWord.textContent = selectedWord;
-                    wordList.appendChild(newWord);
-                }
-                confirmation.style.display = "none";
-            });
-            
-            confirmNo.addEventListener("click", function() {
-                confirmation.style.display = "none";
-            });
-            
-            addTooltipEffect("quote1");
-            addTooltipEffect("quote2");
+        const STUDENTS = [
+            {color: '#FF0000', name: 'Student 1', points: 0},
+            {color: '#00FF00', name: 'Student 2', points: 0}
+        ];
+
+        const COLS = 41;
+        const ROWS = 60;
+        const TOTAL_TILES = COLS * ROWS;
+        let tiles = [];
+        let tileOwners = Array(TOTAL_TILES).fill(null);
+        let selectedColor = null;
+        let landTiles = Array(TOTAL_TILES).fill(false);
+
+        // Initialize
+        const legend = document.getElementById('legend');
+        const map = document.getElementById('map');
+        const worldMap = document.getElementById('world-map');
+        const opacityControl = document.getElementById('opacityControl');
+        const opacityValue = document.getElementById('opacityValue');
+
+        // Opacity control
+        opacityControl.addEventListener('input', function() {
+            worldMap.style.opacity = this.value / 100;
+            opacityValue.textContent = `${this.value}%`;
+            saveState();
         });
+
+        // Create legend
+        STUDENTS.forEach((student, index) => {
+            const item = document.createElement('div');
+            item.className = 'student-item';
+            item.innerHTML = `
+                <div class="color-box" style="background:${student.color}"></div>
+                <input type="number" 
+                       value="${student.points}" 
+                       min="0" 
+                       data-index="${index}"
+                       oninput="updatePoints(${index}, this.value)">
+                <span>${student.name}</span>
+            `;
+            legend.appendChild(item);
+        });
+
+        // Create map tiles
+        for(let i = 0; i < TOTAL_TILES; i++) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.dataset.index = i;
+            tile.addEventListener('click', function() {
+                if (selectedColor && landTiles[i]) {
+                    tileOwners[i] = selectedColor;
+                    this.style.backgroundColor = selectedColor;
+                    this.classList.add('owned');
+                    saveState();
+                }
+            });
+            map.appendChild(tile);
+            tiles.push(tile);
+        }
+
+        // Color selection
+        document.querySelectorAll('.color-box').forEach((box, index) => {
+            box.addEventListener('click', function() {
+                selectedColor = STUDENTS[index].color;
+                document.querySelectorAll('.color-box').forEach(b => 
+                    b.style.border = '1px solid #ccc');
+                this.style.border = '3px solid black';
+            });
+        });
+
+        function analyzeMap() {
+            const img = document.getElementById('world-map');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = COLS;
+            canvas.height = ROWS;
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, COLS, ROWS);
+                const imageData = ctx.getImageData(0, 0, COLS, ROWS);
+                const data = imageData.data;
+                
+                // Reset all tiles
+                tiles.forEach(tile => {
+                    tile.classList.remove('ocean');
+                    tile.style.backgroundColor = '';
+                    tile.classList.remove('owned');
+                });
+                landTiles.fill(false);
+                tileOwners.fill(null);
+                
+                // Analyze each pixel
+                for (let y = 0; y < ROWS; y++) {
+                    for (let x = 0; x < COLS; x++) {
+                        const index = (y * COLS + x) * 4;
+                        const r = data[index];
+                        const g = data[index + 1];
+                        const b = data[index + 2];
+                        const a = data[index + 3];
+                        
+                        const tileIndex = y * COLS + x;
+                        
+                        // Land detection (non-white, non-transparent areas)
+                        if (a > 128 && !(r > 200 && g > 200 && b > 200)) {
+                            landTiles[tileIndex] = true;
+                        } else {
+                            tiles[tileIndex].classList.add('ocean');
+                        }
+                    }
+                }
+                updateMap(); // Redistribute points with new land/ocean data
+                saveState();
+            };
+            
+            if (img.complete) img.onload();
+        }
+
+        function updatePoints(studentIndex, value) {
+            STUDENTS[studentIndex].points = Math.max(0, parseInt(value) || 0);
+            distributeLand();
+            saveState();
+        }
+
+        function distributeLand() {
+            const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
+            document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
+
+            // Clear all existing ownership (except oceans)
+            for (let i = 0; i < TOTAL_TILES; i++) {
+                if (landTiles[i]) {
+                    tiles[i].style.backgroundColor = '';
+                    tiles[i].classList.remove('owned');
+                    tileOwners[i] = null;
+                }
+            }
+
+            if (totalPoints === 0) return;
+
+            // Calculate how many land tiles each student should get
+            const totalLandTiles = landTiles.filter(Boolean).length;
+            const studentsSorted = [...STUDENTS]
+                .map((student, index) => ({...student, index}))
+                .sort((a, b) => b.points - a.points);
+
+            // Distribute tiles proportionally to points
+            let remainingTiles = totalLandTiles;
+            let distributedTiles = 0;
+
+            studentsSorted.forEach(student => {
+                if (student.points === 0) return;
+
+                const share = student.points / totalPoints;
+                const tilesToAssign = Math.min(
+                    Math.round(share * totalLandTiles),
+                    remainingTiles
+                );
+
+                if (tilesToAssign > 0) {
+                    assignTilesToStudent(student.index, tilesToAssign);
+                    distributedTiles += tilesToAssign;
+                    remainingTiles -= tilesToAssign;
+                }
+            });
+
+            // Distribute any remaining tiles to students with highest points
+            if (remainingTiles > 0) {
+                assignTilesToStudent(studentsSorted[0].index, remainingTiles);
+            }
+        }
+
+        function assignTilesToStudent(studentIndex, count) {
+            const color = STUDENTS[studentIndex].color;
+            let tilesAssigned = 0;
+            let tileIndex = 0;
+
+            // First pass: find unassigned land tiles
+            while (tilesAssigned < count && tileIndex < TOTAL_TILES) {
+                if (landTiles[tileIndex] && !tileOwners[tileIndex]) {
+                    tiles[tileIndex].style.backgroundColor = color;
+                    tiles[tileIndex].classList.add('owned');
+                    tileOwners[tileIndex] = color;
+                    tilesAssigned++;
+                }
+                tileIndex++;
+            }
+
+            // Second pass: if needed, reassign from other students (starting with lowest points)
+            if (tilesAssigned < count) {
+                const studentsByPoints = [...STUDENTS]
+                    .map((student, index) => ({...student, index}))
+                    .sort((a, b) => a.points - b.points);
+
+                for (let i = 0; i < studentsByPoints.length && tilesAssigned < count; i++) {
+                    const otherStudent = studentsByPoints[i];
+                    if (otherStudent.index === studentIndex) continue;
+
+                    for (let j = 0; j < TOTAL_TILES && tilesAssigned < count; j++) {
+                        if (landTiles[j] && tileOwners[j] === otherStudent.color) {
+                            tiles[j].style.backgroundColor = color;
+                            tileOwners[j] = color;
+                            tilesAssigned++;
+                        }
+                    }
+                }
+            }
+        }
+
+        function resetAll() {
+            STUDENTS.forEach(s => s.points = 0);
+            document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
+            tileOwners.fill(null);
+            tiles.forEach(tile => {
+                tile.style.backgroundColor = '';
+                tile.classList.remove('owned');
+            });
+            saveState();
+        }
+
+        // Save/load state
+        function saveState() {
+            localStorage.setItem('mapState', JSON.stringify({
+                students: STUDENTS,
+                tileOwners,
+                opacity: opacityControl.value,
+                landTiles
+            }));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('mapState');
+            if (saved) {
+                const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles } = JSON.parse(saved);
+                
+                // Load student points
+                STUDENTS.forEach((s, i) => {
+                    s.points = students[i].points;
+                    document.querySelectorAll('input[type="number"]')[i].value = s.points;
+                });
+                
+                // Load land/ocean data
+                if (savedLandTiles) {
+                    landTiles = savedLandTiles;
+                    landTiles.forEach((isLand, i) => {
+                        if (!isLand) {
+                            tiles[i].classList.add('ocean');
+                        }
+                    });
+                }
+                
+                // Load tile ownership
+                if (savedOwners) {
+                    tileOwners = savedOwners;
+                    tileOwners.forEach((color, i) => {
+                        if (color && landTiles[i]) {
+                            tiles[i].style.backgroundColor = color;
+                            tiles[i].classList.add('owned');
+                        }
+                    });
+                }
+                
+                // Load opacity
+                if (opacity) {
+                    opacityControl.value = opacity;
+                    worldMap.style.opacity = opacity / 100;
+                    opacityValue.textContent = `${opacity}%`;
+                }
+                
+                document.getElementById('totalPoints').textContent = `Total Points: ${STUDENTS.reduce((sum, s) => sum + s.points, 0)}`;
+            } else {
+                // If no saved state, analyze the map immediately
+                analyzeMap();
+            }
+        }
+
+        // Initial load
+        loadState();
     </script>
 </body>
 </html>

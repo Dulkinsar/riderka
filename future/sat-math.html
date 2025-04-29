@@ -46,6 +46,10 @@
             border: 1px solid rgba(0,0,0,0.3);
             box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
+        .tile.ocean {
+            background-color: rgba(173, 216, 230, 0.3) !important;
+            pointer-events: none;
+        }
         .legend {
             display: flex;
             flex-wrap: wrap;
@@ -70,6 +74,7 @@
             height: 20px;
             border-radius: 4px;
             border: 1px solid #ccc;
+            cursor: pointer;
         }
         input[type="number"] {
             width: 70px;
@@ -110,22 +115,20 @@
 </head>
 <body>
     <h1>World Conquest Map (98×48)</h1>
-    <p>Enter points for each student. Territories will appear over the world map!</p>
+    <p>Enter points for each student. Territories will appear only on land areas!</p>
     
     <div class="controls">
         <label for="opacityControl">Map Visibility: </label>
         <input type="range" id="opacityControl" min="0" max="100" value="70">
         <span id="opacityValue">70%</span>
+        <button onclick="analyzeMap()">Detect Land/Ocean</button>
     </div>
     
     <div class="legend" id="legend"></div>
     <div id="totalPoints">Total Points: 0</div>
     
     <div class="map-wrapper">
-        <!-- World map base layer -->
-        <img id="world-map" src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="World map">
-        
-        <!-- Interactive grid overlay -->
+        <img id="world-map" src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="World map" crossorigin="anonymous">
         <div class="grid-overlay" id="map"></div>
     </div>
 
@@ -151,6 +154,9 @@
         const ROWS = 48;
         const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
+        let tileOwners = Array(TOTAL_TILES).fill(null);
+        let selectedColor = null;
+        let landTiles = Array(TOTAL_TILES).fill(false);
 
         // Initialize
         const legend = document.getElementById('legend');
@@ -163,6 +169,7 @@
         opacityControl.addEventListener('input', function() {
             worldMap.style.opacity = this.value / 100;
             opacityValue.textContent = `${this.value}%`;
+            saveState();
         });
 
         // Create legend
@@ -187,7 +194,7 @@
             tile.className = 'tile';
             tile.dataset.index = i;
             tile.addEventListener('click', function() {
-                if (selectedColor) {
+                if (selectedColor && landTiles[i]) {
                     tileOwners[i] = selectedColor;
                     this.style.backgroundColor = selectedColor;
                     this.classList.add('owned');
@@ -197,9 +204,6 @@
             map.appendChild(tile);
             tiles.push(tile);
         }
-
-        let selectedColor = null;
-        let tileOwners = Array(TOTAL_TILES).fill(null);
 
         // Color selection
         document.querySelectorAll('.color-box').forEach((box, index) => {
@@ -211,6 +215,54 @@
             });
         });
 
+        function analyzeMap() {
+            const img = document.getElementById('world-map');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = COLS;
+            canvas.height = ROWS;
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, COLS, ROWS);
+                const imageData = ctx.getImageData(0, 0, COLS, ROWS);
+                const data = imageData.data;
+                
+                // Reset all tiles
+                tiles.forEach(tile => {
+                    tile.classList.remove('ocean');
+                    tile.style.backgroundColor = '';
+                    tile.classList.remove('owned');
+                });
+                landTiles.fill(false);
+                tileOwners.fill(null);
+                
+                // Analyze each pixel
+                for (let y = 0; y < ROWS; y++) {
+                    for (let x = 0; x < COLS; x++) {
+                        const index = (y * COLS + x) * 4;
+                        const r = data[index];
+                        const g = data[index + 1];
+                        const b = data[index + 2];
+                        const a = data[index + 3];
+                        
+                        const tileIndex = y * COLS + x;
+                        
+                        // Land detection (non-white, non-transparent areas)
+                        if (a > 128 && !(r > 200 && g > 200 && b > 200)) {
+                            landTiles[tileIndex] = true;
+                        } else {
+                            tiles[tileIndex].classList.add('ocean');
+                        }
+                    }
+                }
+                updateMap(); // Redistribute points with new land/ocean data
+                saveState();
+            };
+            
+            if (img.complete) img.onload();
+        }
+
         function updatePoints(studentIndex, value) {
             STUDENTS[studentIndex].points = Math.max(0, parseInt(value) || 0);
             updateMap();
@@ -221,20 +273,21 @@
             const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
             document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
 
-            // Calculate distribution
+            // Calculate distribution only for land tiles
+            const totalLandTiles = landTiles.filter(Boolean).length;
             const distribution = STUDENTS.map(student => ({
                 color: student.color,
                 share: totalPoints > 0 ? student.points / totalPoints : 0
             }));
 
-            // Distribute tiles
-            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
-            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+            // Distribute land tiles
+            let tileCounts = distribution.map(d => Math.floor(d.share * totalLandTiles));
+            let remainingTiles = totalLandTiles - tileCounts.reduce((a, b) => a + b, 0);
 
             // Distribute remaining tiles
             const studentsWithRemainders = distribution.map((d, i) => ({
                 index: i,
-                remainder: (d.share * TOTAL_TILES) % 1
+                remainder: (d.share * totalLandTiles) % 1
             })).sort((a, b) => b.remainder - a.remainder);
 
             for (let i = 0; i < remainingTiles; i++) {
@@ -243,23 +296,30 @@
                 }
             }
 
-            // Assign tiles
-            let tileIndex = 0;
+            // Assign tiles only to land areas
+            let tilesAssigned = 0;
             distribution.forEach((d, i) => {
-                for(let j = 0; j < tileCounts[i]; j++) {
-                    tiles[tileIndex].style.backgroundColor = d.color;
-                    tiles[tileIndex].classList.add('owned');
-                    tileOwners[tileIndex] = d.color;
+                let tilesToAssign = tileCounts[i];
+                let tileIndex = 0;
+                
+                while (tilesToAssign > 0 && tileIndex < TOTAL_TILES) {
+                    if (landTiles[tileIndex] && !tileOwners[tileIndex]) {
+                        tiles[tileIndex].style.backgroundColor = d.color;
+                        tiles[tileIndex].classList.add('owned');
+                        tileOwners[tileIndex] = d.color;
+                        tilesToAssign--;
+                    }
                     tileIndex++;
                 }
             });
 
-            // Clear remaining tiles
-            while(tileIndex < TOTAL_TILES) {
-                tiles[tileIndex].style.backgroundColor = '';
-                tiles[tileIndex].classList.remove('owned');
-                tileOwners[tileIndex] = null;
-                tileIndex++;
+            // Clear any previously owned tiles that shouldn't be owned
+            for (let i = 0; i < TOTAL_TILES; i++) {
+                if (!landTiles[i] && tileOwners[i]) {
+                    tiles[i].style.backgroundColor = '';
+                    tiles[i].classList.remove('owned');
+                    tileOwners[i] = null;
+                }
             }
         }
 
@@ -279,32 +339,51 @@
             localStorage.setItem('mapState', JSON.stringify({
                 students: STUDENTS,
                 tileOwners,
-                opacity: opacityControl.value
+                opacity: opacityControl.value,
+                landTiles
             }));
         }
 
         function loadState() {
             const saved = localStorage.getItem('mapState');
             if (saved) {
-                const { students, tileOwners: savedOwners, opacity } = JSON.parse(saved);
+                const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles } = JSON.parse(saved);
+                
+                // Load student points
                 STUDENTS.forEach((s, i) => {
                     s.points = students[i].points;
                     document.querySelectorAll('input[type="number"]')[i].value = s.points;
                 });
+                
+                // Load land/ocean data
+                if (savedLandTiles) {
+                    landTiles = savedLandTiles;
+                    landTiles.forEach((isLand, i) => {
+                        if (!isLand) {
+                            tiles[i].classList.add('ocean');
+                        }
+                    });
+                }
+                
+                // Load tile ownership
                 if (savedOwners) {
                     tileOwners = savedOwners;
                     tileOwners.forEach((color, i) => {
-                        if (color) {
+                        if (color && landTiles[i]) {
                             tiles[i].style.backgroundColor = color;
                             tiles[i].classList.add('owned');
                         }
                     });
                 }
+                
+                // Load opacity
                 if (opacity) {
                     opacityControl.value = opacity;
                     worldMap.style.opacity = opacity / 100;
                     opacityValue.textContent = `${opacity}%`;
                 }
+                
+                updateMap();
             }
         }
 

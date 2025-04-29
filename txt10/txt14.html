@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UK Conquest Map</title>
+    <title>World Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,8 +32,8 @@
             width: 100%;
             height: 100%;
             display: grid;
-            grid-template-columns: repeat(41, 1fr);
-            grid-template-rows: repeat(60, 1fr);
+            grid-template-columns: repeat(98, 1fr);
+            grid-template-rows: repeat(48, 1fr);
             gap: 1px;
             padding: 2px;
         }
@@ -54,8 +54,8 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            justify-content: center;
-            margin: 30px auto;
+            justify-content: flex-start;
+            margin: 30px 0 30px 8%;
             max-width: 900px;
         }
         .student-item {
@@ -112,7 +112,7 @@
     </style>
 </head>
 <body>
-    <h1>UK Conquest Map (41×60)</h1>
+    <h1>World Conquest Map (98×48)</h1>
     <p>Enter points for each student. Territories will appear only on land areas!</p>
     
     <div class="controls">
@@ -125,7 +125,7 @@
     <div id="totalPoints">Total Points: 0</div>
     
     <div class="map-wrapper">
-        <img id="world-map" src="/images/uk.png" alt="UK map">
+        <img id="world-map" src="/images/uk.png" alt="World map" crossorigin="anonymous">
         <div class="grid-overlay" id="map"></div>
     </div>
 
@@ -134,11 +134,21 @@
     <script>
         const STUDENTS = [
             {color: '#FF0000', name: 'Student 1', points: 0},
-            {color: '#00FF00', name: 'Student 2', points: 0}
+            {color: '#00FF00', name: 'Student 2', points: 0},
+            {color: '#0000FF', name: 'Student 3', points: 0},
+            {color: '#FFFF00', name: 'Student 4', points: 0},
+            {color: '#FF00FF', name: 'Student 5', points: 0},
+            {color: '#00FFFF', name: 'Student 6', points: 0},
+            {color: '#FFA500', name: 'Student 7', points: 0},
+            {color: '#A52A2A', name: 'Student 8', points: 0},
+            {color: '#808080', name: 'Student 9', points: 0},
+            {color: '#008000', name: 'Student 10', points: 0},
+            {color: '#800080', name: 'Student 11', points: 0},
+            {color: '#FFC0CB', name: 'Student 12', points: 0}
         ];
 
-        const COLS = 41;
-        const ROWS = 60;
+        const COLS = 98;
+        const ROWS = 48;
         const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
         let tileOwners = Array(TOTAL_TILES).fill(null);

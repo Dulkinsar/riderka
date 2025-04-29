@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Conquest Map</title>
+    <title>UK Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,8 +32,8 @@
             width: 100%;
             height: 100%;
             display: grid;
-            grid-template-columns: repeat(98, 1fr);
-            grid-template-rows: repeat(48, 1fr);
+            grid-template-columns: repeat(41, 1fr);
+            grid-template-rows: repeat(60, 1fr);
             gap: 1px;
             padding: 2px;
         }
@@ -54,8 +54,8 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            justify-content: flex-start;
-            margin: 30px 0 30px 8%;
+            justify-content: center;
+            margin: 30px auto;
             max-width: 900px;
         }
         .student-item {
@@ -112,8 +112,8 @@
     </style>
 </head>
 <body>
-    <h1>World Conquest Map (98×48)</h1>
-    <p>Enter points for each student. Territories will appear only on land areas!</p>
+    <h1>UK Conquest Map (41×60)</h1>
+    <p>Enter points for each student. Territories will appear only on black land areas!</p>
     
     <div class="controls">
         <label for="opacityControl">Map Visibility: </label>
@@ -125,7 +125,7 @@
     <div id="totalPoints">Total Points: 0</div>
     
     <div class="map-wrapper">
-        <img id="world-map" src="/images/uk.png" alt="World map" crossorigin="anonymous">
+        <img id="world-map" src="/images/uk.png" alt="UK map">
         <div class="grid-overlay" id="map"></div>
     </div>
 
@@ -134,21 +134,11 @@
     <script>
         const STUDENTS = [
             {color: '#FF0000', name: 'Student 1', points: 0},
-            {color: '#00FF00', name: 'Student 2', points: 0},
-            {color: '#0000FF', name: 'Student 3', points: 0},
-            {color: '#FFFF00', name: 'Student 4', points: 0},
-            {color: '#FF00FF', name: 'Student 5', points: 0},
-            {color: '#00FFFF', name: 'Student 6', points: 0},
-            {color: '#FFA500', name: 'Student 7', points: 0},
-            {color: '#A52A2A', name: 'Student 8', points: 0},
-            {color: '#808080', name: 'Student 9', points: 0},
-            {color: '#008000', name: 'Student 10', points: 0},
-            {color: '#800080', name: 'Student 11', points: 0},
-            {color: '#FFC0CB', name: 'Student 12', points: 0}
+            {color: '#00FF00', name: 'Student 2', points: 0}
         ];
 
-        const COLS = 98;
-        const ROWS = 48;
+        const COLS = 41;
+        const ROWS = 60;
         const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
         let tileOwners = Array(TOTAL_TILES).fill(null);
@@ -234,7 +224,7 @@
                 landTiles.fill(false);
                 tileOwners.fill(null);
                 
-                // Analyze each pixel
+                // Analyze each pixel for pure black (#000000) land areas
                 for (let y = 0; y < ROWS; y++) {
                     for (let x = 0; x < COLS; x++) {
                         const index = (y * COLS + x) * 4;
@@ -245,15 +235,15 @@
                         
                         const tileIndex = y * COLS + x;
                         
-                        // Land detection (non-white, non-transparent areas)
-                        if (a > 128 && !(r > 200 && g > 200 && b > 200)) {
+                        // Strict black land detection
+                        if (r === 0 && g === 0 && b === 0 && a > 128) {
                             landTiles[tileIndex] = true;
                         } else {
                             tiles[tileIndex].classList.add('ocean');
                         }
                     }
                 }
-                updateMap(); // Redistribute points with new land/ocean data
+                updateMap();
                 saveState();
             };
             
@@ -270,7 +260,7 @@
             const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
             document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
 
-            // Clear all existing ownership (except oceans)
+            // Clear existing ownership
             for (let i = 0; i < TOTAL_TILES; i++) {
                 if (landTiles[i]) {
                     tiles[i].style.backgroundColor = '';
@@ -281,13 +271,11 @@
 
             if (totalPoints === 0) return;
 
-            // Calculate how many land tiles each student should get
             const totalLandTiles = landTiles.filter(Boolean).length;
             const studentsSorted = [...STUDENTS]
                 .map((student, index) => ({...student, index}))
                 .sort((a, b) => b.points - a.points);
 
-            // Distribute tiles proportionally to points
             let remainingTiles = totalLandTiles;
             let distributedTiles = 0;
 
@@ -307,7 +295,6 @@
                 }
             });
 
-            // Distribute any remaining tiles to students with highest points
             if (remainingTiles > 0) {
                 assignTilesToStudent(studentsSorted[0].index, remainingTiles);
             }
@@ -318,7 +305,6 @@
             let tilesAssigned = 0;
             let tileIndex = 0;
 
-            // First pass: find unassigned land tiles
             while (tilesAssigned < count && tileIndex < TOTAL_TILES) {
                 if (landTiles[tileIndex] && !tileOwners[tileIndex]) {
                     tiles[tileIndex].style.backgroundColor = color;
@@ -329,7 +315,6 @@
                 tileIndex++;
             }
 
-            // Second pass: if needed, reassign from other students (starting with lowest points)
             if (tilesAssigned < count) {
                 const studentsByPoints = [...STUDENTS]
                     .map((student, index) => ({...student, index}))
@@ -361,7 +346,6 @@
             saveState();
         }
 
-        // Save/load state
         function saveState() {
             localStorage.setItem('mapState', JSON.stringify({
                 students: STUDENTS,
@@ -376,23 +360,18 @@
             if (saved) {
                 const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles } = JSON.parse(saved);
                 
-                // Load student points
                 STUDENTS.forEach((s, i) => {
                     s.points = students[i].points;
                     document.querySelectorAll('input[type="number"]')[i].value = s.points;
                 });
                 
-                // Load land/ocean data
                 if (savedLandTiles) {
                     landTiles = savedLandTiles;
                     landTiles.forEach((isLand, i) => {
-                        if (!isLand) {
-                            tiles[i].classList.add('ocean');
-                        }
+                        if (!isLand) tiles[i].classList.add('ocean');
                     });
                 }
                 
-                // Load tile ownership
                 if (savedOwners) {
                     tileOwners = savedOwners;
                     tileOwners.forEach((color, i) => {
@@ -403,7 +382,6 @@
                     });
                 }
                 
-                // Load opacity
                 if (opacity) {
                     opacityControl.value = opacity;
                     worldMap.style.opacity = opacity / 100;
@@ -412,7 +390,6 @@
                 
                 document.getElementById('totalPoints').textContent = `Total Points: ${STUDENTS.reduce((sum, s) => sum + s.points, 0)}`;
             } else {
-                // If no saved state, analyze the map immediately
                 analyzeMap();
             }
         }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimized World Conquest Map</title>
+    <title>Live World Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,44 @@
             padding: 20px;
             background: #f0f0f0;
             text-align: center;
+            overflow-x: auto;
+        }
+        .map-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 20px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            transform-origin: top left;
+            transform: scale(0.8);
+        }
+        #world-map {
+            width: 4900px;
+            height: 2400px;
+            display: block;
+            background: #e0f7ff;
+        }
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4900px;
+            height: 2400px;
+            display: grid;
+            grid-template-columns: repeat(490, 10px);
+            grid-template-rows: repeat(240, 10px);
+            gap: 1px;
+        }
+        .tile {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255,255,255,0.2);
+            transition: background-color 0.3s;
+        }
+        .tile.owned {
+            border: 1px solid rgba(0,0,0,0.2);
+            box-shadow: 0 0 3px rgba(0,0,0,0.1);
         }
         .control-panel {
             position: fixed;
@@ -23,41 +61,6 @@
             z-index: 100;
             max-width: 300px;
             text-align: left;
-        }
-        .map-container {
-            position: relative;
-            margin: 120px auto 40px;
-            width: 980px;
-            height: 480px;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        }
-        #world-map {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-        }
-        .grid-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: repeat(98, 10px);
-            grid-template-rows: repeat(48, 10px);
-        }
-        .tile {
-            width: 10px;
-            height: 10px;
-            background-color: rgba(255,255,255,0.3);
-            transition: background-color 0.1s;
-        }
-        .tile.owned {
-            border: 1px solid rgba(0,0,0,0.3);
         }
         .student-control {
             display: flex;
@@ -81,13 +84,13 @@
             width: 60px;
             margin-left: auto;
             padding: 3px;
+            transition: all 0.3s;
         }
-        #totalPoints {
-            font-weight: bold;
-            margin: 10px 0;
-            padding: 8px;
-            background: #e9f7ef;
-            border-radius: 4px;
+        .student-points:focus {
+            background: #fffde7;
+        }
+        .zoom-controls {
+            margin: 15px 0;
         }
         button {
             padding: 8px 15px;
@@ -97,16 +100,41 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #45a049;
         }
         input[type="range"] {
             width: 100%;
             margin: 10px 0;
         }
+        #totalPoints {
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 8px;
+            background: #e9f7ef;
+            border-radius: 4px;
+        }
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div class="loading" id="loading">Updating Map...</div>
+
     <div class="control-panel">
-        <h2>World Conquest (98×48)</h2>
+        <h2>World Conquest (490×240)</h2>
         
         <div>
             <label>Map Opacity: <span id="opacityValue">70</span>%</label>
@@ -119,19 +147,24 @@
             <!-- Student controls will be added here by JavaScript -->
         </div>
         
-        <button onclick="distributeTerritories()">Auto-Distribute</button>
+        <div class="zoom-controls">
+            <button onclick="zoomOut()">-</button>
+            <span id="zoomLevel">80%</span>
+            <button onclick="zoomIn()">+</button>
+        </div>
+        
         <button onclick="resetAll()">Reset All</button>
     </div>
 
-    <div class="map-container">
+    <div class="map-wrapper" id="mapWrapper">
         <img id="world-map" src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="World map">
         <div class="grid-overlay" id="map"></div>
     </div>
 
     <script>
-        // Optimized configuration (reduced grid size for performance)
-        const COLS = 98;
-        const ROWS = 48;
+        // Configuration
+        const COLS = 490;
+        const ROWS = 240;
         const TOTAL_TILES = COLS * ROWS;
         const STUDENTS = [
             {color: '#FF0000', name: 'Student 1', points: 0},
@@ -150,15 +183,21 @@
 
         // State
         let tiles = [];
-        let tileOwners = new Array(TOTAL_TILES).fill(null);
+        let tileOwners = Array(TOTAL_TILES).fill(null);
         let selectedColor = null;
+        let currentZoom = 0.8;
+        let isUpdating = false;
+        let updateTimeout = null;
 
         // Initialize
+        const mapWrapper = document.getElementById('mapWrapper');
         const worldMap = document.getElementById('world-map');
         const map = document.getElementById('map');
         const opacityControl = document.getElementById('opacityControl');
+        const zoomLevelDisplay = document.getElementById('zoomLevel');
         const studentControls = document.getElementById('studentControls');
         const totalPointsDisplay = document.getElementById('totalPoints');
+        const loadingIndicator = document.getElementById('loading');
 
         // Create student controls
         function createStudentControls() {
@@ -171,7 +210,7 @@
                          onclick="selectStudent(${index})"></div>
                     <span>${student.name}</span>
                     <input type="number" class="student-points" value="${student.points}" min="0"
-                           onchange="updateStudentPoints(${index}, this.value)">
+                           oninput="queueTerritoryUpdate(${index}, this.value)">
                 `;
                 studentControls.appendChild(control);
             });
@@ -185,11 +224,24 @@
             document.querySelectorAll('.student-color')[index].classList.add('selected');
         }
 
-        // Update student points
-        function updateStudentPoints(index, value) {
+        // Queue territory update (debounced)
+        function queueTerritoryUpdate(index, value) {
             STUDENTS[index].points = Math.max(0, parseInt(value) || 0);
             updateTotalPoints();
-            saveState();
+            
+            // Show loading indicator for large updates
+            if (!isUpdating) {
+                loadingIndicator.style.display = 'block';
+                isUpdating = true;
+            }
+            
+            // Debounce to prevent jank during rapid input
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                distributeTerritories();
+                isUpdating = false;
+                loadingIndicator.style.display = 'none';
+            }, 300);
         }
 
         // Calculate total points
@@ -199,17 +251,25 @@
             return total;
         }
 
-        // Create optimized grid
+        // Create grid
         function createGrid() {
             map.innerHTML = '';
             tiles = [];
-            
-            const fragment = document.createDocumentFragment();
             
             for(let i = 0; i < TOTAL_TILES; i++) {
                 const tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.dataset.index = i;
+                
+                tile.addEventListener('click', function() {
+                    if (selectedColor) {
+                        const index = parseInt(this.dataset.index);
+                        tileOwners[index] = selectedColor;
+                        this.style.backgroundColor = selectedColor;
+                        this.classList.add('owned');
+                        saveState();
+                    }
+                });
                 
                 // Restore ownership if exists
                 if (tileOwners[i]) {
@@ -217,61 +277,89 @@
                     tile.classList.add('owned');
                 }
                 
-                fragment.appendChild(tile);
+                map.appendChild(tile);
                 tiles.push(tile);
             }
-            
-            map.appendChild(fragment);
-            
-            // Add event delegation for better performance
-            map.addEventListener('click', function(e) {
-                if (e.target.classList.contains('tile') && selectedColor) {
-                    const index = parseInt(e.target.dataset.index);
-                    tileOwners[index] = selectedColor;
-                    e.target.style.backgroundColor = selectedColor;
-                    e.target.classList.add('owned');
-                    saveState();
-                }
-            });
         }
 
-        // Optimized territory distribution
+        // Distribute territories based on points (optimized)
         function distributeTerritories() {
             const totalPoints = updateTotalPoints();
-            if (totalPoints === 0) return;
             
-            // Reset all tiles first
-            tileOwners.fill(null);
-            tiles.forEach(tile => {
-                tile.style.backgroundColor = '';
-                tile.classList.remove('owned');
-            });
+            // Clear all tiles first (optimized)
+            if (totalPoints === 0) {
+                tileOwners.fill(null);
+                tiles.forEach(tile => {
+                    tile.style.backgroundColor = '';
+                    tile.classList.remove('owned');
+                });
+                return;
+            }
             
             // Calculate distribution
             const distribution = STUDENTS
                 .filter(student => student.points > 0)
                 .map(student => ({
                     color: student.color,
-                    share: student.points / totalPoints,
-                    tiles: Math.floor((student.points / totalPoints) * TOTAL_TILES)
+                    share: student.points / totalPoints
                 }));
             
-            // Distribute tiles in random order for better visual spread
-            const availableIndices = Array.from({length: TOTAL_TILES}, (_, i) => i);
+            if (distribution.length === 0) return;
             
-            distribution.forEach(student => {
-                for (let i = 0; i < student.tiles; i++) {
-                    if (availableIndices.length === 0) break;
-                    
-                    const randomIndex = Math.floor(Math.random() * availableIndices.length);
-                    const tileIndex = availableIndices.splice(randomIndex, 1)[0];
-                    
-                    tileOwners[tileIndex] = student.color;
-                    tiles[tileIndex].style.backgroundColor = student.color;
+            // Calculate tile counts
+            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
+            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+            
+            // Distribute remaining tiles
+            if (remainingTiles > 0) {
+                const studentsWithRemainders = distribution.map((d, i) => ({
+                    index: i,
+                    remainder: (d.share * TOTAL_TILES) % 1
+                })).sort((a, b) => b.remainder - a.remainder);
+                
+                for (let i = 0; i < remainingTiles; i++) {
+                    tileCounts[studentsWithRemainders[i % studentsWithRemainders.length].index]++;
+                }
+            }
+            
+            // Assign tiles in batches for better performance
+            let tileIndex = 0;
+            distribution.forEach((d, i) => {
+                const color = d.color;
+                const endIndex = tileIndex + tileCounts[i];
+                
+                for (; tileIndex < endIndex; tileIndex++) {
+                    tileOwners[tileIndex] = color;
+                    tiles[tileIndex].style.backgroundColor = color;
                     tiles[tileIndex].classList.add('owned');
                 }
             });
             
+            // Clear any remaining tiles
+            while (tileIndex < TOTAL_TILES) {
+                tileOwners[tileIndex] = null;
+                tiles[tileIndex].style.backgroundColor = '';
+                tiles[tileIndex].classList.remove('owned');
+                tileIndex++;
+            }
+            
+            saveState();
+        }
+
+        // Zoom functions
+        function zoomIn() {
+            currentZoom = Math.min(1.5, currentZoom + 0.1);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(0.3, currentZoom - 0.1);
+            updateZoom();
+        }
+
+        function updateZoom() {
+            mapWrapper.style.transform = `scale(${currentZoom})`;
+            zoomLevelDisplay.textContent = `${Math.round(currentZoom * 100)}%`;
             saveState();
         }
 
@@ -284,47 +372,51 @@
 
         // Save/load state
         function saveState() {
-            localStorage.setItem('mapState', JSON.stringify({
+            localStorage.setItem('hdMapState', JSON.stringify({
                 students: STUDENTS,
                 tileOwners,
-                opacity: opacityControl.value
+                opacity: opacityControl.value,
+                zoom: currentZoom
             }));
         }
 
         function loadState() {
-            const saved = localStorage.getItem('mapState');
+            const saved = localStorage.getItem('hdMapState');
             if (saved) {
-                const { students, tileOwners: savedOwners, opacity } = JSON.parse(saved);
+                const { students, tileOwners: savedOwners, opacity, zoom } = JSON.parse(saved);
                 
+                // Update students
                 if (students) {
                     STUDENTS.forEach((s, i) => {
                         s.points = students[i]?.points || 0;
                     });
                 }
                 
-                if (savedOwners) {
-                    tileOwners = [...savedOwners];
-                }
+                // Update tiles
+                tileOwners = savedOwners || Array(TOTAL_TILES).fill(null);
                 
-                if (opacity) {
-                    opacityControl.value = opacity;
-                    worldMap.style.opacity = opacity / 100;
-                    document.getElementById('opacityValue').textContent = opacity;
-                }
-                
+                // Update UI
+                opacityControl.value = opacity || 70;
+                worldMap.style.opacity = (opacity || 70) / 100;
+                document.getElementById('opacityValue').textContent = opacity || 70;
+                currentZoom = zoom || 0.8;
+                updateZoom();
                 updateTotalPoints();
                 createStudentControls();
                 createGrid();
+                
+                // Initial territory distribution
+                distributeTerritories();
             }
         }
 
         function resetAll() {
             if (confirm("Reset all points and territories?")) {
                 STUDENTS.forEach(s => s.points = 0);
-                tileOwners.fill(null);
-                createGrid();
+                tileOwners = Array(TOTAL_TILES).fill(null);
                 createStudentControls();
                 updateTotalPoints();
+                distributeTerritories();
                 saveState();
             }
         }

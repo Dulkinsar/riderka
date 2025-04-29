@@ -32,8 +32,8 @@
             width: 100%;
             height: 100%;
             display: grid;
-            grid-template-columns: repeat(49, 1fr);
-            grid-template-rows: repeat(24, 1fr);
+            grid-template-columns: repeat(98, 1fr);
+            grid-template-rows: repeat(48, 1fr);
             gap: 1px;
             padding: 2px;
         }
@@ -109,7 +109,7 @@
     </style>
 </head>
 <body>
-    <h1>World Conquest Map (49×24)</h1>
+    <h1>World Conquest Map (98×48)</h1>
     <p>Enter points for each student. Territories will appear over the world map!</p>
     
     <div class="controls">
@@ -147,8 +147,8 @@
             {color: '#FFC0CB', name: 'Student 12', points: 0}
         ];
 
-        const COLS = 49;
-        const ROWS = 24;
+        const COLS = 98;
+        const ROWS = 48;
         const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
 

@@ -164,7 +164,7 @@
             const item = document.createElement('div');
             item.className = 'student-item';
             item.innerHTML = `
-                <div class="color-box" style="background:${student.color}"></div>
+                <div class="color-box" style="background:${student.color}" onclick="selectColor(${index})"></div>
                 <input type="number" 
                        value="${student.points}" 
                        min="0" 
@@ -193,14 +193,12 @@
         }
 
         // Color selection
-        document.querySelectorAll('.color-box').forEach((box, index) => {
-            box.addEventListener('click', function() {
-                selectedColor = STUDENTS[index].color;
-                document.querySelectorAll('.color-box').forEach(b => 
-                    b.style.border = '1px solid #ccc');
-                this.style.border = '3px solid black';
-            });
-        });
+        function selectColor(index) {
+            selectedColor = STUDENTS[index].color;
+            document.querySelectorAll('.color-box').forEach(b => 
+                b.style.border = '1px solid #ccc');
+            document.querySelectorAll('.color-box')[index].style.border = '3px solid black';
+        }
 
         function analyzeMap() {
             const img = document.getElementById('world-map');
@@ -210,6 +208,10 @@
             canvas.width = COLS;
             canvas.height = ROWS;
             
+            img.onerror = function() {
+                console.error('Error loading map image');
+            };
+
             img.onload = function() {
                 ctx.drawImage(img, 0, 0, COLS, ROWS);
                 const imageData = ctx.getImageData(0, 0, COLS, ROWS);
@@ -235,19 +237,22 @@
                         
                         const tileIndex = y * COLS + x;
                         
-                        // Strict black land detection
-                        if (r === 0 && g === 0 && b === 0 && a > 128) {
+                        // Strict black color detection
+                        if (r === 0 && g === 0 && b === 0 && a === 255) {
                             landTiles[tileIndex] = true;
                         } else {
                             tiles[tileIndex].classList.add('ocean');
                         }
                     }
                 }
-                updateMap();
+                distributeLand();
                 saveState();
             };
             
-            if (img.complete) img.onload();
+            // Trigger analysis if image is already loaded
+            if (img.complete && img.naturalWidth !== 0) {
+                img.onload();
+            }
         }
 
         function updatePoints(studentIndex, value) {
@@ -260,6 +265,13 @@
             const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
             document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
 
+            // Check if we have valid land data
+            const totalLand = landTiles.filter(Boolean).length;
+            if (totalLand === 0) {
+                console.log('No land areas detected yet');
+                return;
+            }
+
             // Clear existing ownership
             for (let i = 0; i < TOTAL_TILES; i++) {
                 if (landTiles[i]) {
@@ -271,12 +283,11 @@
 
             if (totalPoints === 0) return;
 
-            const totalLandTiles = landTiles.filter(Boolean).length;
             const studentsSorted = [...STUDENTS]
                 .map((student, index) => ({...student, index}))
                 .sort((a, b) => b.points - a.points);
 
-            let remainingTiles = totalLandTiles;
+            let remainingTiles = totalLand;
             let distributedTiles = 0;
 
             studentsSorted.forEach(student => {
@@ -284,7 +295,7 @@
 
                 const share = student.points / totalPoints;
                 const tilesToAssign = Math.min(
-                    Math.round(share * totalLandTiles),
+                    Math.round(share * totalLand),
                     remainingTiles
                 );
 
@@ -295,7 +306,7 @@
                 }
             });
 
-            if (remainingTiles > 0) {
+            if (remainingTiles > 0 && studentsSorted.length > 0) {
                 assignTilesToStudent(studentsSorted[0].index, remainingTiles);
             }
         }
@@ -303,33 +314,24 @@
         function assignTilesToStudent(studentIndex, count) {
             const color = STUDENTS[studentIndex].color;
             let tilesAssigned = 0;
-            let tileIndex = 0;
 
-            while (tilesAssigned < count && tileIndex < TOTAL_TILES) {
-                if (landTiles[tileIndex] && !tileOwners[tileIndex]) {
-                    tiles[tileIndex].style.backgroundColor = color;
-                    tiles[tileIndex].classList.add('owned');
-                    tileOwners[tileIndex] = color;
+            // First pass: assign unclaimed tiles
+            for (let i = 0; i < TOTAL_TILES && tilesAssigned < count; i++) {
+                if (landTiles[i] && !tileOwners[i]) {
+                    tiles[i].style.backgroundColor = color;
+                    tiles[i].classList.add('owned');
+                    tileOwners[i] = color;
                     tilesAssigned++;
                 }
-                tileIndex++;
             }
 
+            // Second pass: reassign if needed
             if (tilesAssigned < count) {
-                const studentsByPoints = [...STUDENTS]
-                    .map((student, index) => ({...student, index}))
-                    .sort((a, b) => a.points - b.points);
-
-                for (let i = 0; i < studentsByPoints.length && tilesAssigned < count; i++) {
-                    const otherStudent = studentsByPoints[i];
-                    if (otherStudent.index === studentIndex) continue;
-
-                    for (let j = 0; j < TOTAL_TILES && tilesAssigned < count; j++) {
-                        if (landTiles[j] && tileOwners[j] === otherStudent.color) {
-                            tiles[j].style.backgroundColor = color;
-                            tileOwners[j] = color;
-                            tilesAssigned++;
-                        }
+                for (let i = 0; i < TOTAL_TILES && tilesAssigned < count; i++) {
+                    if (landTiles[i] && tileOwners[i] !== color) {
+                        tiles[i].style.backgroundColor = color;
+                        tileOwners[i] = color;
+                        tilesAssigned++;
                     }
                 }
             }
@@ -343,59 +345,96 @@
                 tile.style.backgroundColor = '';
                 tile.classList.remove('owned');
             });
+            document.getElementById('totalPoints').textContent = 'Total Points: 0';
             saveState();
         }
 
         function saveState() {
-            localStorage.setItem('mapState', JSON.stringify({
+            const state = {
                 students: STUDENTS,
                 tileOwners,
                 opacity: opacityControl.value,
-                landTiles
-            }));
+                landTiles,
+                selectedColor
+            };
+            localStorage.setItem('mapState', JSON.stringify(state));
         }
 
         function loadState() {
             const saved = localStorage.getItem('mapState');
             if (saved) {
-                const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles } = JSON.parse(saved);
-                
-                STUDENTS.forEach((s, i) => {
-                    s.points = students[i].points;
-                    document.querySelectorAll('input[type="number"]')[i].value = s.points;
-                });
-                
-                if (savedLandTiles) {
-                    landTiles = savedLandTiles;
-                    landTiles.forEach((isLand, i) => {
-                        if (!isLand) tiles[i].classList.add('ocean');
+                try {
+                    const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles, selectedColor: savedColor } = JSON.parse(saved);
+                    
+                    // Load student points
+                    STUDENTS.forEach((s, i) => {
+                        s.points = students[i].points;
+                        document.querySelectorAll('input[type="number"]')[i].value = s.points;
                     });
+                    
+                    // Load land/ocean data
+                    if (savedLandTiles && savedLandTiles.length === TOTAL_TILES) {
+                        landTiles = savedLandTiles;
+                        landTiles.forEach((isLand, i) => {
+                            tiles[i].classList.toggle('ocean', !isLand);
+                        });
+                    } else {
+                        analyzeMap();
+                        return;
+                    }
+                    
+                    // Load tile ownership
+                    if (savedOwners && savedOwners.length === TOTAL_TILES) {
+                        tileOwners = savedOwners;
+                        tileOwners.forEach((color, i) => {
+                            if (color && landTiles[i]) {
+                                tiles[i].style.backgroundColor = color;
+                                tiles[i].classList.add('owned');
+                            }
+                        });
+                    }
+                    
+                    // Load opacity
+                    if (opacity) {
+                        opacityControl.value = opacity;
+                        worldMap.style.opacity = opacity / 100;
+                        opacityValue.textContent = `${opacity}%`;
+                    }
+                    
+                    // Load selected color
+                    if (savedColor) {
+                        selectedColor = savedColor;
+                        STUDENTS.forEach((student, index) => {
+                            if (student.color === savedColor) {
+                                document.querySelectorAll('.color-box')[index].style.border = '3px solid black';
+                            }
+                        });
+                    }
+                    
+                    document.getElementById('totalPoints').textContent = `Total Points: ${STUDENTS.reduce((sum, s) => sum + s.points, 0)}`;
+                } catch (e) {
+                    console.error('Error loading saved state', e);
+                    analyzeMap();
                 }
-                
-                if (savedOwners) {
-                    tileOwners = savedOwners;
-                    tileOwners.forEach((color, i) => {
-                        if (color && landTiles[i]) {
-                            tiles[i].style.backgroundColor = color;
-                            tiles[i].classList.add('owned');
-                        }
-                    });
-                }
-                
-                if (opacity) {
-                    opacityControl.value = opacity;
-                    worldMap.style.opacity = opacity / 100;
-                    opacityValue.textContent = `${opacity}%`;
-                }
-                
-                document.getElementById('totalPoints').textContent = `Total Points: ${STUDENTS.reduce((sum, s) => sum + s.points, 0)}`;
             } else {
                 analyzeMap();
             }
         }
 
         // Initial load
-        loadState();
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            
+            // If no land detected after load, force analysis
+            if (landTiles.filter(Boolean).length === 0) {
+                setTimeout(analyzeMap, 500);
+            }
+        });
+
+        // Export functions to global scope
+        window.updatePoints = updatePoints;
+        window.resetAll = resetAll;
+        window.selectColor = selectColor;
     </script>
 </body>
 </html>

@@ -3,29 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live World Conquest Map</title>
+    <title>World Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 30px;
             background: #f0f0f0;
             text-align: center;
-            overflow-x: auto;
         }
         .map-wrapper {
             position: relative;
             display: inline-block;
-            margin: 20px auto;
-            border-radius: 8px;
+            margin: 30px auto;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            transform-origin: top left;
-            transform: scale(0.8);
         }
         #world-map {
-            width: 4900px;
-            height: 2400px;
+            width: 100%;
             display: block;
             background: #e0f7ff;
         }
@@ -33,139 +29,109 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 4900px;
-            height: 2400px;
+            width: 100%;
+            height: 100%;
             display: grid;
-            grid-template-columns: repeat(490, 10px);
-            grid-template-rows: repeat(240, 10px);
+            grid-template-columns: repeat(49, 1fr);
+            grid-template-rows: repeat(24, 1fr);
             gap: 1px;
+            padding: 2px;
         }
         .tile {
-            width: 10px;
-            height: 10px;
-            background-color: rgba(255,255,255,0.2);
-            transition: background-color 0.3s;
+            background-color: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            border-radius: 1px;
         }
         .tile.owned {
-            border: 1px solid rgba(0,0,0,0.2);
-            box-shadow: 0 0 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.3);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
-        .control-panel {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 100;
-            max-width: 300px;
-            text-align: left;
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .student-control {
+        .student-item {
             display: flex;
             align-items: center;
-            margin: 8px 0;
-            padding: 5px;
-            border-radius: 4px;
-            background: #f8f8f8;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .student-color {
+        .color-box {
             width: 20px;
             height: 20px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-        .student-color.selected {
-            border: 3px solid #000;
-        }
-        .student-points {
-            width: 60px;
-            margin-left: auto;
-            padding: 3px;
-            transition: all 0.3s;
-        }
-        .student-points:focus {
-            background: #fffde7;
-        }
-        .zoom-controls {
-            margin: 15px 0;
-        }
-        button {
-            padding: 8px 15px;
-            margin: 5px;
-            background: #4CAF50;
-            color: white;
-            border: none;
             border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
+            border: 1px solid #ccc;
         }
-        button:hover {
-            background: #45a049;
-        }
-        input[type="range"] {
-            width: 100%;
-            margin: 10px 0;
+        input[type="number"] {
+            width: 70px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
         }
         #totalPoints {
             font-weight: bold;
-            margin: 10px 0;
-            padding: 8px;
-            background: #e9f7ef;
-            border-radius: 4px;
+            margin: 25px;
+            font-size: 1.3em;
+            color: #333;
         }
-        .loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
+        button {
+            padding: 10px 25px;
+            background: #4CAF50;
             color: white;
-            padding: 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            display: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+            margin: 15px;
+        }
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        #opacityControl {
+            width: 200px;
+            margin: 0 10px;
         }
     </style>
 </head>
 <body>
-    <div class="loading" id="loading">Updating Map...</div>
-
-    <div class="control-panel">
-        <h2>World Conquest (490×240)</h2>
-        
-        <div>
-            <label>Map Opacity: <span id="opacityValue">70</span>%</label>
-            <input type="range" id="opacityControl" min="0" max="100" value="70">
-        </div>
-        
-        <div id="totalPoints">Total Points: 0</div>
-        
-        <div id="studentControls">
-            <!-- Student controls will be added here by JavaScript -->
-        </div>
-        
-        <div class="zoom-controls">
-            <button onclick="zoomOut()">-</button>
-            <span id="zoomLevel">80%</span>
-            <button onclick="zoomIn()">+</button>
-        </div>
-        
-        <button onclick="resetAll()">Reset All</button>
+    <h1>World Conquest Map (49×24)</h1>
+    <p>Enter points for each student. Territories will appear over the world map!</p>
+    
+    <div class="controls">
+        <label for="opacityControl">Map Visibility: </label>
+        <input type="range" id="opacityControl" min="0" max="100" value="70">
+        <span id="opacityValue">70%</span>
     </div>
-
-    <div class="map-wrapper" id="mapWrapper">
+    
+    <div class="legend" id="legend"></div>
+    <div id="totalPoints">Total Points: 0</div>
+    
+    <div class="map-wrapper">
+        <!-- World map base layer -->
         <img id="world-map" src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="World map">
+        
+        <!-- Interactive grid overlay -->
         <div class="grid-overlay" id="map"></div>
     </div>
 
+    <button onclick="resetAll()">Reset All</button>
+
     <script>
-        // Configuration
-        const COLS = 490;
-        const ROWS = 240;
-        const TOTAL_TILES = COLS * ROWS;
         const STUDENTS = [
             {color: '#FF0000', name: 'Student 1', points: 0},
             {color: '#00FF00', name: 'Student 2', points: 0},
@@ -181,249 +147,168 @@
             {color: '#FFC0CB', name: 'Student 12', points: 0}
         ];
 
-        // State
+        const COLS = 100;
+        const ROWS = 50;
+        const TOTAL_TILES = COLS * ROWS;
         let tiles = [];
-        let tileOwners = Array(TOTAL_TILES).fill(null);
-        let selectedColor = null;
-        let currentZoom = 0.8;
-        let isUpdating = false;
-        let updateTimeout = null;
 
         // Initialize
-        const mapWrapper = document.getElementById('mapWrapper');
-        const worldMap = document.getElementById('world-map');
+        const legend = document.getElementById('legend');
         const map = document.getElementById('map');
+        const worldMap = document.getElementById('world-map');
         const opacityControl = document.getElementById('opacityControl');
-        const zoomLevelDisplay = document.getElementById('zoomLevel');
-        const studentControls = document.getElementById('studentControls');
-        const totalPointsDisplay = document.getElementById('totalPoints');
-        const loadingIndicator = document.getElementById('loading');
-
-        // Create student controls
-        function createStudentControls() {
-            studentControls.innerHTML = '';
-            STUDENTS.forEach((student, index) => {
-                const control = document.createElement('div');
-                control.className = 'student-control';
-                control.innerHTML = `
-                    <div class="student-color" style="background:${student.color}" 
-                         onclick="selectStudent(${index})"></div>
-                    <span>${student.name}</span>
-                    <input type="number" class="student-points" value="${student.points}" min="0"
-                           oninput="queueTerritoryUpdate(${index}, this.value)">
-                `;
-                studentControls.appendChild(control);
-            });
-        }
-
-        // Select student
-        function selectStudent(index) {
-            selectedColor = STUDENTS[index].color;
-            document.querySelectorAll('.student-color').forEach(el => 
-                el.classList.remove('selected'));
-            document.querySelectorAll('.student-color')[index].classList.add('selected');
-        }
-
-        // Queue territory update (debounced)
-        function queueTerritoryUpdate(index, value) {
-            STUDENTS[index].points = Math.max(0, parseInt(value) || 0);
-            updateTotalPoints();
-            
-            // Show loading indicator for large updates
-            if (!isUpdating) {
-                loadingIndicator.style.display = 'block';
-                isUpdating = true;
-            }
-            
-            // Debounce to prevent jank during rapid input
-            clearTimeout(updateTimeout);
-            updateTimeout = setTimeout(() => {
-                distributeTerritories();
-                isUpdating = false;
-                loadingIndicator.style.display = 'none';
-            }, 300);
-        }
-
-        // Calculate total points
-        function updateTotalPoints() {
-            const total = STUDENTS.reduce((sum, s) => sum + s.points, 0);
-            totalPointsDisplay.textContent = `Total Points: ${total}`;
-            return total;
-        }
-
-        // Create grid
-        function createGrid() {
-            map.innerHTML = '';
-            tiles = [];
-            
-            for(let i = 0; i < TOTAL_TILES; i++) {
-                const tile = document.createElement('div');
-                tile.className = 'tile';
-                tile.dataset.index = i;
-                
-                tile.addEventListener('click', function() {
-                    if (selectedColor) {
-                        const index = parseInt(this.dataset.index);
-                        tileOwners[index] = selectedColor;
-                        this.style.backgroundColor = selectedColor;
-                        this.classList.add('owned');
-                        saveState();
-                    }
-                });
-                
-                // Restore ownership if exists
-                if (tileOwners[i]) {
-                    tile.style.backgroundColor = tileOwners[i];
-                    tile.classList.add('owned');
-                }
-                
-                map.appendChild(tile);
-                tiles.push(tile);
-            }
-        }
-
-        // Distribute territories based on points (optimized)
-        function distributeTerritories() {
-            const totalPoints = updateTotalPoints();
-            
-            // Clear all tiles first (optimized)
-            if (totalPoints === 0) {
-                tileOwners.fill(null);
-                tiles.forEach(tile => {
-                    tile.style.backgroundColor = '';
-                    tile.classList.remove('owned');
-                });
-                return;
-            }
-            
-            // Calculate distribution
-            const distribution = STUDENTS
-                .filter(student => student.points > 0)
-                .map(student => ({
-                    color: student.color,
-                    share: student.points / totalPoints
-                }));
-            
-            if (distribution.length === 0) return;
-            
-            // Calculate tile counts
-            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
-            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
-            
-            // Distribute remaining tiles
-            if (remainingTiles > 0) {
-                const studentsWithRemainders = distribution.map((d, i) => ({
-                    index: i,
-                    remainder: (d.share * TOTAL_TILES) % 1
-                })).sort((a, b) => b.remainder - a.remainder);
-                
-                for (let i = 0; i < remainingTiles; i++) {
-                    tileCounts[studentsWithRemainders[i % studentsWithRemainders.length].index]++;
-                }
-            }
-            
-            // Assign tiles in batches for better performance
-            let tileIndex = 0;
-            distribution.forEach((d, i) => {
-                const color = d.color;
-                const endIndex = tileIndex + tileCounts[i];
-                
-                for (; tileIndex < endIndex; tileIndex++) {
-                    tileOwners[tileIndex] = color;
-                    tiles[tileIndex].style.backgroundColor = color;
-                    tiles[tileIndex].classList.add('owned');
-                }
-            });
-            
-            // Clear any remaining tiles
-            while (tileIndex < TOTAL_TILES) {
-                tileOwners[tileIndex] = null;
-                tiles[tileIndex].style.backgroundColor = '';
-                tiles[tileIndex].classList.remove('owned');
-                tileIndex++;
-            }
-            
-            saveState();
-        }
-
-        // Zoom functions
-        function zoomIn() {
-            currentZoom = Math.min(1.5, currentZoom + 0.1);
-            updateZoom();
-        }
-
-        function zoomOut() {
-            currentZoom = Math.max(0.3, currentZoom - 0.1);
-            updateZoom();
-        }
-
-        function updateZoom() {
-            mapWrapper.style.transform = `scale(${currentZoom})`;
-            zoomLevelDisplay.textContent = `${Math.round(currentZoom * 100)}%`;
-            saveState();
-        }
+        const opacityValue = document.getElementById('opacityValue');
 
         // Opacity control
         opacityControl.addEventListener('input', function() {
             worldMap.style.opacity = this.value / 100;
-            document.getElementById('opacityValue').textContent = this.value;
-            saveState();
+            opacityValue.textContent = `${this.value}%`;
         });
 
-        // Save/load state
-        function saveState() {
-            localStorage.setItem('hdMapState', JSON.stringify({
-                students: STUDENTS,
-                tileOwners,
-                opacity: opacityControl.value,
-                zoom: currentZoom
-            }));
+        // Create legend
+        STUDENTS.forEach((student, index) => {
+            const item = document.createElement('div');
+            item.className = 'student-item';
+            item.innerHTML = `
+                <div class="color-box" style="background:${student.color}"></div>
+                <input type="number" 
+                       value="${student.points}" 
+                       min="0" 
+                       data-index="${index}"
+                       oninput="updatePoints(${index}, this.value)">
+                <span>${student.name}</span>
+            `;
+            legend.appendChild(item);
+        });
+
+        // Create map tiles
+        for(let i = 0; i < TOTAL_TILES; i++) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.dataset.index = i;
+            tile.addEventListener('click', function() {
+                if (selectedColor) {
+                    tileOwners[i] = selectedColor;
+                    this.style.backgroundColor = selectedColor;
+                    this.classList.add('owned');
+                    saveState();
+                }
+            });
+            map.appendChild(tile);
+            tiles.push(tile);
         }
 
-        function loadState() {
-            const saved = localStorage.getItem('hdMapState');
-            if (saved) {
-                const { students, tileOwners: savedOwners, opacity, zoom } = JSON.parse(saved);
-                
-                // Update students
-                if (students) {
-                    STUDENTS.forEach((s, i) => {
-                        s.points = students[i]?.points || 0;
-                    });
+        let selectedColor = null;
+        let tileOwners = Array(TOTAL_TILES).fill(null);
+
+        // Color selection
+        document.querySelectorAll('.color-box').forEach((box, index) => {
+            box.addEventListener('click', function() {
+                selectedColor = STUDENTS[index].color;
+                document.querySelectorAll('.color-box').forEach(b => 
+                    b.style.border = '1px solid #ccc');
+                this.style.border = '3px solid black';
+            });
+        });
+
+        function updatePoints(studentIndex, value) {
+            STUDENTS[studentIndex].points = Math.max(0, parseInt(value) || 0);
+            updateMap();
+            saveState();
+        }
+
+        function updateMap() {
+            const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
+            document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
+
+            // Calculate distribution
+            const distribution = STUDENTS.map(student => ({
+                color: student.color,
+                share: totalPoints > 0 ? student.points / totalPoints : 0
+            }));
+
+            // Distribute tiles
+            let tileCounts = distribution.map(d => Math.floor(d.share * TOTAL_TILES));
+            let remainingTiles = TOTAL_TILES - tileCounts.reduce((a, b) => a + b, 0);
+
+            // Distribute remaining tiles
+            const studentsWithRemainders = distribution.map((d, i) => ({
+                index: i,
+                remainder: (d.share * TOTAL_TILES) % 1
+            })).sort((a, b) => b.remainder - a.remainder);
+
+            for (let i = 0; i < remainingTiles; i++) {
+                if (i < studentsWithRemainders.length) {
+                    tileCounts[studentsWithRemainders[i].index]++;
                 }
-                
-                // Update tiles
-                tileOwners = savedOwners || Array(TOTAL_TILES).fill(null);
-                
-                // Update UI
-                opacityControl.value = opacity || 70;
-                worldMap.style.opacity = (opacity || 70) / 100;
-                document.getElementById('opacityValue').textContent = opacity || 70;
-                currentZoom = zoom || 0.8;
-                updateZoom();
-                updateTotalPoints();
-                createStudentControls();
-                createGrid();
-                
-                // Initial territory distribution
-                distributeTerritories();
+            }
+
+            // Assign tiles
+            let tileIndex = 0;
+            distribution.forEach((d, i) => {
+                for(let j = 0; j < tileCounts[i]; j++) {
+                    tiles[tileIndex].style.backgroundColor = d.color;
+                    tiles[tileIndex].classList.add('owned');
+                    tileOwners[tileIndex] = d.color;
+                    tileIndex++;
+                }
+            });
+
+            // Clear remaining tiles
+            while(tileIndex < TOTAL_TILES) {
+                tiles[tileIndex].style.backgroundColor = '';
+                tiles[tileIndex].classList.remove('owned');
+                tileOwners[tileIndex] = null;
+                tileIndex++;
             }
         }
 
         function resetAll() {
-            if (confirm("Reset all points and territories?")) {
-                STUDENTS.forEach(s => s.points = 0);
-                tileOwners = Array(TOTAL_TILES).fill(null);
-                createStudentControls();
-                updateTotalPoints();
-                distributeTerritories();
-                saveState();
+            STUDENTS.forEach(s => s.points = 0);
+            document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
+            tileOwners.fill(null);
+            tiles.forEach(tile => {
+                tile.style.backgroundColor = '';
+                tile.classList.remove('owned');
+            });
+            saveState();
+        }
+
+        // Save/load state
+        function saveState() {
+            localStorage.setItem('mapState', JSON.stringify({
+                students: STUDENTS,
+                tileOwners,
+                opacity: opacityControl.value
+            }));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('mapState');
+            if (saved) {
+                const { students, tileOwners: savedOwners, opacity } = JSON.parse(saved);
+                STUDENTS.forEach((s, i) => {
+                    s.points = students[i].points;
+                    document.querySelectorAll('input[type="number"]')[i].value = s.points;
+                });
+                if (savedOwners) {
+                    tileOwners = savedOwners;
+                    tileOwners.forEach((color, i) => {
+                        if (color) {
+                            tiles[i].style.backgroundColor = color;
+                            tiles[i].classList.add('owned');
+                        }
+                    });
+                }
+                if (opacity) {
+                    opacityControl.value = opacity;
+                    worldMap.style.opacity = opacity / 100;
+                    opacityValue.textContent = `${opacity}%`;
+                }
             }
         }
 
-        // Initial setup
-        createStudentControls();
-        createGrid();
+        // Initial load
         loadState();
     </script>
 </body>

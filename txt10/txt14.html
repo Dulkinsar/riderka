@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UK Conquest Map</title>
+    <title>Country Conquest Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 30px;
+            padding: 20px;
             background: #f0f0f0;
             text-align: center;
         }
         .map-wrapper {
             position: relative;
             display: inline-block;
-            margin: 30px auto;
-            border-radius: 12px;
+            margin: 20px auto;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
-        #world-map {
+        #country-map {
             width: 100%;
             display: block;
             background: #e0f7ff;
@@ -32,192 +32,260 @@
             width: 100%;
             height: 100%;
             display: grid;
-            grid-template-columns: repeat(41, 1fr);
-            grid-template-rows: repeat(60, 1fr);
+            grid-template-columns: repeat(70, 1fr);
+            grid-template-rows: repeat(70, 1fr);
             gap: 1px;
-            padding: 2px;
         }
         .tile {
-            background-color: rgba(255,255,255,0.3);
-            transition: all 0.3s;
-            border-radius: 1px;
+            background-color: rgba(255,255,255,0.2);
+            transition: all 0.2s;
         }
         .tile.owned {
-            border: 1px solid rgba(0,0,0,0.3);
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.2);
+            box-shadow: 0 0 3px rgba(0,0,0,0.1);
         }
         .tile.ocean {
-            background-color: rgba(173, 216, 230, 0.3) !important;
+            background-color: rgba(173, 216, 230, 0.2) !important;
             pointer-events: none;
         }
-        .legend {
+        .controls {
+            margin: 20px 0;
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
             justify-content: center;
-            margin: 30px auto;
-            max-width: 900px;
+            gap: 15px;
         }
-        .student-item {
+        .player-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .player-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 6px 10px;
             background: white;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .color-box {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
             cursor: pointer;
         }
         input[type="number"] {
-            width: 70px;
-            padding: 6px;
+            width: 60px;
+            padding: 5px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        #totalPoints {
-            font-weight: bold;
-            margin: 25px;
-            font-size: 1.3em;
-            color: #333;
+            border-radius: 3px;
         }
         button {
-            padding: 10px 25px;
+            padding: 8px 15px;
             background: #4CAF50;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s;
-            margin: 15px;
+            font-size: 0.9em;
         }
         button:hover {
             background: #45a049;
-            transform: scale(1.05);
         }
-        .controls {
-            margin-bottom: 20px;
+        #totalPoints {
+            font-weight: bold;
+            margin: 15px;
+            font-size: 1.2em;
         }
-        #opacityControl {
-            width: 200px;
-            margin: 0 10px;
+        #image-url {
+            width: 300px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <h1>UK Conquest Map (41×60)</h1>
-    <p>Enter points for each student. Territories will appear only on black land areas!</p>
+    <h1>Country Conquest Map (70×70)</h1>
     
     <div class="controls">
-        <label for="opacityControl">Map Visibility: </label>
-        <input type="range" id="opacityControl" min="0" max="100" value="70">
-        <span id="opacityValue">70%</span>
+        <input type="text" id="image-url" placeholder="https://media.istockphoto.com/id/1306689528/vector/vector-illustration-of-the-black-map-of-south-korea-on-white-background.jpg?s=612x612&w=0&k=20&c=lPQjVeoAVHp41QzLTgbC1LWLvxzxzc0dhOjqKtg3rdg=">
+        <button onclick="loadNewImage()">Load Map</button>
+        <button onclick="addPlayer()">Add Player</button>
+        <button onclick="resetAll()">Reset All</button>
     </div>
     
-    <div class="legend" id="legend"></div>
+    <div class="player-controls" id="players"></div>
     <div id="totalPoints">Total Points: 0</div>
     
     <div class="map-wrapper">
-        <img id="world-map" src="/images/uk.png" alt="UK map">
+        <img id="country-map" src=" " alt="Country map">
         <div class="grid-overlay" id="map"></div>
     </div>
 
-    <button onclick="resetAll()">Reset All</button>
-
     <script>
-        const STUDENTS = [
-            {color: '#FF0000', name: 'Student 1', points: 0},
-            {color: '#00FF00', name: 'Student 2', points: 0}
-        ];
-
-        const COLS = 41;
-        const ROWS = 60;
+        // Configurable settings
+        const COLS = 70;
+        const ROWS = 70;
         const TOTAL_TILES = COLS * ROWS;
+        
+        // Default players
+        let players = [
+            {color: '#FF0000', name: 'Player 1', points: 0},
+            {color: '#00FF00', name: 'Player 2', points: 0}
+        ];
+        
+        // Game state
         let tiles = [];
         let tileOwners = Array(TOTAL_TILES).fill(null);
         let selectedColor = null;
         let landTiles = Array(TOTAL_TILES).fill(false);
+        let nextPlayerId = 3;
 
-        // Initialize
-        const legend = document.getElementById('legend');
+        // DOM elements
+        const playersContainer = document.getElementById('players');
         const map = document.getElementById('map');
-        const worldMap = document.getElementById('world-map');
-        const opacityControl = document.getElementById('opacityControl');
-        const opacityValue = document.getElementById('opacityValue');
+        const countryMap = document.getElementById('country-map');
+        const totalPointsDisplay = document.getElementById('totalPoints');
 
-        // Opacity control
-        opacityControl.addEventListener('input', function() {
-            worldMap.style.opacity = this.value / 100;
-            opacityValue.textContent = `${this.value}%`;
-            saveState();
-        });
+        // Initialize the game
+        function initGame() {
+            createMapTiles();
+            renderPlayerControls();
+            if (countryMap.src) analyzeMap();
+        }
 
-        // Create legend
-        STUDENTS.forEach((student, index) => {
-            const item = document.createElement('div');
-            item.className = 'student-item';
-            item.innerHTML = `
-                <div class="color-box" style="background:${student.color}" onclick="selectColor(${index})"></div>
-                <input type="number" 
-                       value="${student.points}" 
-                       min="0" 
-                       data-index="${index}"
-                       oninput="updatePoints(${index}, this.value)">
-                <span>${student.name}</span>
-            `;
-            legend.appendChild(item);
-        });
+        // Create the grid tiles
+        function createMapTiles() {
+            map.innerHTML = '';
+            tiles = [];
+            
+            for(let i = 0; i < TOTAL_TILES; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.dataset.index = i;
+                tile.addEventListener('click', function() {
+                    if (selectedColor && landTiles[i]) {
+                        tileOwners[i] = selectedColor;
+                        this.style.backgroundColor = selectedColor;
+                        this.classList.add('owned');
+                        saveState();
+                    }
+                });
+                map.appendChild(tile);
+                tiles.push(tile);
+            }
+        }
 
-        // Create map tiles
-        for(let i = 0; i < TOTAL_TILES; i++) {
-            const tile = document.createElement('div');
-            tile.className = 'tile';
-            tile.dataset.index = i;
-            tile.addEventListener('click', function() {
-                if (selectedColor && landTiles[i]) {
-                    tileOwners[i] = selectedColor;
-                    this.style.backgroundColor = selectedColor;
-                    this.classList.add('owned');
-                    saveState();
-                }
+        // Render player controls
+        function renderPlayerControls() {
+            playersContainer.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const playerEl = document.createElement('div');
+                playerEl.className = 'player-item';
+                playerEl.innerHTML = `
+                    <div class="color-box" style="background:${player.color}" 
+                         onclick="selectPlayer(${index})"></div>
+                    <input type="number" value="${player.points}" min="0"
+                           oninput="updatePoints(${index}, this.value)">
+                    <input type="text" value="${player.name}" 
+                           onchange="updateName(${index}, this.value)">
+                    <button onclick="removePlayer(${index})">×</button>
+                `;
+                playersContainer.appendChild(playerEl);
             });
-            map.appendChild(tile);
-            tiles.push(tile);
+            
+            updateTotalPoints();
         }
 
-        // Color selection
-        function selectColor(index) {
-            selectedColor = STUDENTS[index].color;
-            document.querySelectorAll('.color-box').forEach(b => 
-                b.style.border = '1px solid #ccc');
-            document.querySelectorAll('.color-box')[index].style.border = '3px solid black';
+        // Add a new player
+        function addPlayer() {
+            const colors = ['#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500'];
+            const newColor = colors[(nextPlayerId - 3) % colors.length];
+            
+            players.push({
+                color: newColor,
+                name: `Player ${nextPlayerId}`,
+                points: 0
+            });
+            nextPlayerId++;
+            
+            renderPlayerControls();
+            saveState();
         }
 
+        // Remove a player
+        function removePlayer(index) {
+            if (players.length <= 2) {
+                alert("You need at least 2 players");
+                return;
+            }
+            
+            // Clear tiles owned by this player
+            for (let i = 0; i < TOTAL_TILES; i++) {
+                if (tileOwners[i] === players[index].color) {
+                    tileOwners[i] = null;
+                    tiles[i].style.backgroundColor = '';
+                    tiles[i].classList.remove('owned');
+                }
+            }
+            
+            players.splice(index, 1);
+            renderPlayerControls();
+            distributeLand();
+            saveState();
+        }
+
+        // Select a player
+        function selectPlayer(index) {
+            selectedColor = players[index].color;
+            document.querySelectorAll('.color-box').forEach(box => {
+                box.style.border = '1px solid #ddd';
+            });
+            document.querySelectorAll('.color-box')[index].style.border = '2px solid #000';
+            saveState();
+        }
+
+        // Update player points
+        function updatePoints(index, value) {
+            players[index].points = Math.max(0, parseInt(value) || 0);
+            distributeLand();
+            saveState();
+        }
+
+        // Update player name
+        function updateName(index, name) {
+            players[index].name = name || `Player ${index + 1}`;
+            saveState();
+        }
+
+        // Calculate total points
+        function updateTotalPoints() {
+            const total = players.reduce((sum, p) => sum + p.points, 0);
+            totalPointsDisplay.textContent = `Total Points: ${total}`;
+        }
+
+        // Analyze the map image
         function analyzeMap() {
-            const img = document.getElementById('world-map');
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
             canvas.width = COLS;
             canvas.height = ROWS;
             
-            img.onerror = function() {
-                console.error('Error loading map image');
-            };
-
-            img.onload = function() {
-                ctx.drawImage(img, 0, 0, COLS, ROWS);
+            countryMap.onerror = () => console.error("Error loading map image");
+            
+            countryMap.onload = function() {
+                ctx.drawImage(countryMap, 0, 0, COLS, ROWS);
                 const imageData = ctx.getImageData(0, 0, COLS, ROWS);
                 const data = imageData.data;
                 
-                // Reset all tiles
+                // Reset tiles
                 tiles.forEach(tile => {
                     tile.classList.remove('ocean');
                     tile.style.backgroundColor = '';
@@ -226,52 +294,37 @@
                 landTiles.fill(false);
                 tileOwners.fill(null);
                 
-                // Analyze each pixel for pure black (#000000) land areas
+                // Detect land (black pixels)
                 for (let y = 0; y < ROWS; y++) {
                     for (let x = 0; x < COLS; x++) {
-                        const index = (y * COLS + x) * 4;
-                        const r = data[index];
-                        const g = data[index + 1];
-                        const b = data[index + 2];
-                        const a = data[index + 3];
+                        const i = (y * COLS + x) * 4;
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const a = data[i + 3];
                         
                         const tileIndex = y * COLS + x;
                         
-                        // Strict black color detection
-                        if (r === 0 && g === 0 && b === 0 && a === 255) {
+                        // Consider pixel as land if it's black and not transparent
+                        if (r < 50 && g < 50 && b < 50 && a > 128) {
                             landTiles[tileIndex] = true;
                         } else {
                             tiles[tileIndex].classList.add('ocean');
                         }
                     }
                 }
+                
                 distributeLand();
                 saveState();
             };
             
-            // Trigger analysis if image is already loaded
-            if (img.complete && img.naturalWidth !== 0) {
-                img.onload();
-            }
+            if (countryMap.complete) countryMap.onload();
         }
 
-        function updatePoints(studentIndex, value) {
-            STUDENTS[studentIndex].points = Math.max(0, parseInt(value) || 0);
-            distributeLand();
-            saveState();
-        }
-
+        // Distribute land based on points
         function distributeLand() {
-            const totalPoints = STUDENTS.reduce((sum, s) => sum + s.points, 0);
-            document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints}`;
-
-            // Check if we have valid land data
-            const totalLand = landTiles.filter(Boolean).length;
-            if (totalLand === 0) {
-                console.log('No land areas detected yet');
-                return;
-            }
-
+            updateTotalPoints();
+            
             // Clear existing ownership
             for (let i = 0; i < TOTAL_TILES; i++) {
                 if (landTiles[i]) {
@@ -280,161 +333,175 @@
                     tileOwners[i] = null;
                 }
             }
-
-            if (totalPoints === 0) return;
-
-            const studentsSorted = [...STUDENTS]
-                .map((student, index) => ({...student, index}))
+            
+            const totalLand = landTiles.filter(Boolean).length;
+            const totalPoints = players.reduce((sum, p) => sum + p.points, 0);
+            
+            if (totalPoints === 0 || totalLand === 0) return;
+            
+            // Sort players by points (descending)
+            const sortedPlayers = [...players]
+                .map((p, i) => ({...p, index: i}))
                 .sort((a, b) => b.points - a.points);
-
+            
             let remainingTiles = totalLand;
-            let distributedTiles = 0;
-
-            studentsSorted.forEach(student => {
-                if (student.points === 0) return;
-
-                const share = student.points / totalPoints;
+            
+            // Distribute tiles proportionally
+            sortedPlayers.forEach(player => {
+                if (player.points === 0) return;
+                
+                const share = player.points / totalPoints;
                 const tilesToAssign = Math.min(
                     Math.round(share * totalLand),
                     remainingTiles
                 );
-
+                
                 if (tilesToAssign > 0) {
-                    assignTilesToStudent(student.index, tilesToAssign);
-                    distributedTiles += tilesToAssign;
+                    assignTiles(player.index, tilesToAssign);
                     remainingTiles -= tilesToAssign;
                 }
             });
-
-            if (remainingTiles > 0 && studentsSorted.length > 0) {
-                assignTilesToStudent(studentsSorted[0].index, remainingTiles);
+            
+            // Assign any remaining tiles
+            if (remainingTiles > 0 && sortedPlayers.length > 0) {
+                assignTiles(sortedPlayers[0].index, remainingTiles);
             }
+            
+            saveState();
         }
 
-        function assignTilesToStudent(studentIndex, count) {
-            const color = STUDENTS[studentIndex].color;
-            let tilesAssigned = 0;
-
+        // Assign tiles to a player
+        function assignTiles(playerIndex, count) {
+            const color = players[playerIndex].color;
+            let assigned = 0;
+            
             // First pass: assign unclaimed tiles
-            for (let i = 0; i < TOTAL_TILES && tilesAssigned < count; i++) {
+            for (let i = 0; i < TOTAL_TILES && assigned < count; i++) {
                 if (landTiles[i] && !tileOwners[i]) {
                     tiles[i].style.backgroundColor = color;
                     tiles[i].classList.add('owned');
                     tileOwners[i] = color;
-                    tilesAssigned++;
+                    assigned++;
                 }
             }
-
+            
             // Second pass: reassign if needed
-            if (tilesAssigned < count) {
-                for (let i = 0; i < TOTAL_TILES && tilesAssigned < count; i++) {
+            if (assigned < count) {
+                for (let i = 0; i < TOTAL_TILES && assigned < count; i++) {
                     if (landTiles[i] && tileOwners[i] !== color) {
                         tiles[i].style.backgroundColor = color;
                         tileOwners[i] = color;
-                        tilesAssigned++;
+                        assigned++;
                     }
                 }
             }
         }
 
-        function resetAll() {
-            STUDENTS.forEach(s => s.points = 0);
-            document.querySelectorAll('input[type="number"]').forEach(input => input.value = 0);
-            tileOwners.fill(null);
-            tiles.forEach(tile => {
-                tile.style.backgroundColor = '';
-                tile.classList.remove('owned');
-            });
-            document.getElementById('totalPoints').textContent = 'Total Points: 0';
-            saveState();
+        // Load a new map image
+        function loadNewImage() {
+            const url = document.getElementById('image-url').value.trim();
+            if (!url) return;
+            
+            countryMap.src = url;
+            countryMap.onload = function() {
+                analyzeMap();
+                saveState();
+            };
+            countryMap.onerror = function() {
+                alert("Could not load the image. Please check the URL.");
+            };
         }
 
+        // Reset everything
+        function resetAll() {
+            if (confirm("Reset everything including players and map?")) {
+                players = [
+                    {color: '#FF0000', name: 'Player 1', points: 0},
+                    {color: '#00FF00', name: 'Player 2', points: 0}
+                ];
+                nextPlayerId = 3;
+                tileOwners.fill(null);
+                landTiles.fill(false);
+                
+                document.getElementById('image-url').value = '';
+                countryMap.src = '';
+                
+                createMapTiles();
+                renderPlayerControls();
+                saveState();
+            }
+        }
+
+        // Save game state
         function saveState() {
             const state = {
-                students: STUDENTS,
+                players,
+                nextPlayerId,
                 tileOwners,
-                opacity: opacityControl.value,
                 landTiles,
-                selectedColor
+                selectedColor,
+                mapUrl: countryMap.src
             };
-            localStorage.setItem('mapState', JSON.stringify(state));
+            localStorage.setItem('conquestMapState', JSON.stringify(state));
         }
 
+        // Load game state
         function loadState() {
-            const saved = localStorage.getItem('mapState');
+            const saved = localStorage.getItem('conquestMapState');
             if (saved) {
                 try {
-                    const { students, tileOwners: savedOwners, opacity, landTiles: savedLandTiles, selectedColor: savedColor } = JSON.parse(saved);
+                    const state = JSON.parse(saved);
+                    players = state.players || players;
+                    nextPlayerId = state.nextPlayerId || nextPlayerId;
+                    tileOwners = state.tileOwners || Array(TOTAL_TILES).fill(null);
+                    landTiles = state.landTiles || Array(TOTAL_TILES).fill(false);
+                    selectedColor = state.selectedColor;
                     
-                    // Load student points
-                    STUDENTS.forEach((s, i) => {
-                        s.points = students[i].points;
-                        document.querySelectorAll('input[type="number"]')[i].value = s.points;
-                    });
-                    
-                    // Load land/ocean data
-                    if (savedLandTiles && savedLandTiles.length === TOTAL_TILES) {
-                        landTiles = savedLandTiles;
-                        landTiles.forEach((isLand, i) => {
-                            tiles[i].classList.toggle('ocean', !isLand);
-                        });
-                    } else {
-                        analyzeMap();
-                        return;
+                    if (state.mapUrl) {
+                        countryMap.src = state.mapUrl;
                     }
                     
-                    // Load tile ownership
-                    if (savedOwners && savedOwners.length === TOTAL_TILES) {
-                        tileOwners = savedOwners;
-                        tileOwners.forEach((color, i) => {
-                            if (color && landTiles[i]) {
-                                tiles[i].style.backgroundColor = color;
-                                tiles[i].classList.add('owned');
-                            }
-                        });
+                    createMapTiles();
+                    renderPlayerControls();
+                    
+                    // Restore tile colors
+                    for (let i = 0; i < TOTAL_TILES; i++) {
+                        if (tileOwners[i] && landTiles[i]) {
+                            tiles[i].style.backgroundColor = tileOwners[i];
+                            tiles[i].classList.add('owned');
+                        }
+                        if (!landTiles[i]) {
+                            tiles[i].classList.add('ocean');
+                        }
                     }
                     
-                    // Load opacity
-                    if (opacity) {
-                        opacityControl.value = opacity;
-                        worldMap.style.opacity = opacity / 100;
-                        opacityValue.textContent = `${opacity}%`;
+                    // Restore selected player
+                    if (selectedColor) {
+                        const playerIndex = players.findIndex(p => p.color === selectedColor);
+                        if (playerIndex >= 0) {
+                            selectPlayer(playerIndex);
+                        }
                     }
-                    
-                    // Load selected color
-                    if (savedColor) {
-                        selectedColor = savedColor;
-                        STUDENTS.forEach((student, index) => {
-                            if (student.color === savedColor) {
-                                document.querySelectorAll('.color-box')[index].style.border = '3px solid black';
-                            }
-                        });
-                    }
-                    
-                    document.getElementById('totalPoints').textContent = `Total Points: ${STUDENTS.reduce((sum, s) => sum + s.points, 0)}`;
                 } catch (e) {
-                    console.error('Error loading saved state', e);
-                    analyzeMap();
+                    console.error("Error loading saved state", e);
                 }
-            } else {
-                analyzeMap();
             }
         }
 
-        // Initial load
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize on page load
+        window.onload = function() {
             loadState();
-            
-            // If no land detected after load, force analysis
-            if (landTiles.filter(Boolean).length === 0) {
-                setTimeout(analyzeMap, 500);
-            }
-        });
+            initGame();
+        };
 
-        // Export functions to global scope
+        // Make functions available globally
+        window.selectPlayer = selectPlayer;
         window.updatePoints = updatePoints;
+        window.updateName = updateName;
+        window.removePlayer = removePlayer;
+        window.addPlayer = addPlayer;
+        window.loadNewImage = loadNewImage;
         window.resetAll = resetAll;
-        window.selectColor = selectColor;
     </script>
 </body>
 </html>

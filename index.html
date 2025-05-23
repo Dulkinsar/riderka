@@ -286,18 +286,8 @@
   </style>
 </head>
 <body>
-  <!-- Login Section -->
-  <div id="login-container" class="login-container">
-    <div class="login-box">
-      <h2>🎓 Riderka Login</h2>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="validateLogin()">Unlock Profile</button>
-    </div>
-  </div>
-
   <!-- Main Content -->
-  <div id="main-content" class="hidden">
+  <div id="main-content">
     <header>
       <h1>RIDERKA</h1>
       <p class="slogan">GC - твой шаг в будущее!</p>
@@ -350,17 +340,6 @@
   </div>
 
   <script>
-    function validateLogin() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      if (username === 'admin' && password === 'password123') {
-        document.getElementById('login-container').classList.add('hidden');
-        document.getElementById('main-content').classList.remove('hidden');
-      } else {
-        alert('⚠️ Invalid credentials! Try: admin/password123');
-      }
-    }
-
     function toggleText(id, btn) {
       const textBlock = document.getElementById(id);
       textBlock.classList.toggle('expanded');

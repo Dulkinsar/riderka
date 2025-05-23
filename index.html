@@ -3,204 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riderka</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #F2F2F2; /* Bright grey */
-      --bg-secondary: #E0E0E0; /* Light silver */
-      --bg-card: #FAFAFA; /* Off-white for cards */
-      --text-primary: #4B4B4B; /* Soft charcoal */
-      --text-secondary: #757575; /* Medium grey for less emphasis */
-      --accent-subtle: #AEC6CF; /* Desaturated cool blue-grey for subtle accents */
-      --border-color: #D0D0D0; /* Light border for subtle separation */
+      --bg-main: #F5F5F5; /* Bright grey */
+      --bg-card: #FFFFFF; /* Off-white/Pure white for cards */
+      --bg-header-footer: #FBFBFB; /* Slightly off-white for header/footer areas */
+      --text-primary: #222222; /* Charcoal black */
+      --text-secondary: #333333; /* Dark slate grey */
+      --text-tertiary: #555555; /* Medium grey for less emphasis */
+      --border-color: #E0E0E0; /* Light silver/grey for borders */
+      --accent-primary: #007AFF; /* A subtle, professional blue - can be adjusted */
+      --accent-hover: #0056b3;
 
-      --font-heading: 'Space Grotesk', sans-serif;
-      --font-body: 'Inter', sans-serif;
+      --font-primary: 'Inter', sans-serif;
+      --font-secondary: 'Space Grotesk', sans-serif; /* For specific headings if needed */
+
+      --spacing-unit: 8px;
+      --padding-large: calc(var(--spacing-unit) * 4); /* 32px */
+      --padding-medium: calc(var(--spacing-unit) * 3); /* 24px */
+      --padding-small: calc(var(--spacing-unit) * 2); /* 16px */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: var(--font-body);
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-primary);
-      /* Optional soft gradient background:
-      background: linear-gradient(180deg, #F7F7F7 0%, #EDEDED 100%);
-      */
+      font-family: var(--font-primary);
+      background-color: var(--bg-main);
       color: var(--text-primary);
-      overflow-x: hidden;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     header {
-      background: var(--bg-card); /* Cleaner, flat background */
-      padding: 2rem 2rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color); /* Subtle divider */
-      margin-bottom: 2.5rem;
+      background-color: var(--bg-header-footer);
+      padding: var(--padding-medium) var(--padding-large);
+      text-align: center; /* Center logo and slogan */
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: calc(var(--spacing-unit) * 5); /* 40px */
     }
-
-    header h1 {
-      font-family: var(--font-heading);
-      font-weight: 500; /* Medium weight */
-      font-size: 2.8rem;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      text-shadow: none; /* Remove previous shadow */
-      margin: 0;
+    
+    .header-logo {
+      width: 180px; /* As per brief: 140px-200px */
+      height: auto;
+      margin-bottom: var(--spacing-unit); /* Space between logo and slogan */
     }
 
     .slogan {
-      font-family: var(--font-body); /* Consistent sans-serif */
-      font-size: 1.1rem;
+      font-family: var(--font-primary);
+      font-size: calc(var(--spacing-unit) * 1.75); /* 14px */
       font-weight: 400;
-      color: var(--text-secondary);
-      margin-top: 0.5rem;
+      color: var(--text-tertiary);
       letter-spacing: 0.5px;
+      margin-top: 0; /* Reset margin if any */
+      text-transform: uppercase; /* Optional emphasis */
     }
 
     .icon-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Slightly larger base for spacing */
-      gap: 2rem;
-      padding: 1.5rem;
-      max-width: 1200px;
-      margin: 2rem auto;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--padding-medium);
+      padding: 0 var(--padding-large);
+      max-width: 1400px; /* Wider max-width for enterprise feel */
+      margin: calc(var(--spacing-unit) * 5) auto;
     }
 
     .icon-card, .text-block {
       background: var(--bg-card);
-      backdrop-filter: none; /* Remove glassmorphism */
-      padding: 2rem;
-      border-radius: 8px; /* Softer, less prominent radius */
-      border: 1px solid var(--border-color); /* Subtle border */
-      text-align: center;
-      transition: background-color 0.2s ease, border-color 0.2s ease; /* Softer hover transition */
-      box-shadow: none; /* Remove all shadows */
+      padding: var(--padding-medium);
+      border: 1px solid var(--border-color);
+      border-radius: calc(var(--spacing-unit) * 0.75); /* 6px, subtle radius */
+      text-align: left; /* Align content left for enterprise */
+      transition: border-color 0.2s ease;
+      box-shadow: none;
     }
 
     .icon-card:hover, .text-block:hover {
-      transform: none; /* Remove transform on hover */
-      box-shadow: none; /* Ensure no shadow on hover */
-      background-color: #FFFFFF; /* Slight lift on hover */
-      border-color: var(--accent-subtle);
+      border-color: var(--accent-primary); /* Subtle hover indication */
+      background-color: var(--bg-card); /* Keep background same or very slightly lighter */
+      transform: none;
     }
 
     .icon-card img {
-      width: 60px; /* Slightly smaller for minimalist feel */
-      height: 60px;
-      margin-bottom: 1rem;
-      border: none; /* Remove border */
-      border-radius: 6px; /* Match card radius or use specific icon style */
+      width: 48px; /* Smaller, minimal icons */
+      height: 48px;
+      margin-bottom: var(--padding-small);
+      border: none;
+      border-radius: 4px;
       padding: 0;
-      background-color: transparent;
-      object-fit: contain; /* For line icons */
+      object-fit: contain; /* Good for outlined SVGs/PNGs */
+      display: block; /* Ensure it's a block for margin handling */
     }
 
     .icon-card a {
-      font-family: var(--font-body); /* Consistent sans-serif */
+      font-family: var(--font-primary);
       color: var(--text-primary);
-      font-weight: 500;
+      font-weight: 600; /* SemiBold for links/titles in cards */
       text-decoration: none;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: calc(var(--spacing-unit) * 2); /* 16px */
+      text-transform: none; /* No uppercase unless specifically desired for a heading style */
+      letter-spacing: 0.2px;
       display: block;
-      padding: 0.5rem;
-      border-radius: 4px;
-      transition: color 0.2s ease, background-color 0.2s ease;
+      margin-top: var(--spacing-unit);
+      transition: color 0.2s ease;
     }
 
     .icon-card a:hover {
-      background-color: transparent;
-      color: var(--accent-subtle);
-      text-shadow: none;
-      text-decoration: underline; /* Soft hover effect */
+      color: var(--accent-primary);
+      text-decoration: underline;
     }
 
     main {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      padding: 1.5rem;
-      max-width: 1200px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--padding-medium);
+      padding: 0 var(--padding-large) calc(var(--spacing-unit) * 5) var(--padding-large);
+      max-width: 1400px;
       margin: 0 auto;
     }
 
     .text-block h2 {
-      font-family: var(--font-heading);
+      font-family: var(--font-secondary); /* Using Space Grotesk for these headings */
       font-weight: 500;
       color: var(--text-primary);
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      letter-spacing: 1px;
-      text-align: left;
+      font-size: calc(var(--spacing-unit) * 2.5); /* 20px */
+      margin-bottom: var(--padding-small);
+      letter-spacing: 0.3px;
     }
 
     .text-block p {
       color: var(--text-secondary);
+      font-size: calc(var(--spacing-unit) * 1.75); /* 14px */
       line-height: 1.7;
-      margin-bottom: 1.2rem;
-      font-size: 0.9rem;
-      text-align: left;
+      margin-bottom: var(--padding-medium);
     }
 
-    .link-button, .profile-button /* Assuming .profile-button is still used */ {
+    .link-button, .profile-button {
       display: inline-block;
-      background: transparent;
-      color: var(--text-primary);
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+      background-color: var(--accent-primary);
+      color: #FFFFFF;
+      padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2.5); /* 10px 20px */
+      border-radius: 4px;
+      border: 1px solid var(--accent-primary);
       text-decoration: none;
-      font-family: var(--font-body); /* Consistent sans-serif */
+      font-family: var(--font-primary);
       font-weight: 500;
-      text-transform: uppercase;
+      font-size: calc(var(--spacing-unit) * 1.75); /* 14px */
+      text-transform: uppercase; /* Enterprise buttons often uppercase */
       letter-spacing: 0.5px;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
       box-shadow: none;
+      text-align: center;
     }
 
     .link-button:hover, .profile-button:hover {
-      background: var(--bg-secondary);
-      border-color: var(--accent-subtle);
-      color: var(--text-primary);
-      transform: none;
-      box-shadow: none;
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+      color: #FFFFFF;
       text-decoration: none;
     }
     
     .reaction-buttons {
       display: flex;
-      gap: 0.8rem;
-      margin-top: 1.2rem;
+      gap: var(--padding-small);
+      margin-top: var(--padding-medium);
       justify-content: flex-start;
     }
 
     .reaction-buttons button {
-      padding: 0.4rem 0.8rem;
+      padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5); /* 8px 12px */
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 4px;
       background: transparent;
-      color: var(--text-secondary);
-      font-family: var(--font-body);
-      font-weight: 400;
+      color: var(--text-tertiary);
+      font-family: var(--font-primary);
+      font-size: calc(var(--spacing-unit) * 1.5); /* 12px */
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
+      text-transform: uppercase;
     }
 
     .reaction-buttons button:hover {
-      border-color: var(--accent-subtle);
+      border-color: var(--text-secondary);
       color: var(--text-primary);
-      background-color: var(--bg-card);
-      box-shadow: none;
+      background-color: var(--bg-main); /* Slight bg change on hover */
     }
 
     .hidden { display: none; }
-    .top-right { position: absolute; top: 20px; right: 20px; } 
-    /* .profile-button specific positioning if needed, common styles merged above */
+    .top-right { 
+      position: absolute; 
+      top: var(--padding-medium); 
+      right: var(--padding-medium); 
+    }
+    /* Ensure .profile-button (if used as standalone with .top-right) inherits general button styles */
+    .profile-button.top-right {
+       /* Specific overrides if needed, else common .link-button styles apply */
+    }
 
   </style>
 </head>
@@ -208,29 +213,29 @@
   <!-- Main Content -->
   <div id="main-content">
     <header>
-      <h1>RIDERKA</h1>
+      <img src="/images/olzhtech.png" alt="Platform Logo" class="header-logo">
       <p class="slogan">GC - твой шаг в будущее!</p>
     </header>
 
     <div class="icon-row">
       <div class="icon-card">
-        <img src="/images/profile.webp" alt="Profile">
+        <img src="/images/profile.webp" alt="Profile Icon">
         <a href="/profile builder/welcome.html">Profile Builder</a>
       </div>
       <div class="icon-card">
-        <img src="/images/pay.png" alt="Courses">
+        <img src="/images/pay.png" alt="Courses Icon">
         <a href="/courses/wlcm.html">Premium Courses</a>
       </div>
       <div class="icon-card">
-    <img src="/images/other.webp" alt="Other">
-    <a href="/other/welcome.html">Other</a>
-  </div>
+        <img src="/images/other.webp" alt="Other Icon">
+        <a href="/other/welcome.html">Other</a>
+      </div>
       <div class="icon-card">
-        <img src="/images/exam.webp" alt="Exams">
+        <img src="/images/exam.webp" alt="Exams Icon">
         <a href="/mock exams/welcome.html">Mock Exams</a>
       </div>
       <div class="icon-card">
-        <img src="/images/think.webp" alt="Writing">
+        <img src="/images/think.webp" alt="Writing Icon">
         <a href="/writing builder/welcome.html">Writing Lab</a>
       </div>
     </div>

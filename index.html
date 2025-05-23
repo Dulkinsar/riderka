@@ -7,19 +7,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Color Palette: Dark, Monochromatic, Systemic */
-      --bg-primary: #1C1C1C;       /* Light graphite - Main background */
-      --bg-secondary: #2B2B2B;     /* Neutral grey - Cards, Headers */
-      --bg-tertiary: #3A3A3A;      /* Muted dark silver - Hover, accents */
+      /* Color Palette: Light Enterprise */
+      --bg-primary: #F4F4F4;       /* Base background */
+      --bg-secondary: #FAFAFA;     /* Surface background */
+      --bg-tertiary: #E8E8E8;      /* Hover/active states */
       
-      --text-primary: #DDDDDD;     /* Light grey - Primary text */
-      --text-secondary: #BBBBBB;   /* Slightly dimmer grey - Secondary text */
-      --text-highlight: #F5F5F5;   /* Off-white - For highlighted text or strong foreground */
+      --text-primary: #2B2B2B;     /* Primary text */
+      --text-secondary: #4B4B4B;   /* Secondary text */
+      --text-highlight: #FFFFFF;   /* Inverted text */
       
-      --accent-cyan: #00BCD4;      /* Monochrome cyan - Primary accent */
-      --accent-cyan-hover: #00A5BB; /* Darker cyan for hover */
-      --border-color: #4A4A4A;     /* Darker border for subtle divisions */
-      --border-accent: var(--accent-cyan);
+      --accent-primary: #B0E0E6;   /* Desaturated cyan */
+      --accent-secondary: #8AAEC0; /* Grey-blue */
+      --accent-tertiary: #7C8B9A;  /* Muted steel */
+      
+      --border-color: #D0D0D0;     /* Divider lines */
+      --border-accent: var(--accent-secondary);
 
       /* Typography */
       --font-body: 'Inter', sans-serif;
@@ -28,15 +30,14 @@
 
       /* Spacing & Sizing */
       --spacing-base: 8px;
-      --spacing-xs: calc(var(--spacing-base) * 0.5);  /* 4px */
-      --spacing-sm: var(--spacing-base);             /* 8px */
-      --spacing-md: calc(var(--spacing-base) * 2);   /* 16px */
-      --spacing-lg: calc(var(--spacing-base) * 3);   /* 24px */
-      --spacing-xl: calc(var(--spacing-base) * 4);   /* 32px */
-      --spacing-xxl: calc(var(--spacing-base) * 6);  /* 48px */
+      --spacing-xs: calc(var(--spacing-base) * 0.5);
+      --spacing-sm: var(--spacing-base);
+      --spacing-md: calc(var(--spacing-base) * 2);
+      --spacing-lg: calc(var(--spacing-base) * 3);
+      --spacing-xl: calc(var(--spacing-base) * 4);
+      --spacing-xxl: calc(var(--spacing-base) * 6);
 
-      --border-radius-sharp: 0px; /* Sharp, rectangular elements */
-      --border-radius-subtle: 2px;
+      --border-radius: 0px; /* Sharp corners */
     }
 
     * {
@@ -48,14 +49,14 @@
     body {
       font-family: var(--font-body);
       background-color: var(--bg-primary);
-      /* Optional: Subtle repeating background pattern */
-      background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+      background-image: 
+        linear-gradient(var(--border-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
       background-size: 20px 20px;
       color: var(--text-primary);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      padding-bottom: var(--spacing-xxl); /* Ensure space at bottom */
     }
 
     header {
@@ -67,19 +68,16 @@
     }
     
     .header-logo {
-      width: 160px; /* Adjusted for dark theme */
+      width: 180px;
       height: auto;
       margin-bottom: var(--spacing-sm);
-      /* Consider filter for monochrome if logo isn't already light/monochrome */
-      /* filter: grayscale(100%) brightness(3); */
     }
 
     .slogan {
       font-family: var(--font-mono);
-      font-size: calc(var(--spacing-base) * 1.5); /* 12px */
-      font-weight: 400;
+      font-size: calc(var(--spacing-base) * 1.5);
       color: var(--text-secondary);
-      letter-spacing: 1.5px; /* Increased tracking */
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-top: var(--spacing-xs);
     }
@@ -89,7 +87,7 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: var(--spacing-lg);
       padding: 0 var(--spacing-xl);
-      max-width: 1500px; 
+      max-width: 1500px;
       margin: var(--spacing-xxl) auto;
     }
 
@@ -97,59 +95,54 @@
       background: var(--bg-secondary);
       padding: var(--spacing-lg);
       border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-subtle); /* Subtle radius, almost sharp */
+      border-radius: var(--border-radius);
       text-align: left;
       transition: border-color 0.2s ease, background-color 0.2s ease;
-      box-shadow: none; /* No shadows */
     }
 
     .icon-card:hover, .text-block:hover {
       border-color: var(--border-accent);
-      background-color: var(--bg-tertiary); /* Subtle background shift */
-      transform: none;
+      background-color: var(--bg-tertiary);
     }
 
     .icon-card img {
-      width: 40px; /* Smaller system-like icons */
+      width: 40px;
       height: 40px;
       margin-bottom: var(--spacing-md);
       border: none;
-      border-radius: 0; /* Sharp */
+      border-radius: 0;
       padding: 0;
       object-fit: contain;
       display: block;
-      /* Making raster icons monochrome and light */
-      filter: grayscale(100%) brightness(2.5) contrast(1.2); 
+      filter: grayscale(100%) brightness(0.8);
     }
 
-    .icon-card a, .text-block h2 /* Grouping for similar styling */ {
-      font-family: var(--font-mono); /* Technical font for these */
-      color: var(--text-highlight);
-      font-weight: 500; /* Medium for mono */
+    .icon-card a, .text-block h2 {
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      font-weight: 500;
       text-decoration: none;
-      font-size: calc(var(--spacing-base) * 1.75); /* 14px */
-      text-transform: uppercase; /* All caps for technical feel */
+      font-size: calc(var(--spacing-base) * 1.75);
+      text-transform: uppercase;
       letter-spacing: 1px;
       display: block;
       transition: color 0.2s ease;
     }
     
     .icon-card a {
-        margin-top: var(--spacing-md);
+      margin-top: var(--spacing-md);
     }
     
     .text-block h2 {
-        margin-bottom: var(--spacing-md); /* Original .text-block h2 styling */
-        font-family: var(--font-heading); /* Override mono for h2 if preferred */
-        font-size: calc(var(--spacing-base) * 2.25); /* 18px for h2 */
-        color: var(--text-highlight);
-        letter-spacing: 0.5px;
+      margin-bottom: var(--spacing-md);
+      font-family: var(--font-heading);
+      font-size: calc(var(--spacing-base) * 2.25);
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
     }
 
-
     .icon-card a:hover {
-      color: var(--accent-cyan);
-      text-decoration: none; /* No underline, rely on color change */
+      color: var(--accent-secondary);
     }
 
     main {
@@ -163,36 +156,32 @@
 
     .text-block p {
       color: var(--text-secondary);
-      font-size: calc(var(--spacing-base) * 1.75); /* 14px */
-      line-height: 1.8; /* Increased for readability on dark bg */
+      font-size: calc(var(--spacing-base) * 1.75);
+      line-height: 1.8;
       margin-bottom: var(--spacing-lg);
     }
 
-    /* Buttons: Rectangular, border-only, invert on hover */
     .link-button, .profile-button {
       display: inline-block;
       background-color: transparent;
-      color: var(--accent-cyan);
-      padding: calc(var(--spacing-base)*1.25) calc(var(--spacing-base) * 2.5); /* 10px 20px */
-      border-radius: var(--border-radius-sharp);
-      border: 1px solid var(--accent-cyan);
+      color: var(--accent-secondary);
+      padding: calc(var(--spacing-base)*1.25) calc(var(--spacing-base) * 2.5);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--accent-secondary);
       text-decoration: none;
       font-family: var(--font-mono);
       font-weight: 500;
-      font-size: calc(var(--spacing-base) * 1.5); /* 12px */
+      font-size: calc(var(--spacing-base) * 1.5);
       text-transform: uppercase;
       letter-spacing: 1px;
       transition: background-color 0.2s ease, color 0.2s ease;
-      box-shadow: none;
       text-align: center;
       cursor: pointer;
     }
 
     .link-button:hover, .profile-button:hover {
-      background-color: var(--accent-cyan);
-      border-color: var(--accent-cyan);
-      color: var(--bg-secondary); /* Text color inverts to card background */
-      text-decoration: none;
+      background-color: var(--accent-secondary);
+      color: var(--text-highlight);
     }
     
     .reaction-buttons {
@@ -205,20 +194,20 @@
     .reaction-buttons button {
       padding: var(--spacing-sm) var(--spacing-md);
       border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-sharp);
+      border-radius: var(--border-radius);
       background: transparent;
       color: var(--text-secondary);
       font-family: var(--font-mono);
-      font-size: calc(var(--spacing-base) * 1.25); /* 10px */
+      font-size: calc(var(--spacing-base) * 1.25);
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      text-transform: uppercase; /* SYSTEM LOG: [COUNT] */
+      text-transform: uppercase;
     }
 
     .reaction-buttons button:hover {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
+      border-color: var(--accent-secondary);
+      color: var(--accent-secondary);
       background-color: var(--bg-tertiary);
     }
 
@@ -228,40 +217,35 @@
       top: var(--spacing-lg); 
       right: var(--spacing-lg); 
     }
-    .profile-button.top-right {
-       /* No specific overrides needed, inherits general button style */
-    }
-
   </style>
 </head>
 <body>
-  <!-- Main Content -->
   <div id="main-content">
     <header>
-      <img src="/images/olzhtech.png" alt="SYSTEM LOGO // OLZHTECH" class="header-logo">
-      <p class="slogan">SYSTEM STATUS: OPERATIONAL // GC PROTOCOL ACTIVE</p>
+      <img src="/images/olzhtech.png" alt="SYSTEM LOGO" class="header-logo">
+      <p class="slogan">SYSTEM STATUS: OPERATIONAL // PRECISION BUILDS POTENTIAL</p>
     </header>
 
     <div class="icon-row">
       <div class="icon-card">
-        <img src="/images/profile.webp" alt="User Profile Module Icon">
+        <img src="/images/profile.webp" alt="Profile Module">
         <a href="/profile builder/welcome.html">ACCESS PROFILE UNIT</a>
       </div>
       <div class="icon-card">
-        <img src="/images/pay.png" alt="Learning Modules Icon">
+        <img src="/images/pay.png" alt="Learning Module">
         <a href="/courses/wlcm.html">INITIATE LEARNING MODULES</a>
       </div>
       <div class="icon-card">
-        <img src="/images/other.webp" alt="Auxiliary Systems Icon">
-        <a href="/other/welcome.html">EXPLORE AUXILIARY SYSTEMS</a>
+        <img src="/images/other.webp" alt="Auxiliary Systems">
+        <a href="/other/welcome.html">ACCESS AUXILIARY SYSTEMS</a>
       </div>
       <div class="icon-card">
-        <img src="/images/exam.webp" alt="Assessment Protocol Icon">
-        <a href="/mock exams/welcome.html">SIMULATE ASSESSMENT PROTOCOL</a>
+        <img src="/images/exam.webp" alt="Assessment Protocol">
+        <a href="/mock exams/welcome.html">INITIATE ASSESSMENT PROTOCOL</a>
       </div>
       <div class="icon-card">
-        <img src="/images/think.webp" alt="Composition Interface Icon">
-        <a href="/writing builder/welcome.html">ENGAGE COMPOSITION INTERFACE</a>
+        <img src="/images/think.webp" alt="Composition Interface">
+        <a href="/writing builder/welcome.html">ACCESS COMPOSITION INTERFACE</a>
       </div>
     </div>
 
@@ -269,7 +253,7 @@
       <div class="text-block">
         <h2><span style="font-family: var(--font-mono); letter-spacing: 1px;">UNIT:</span> Questions Hub</h2>
         <p>Daily Affirmations + SAT Challenges // SYSTEM PROCESSING...</p>
-        <a href="/questions/welcome.html" class="link-button">COMMENCE CHALLENGE SEQUENCE</a>
+        <a href="/questions/welcome.html" class="link-button">INITIATE CHALLENGE SEQUENCE</a>
         <div class="reaction-buttons">
           <button>LOG POSITIVE: 248</button>
           <button>LOG NEGATIVE: 12</button>
@@ -279,7 +263,7 @@
       <div class="text-block">
         <h2><span style="font-family: var(--font-mono); letter-spacing: 1px;">UNIT:</span> Future Features</h2>
         <p>Explore upcoming innovations // PROTOTYPE STAGING AREA</p>
-        <a href="/future/welcome.html" class="link-button">REVIEW PROTOTYPE FUNCTIONS</a>
+        <a href="/future/welcome.html" class="link-button">ACCESS PROTOTYPE FUNCTIONS</a>
         <div class="reaction-buttons">
           <button>LOG POSITIVE: 184</button>
           <button>LOG NEGATIVE: 5</button>

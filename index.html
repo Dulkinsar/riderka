@@ -7,20 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Color Palette: Light Enterprise */
-      --bg-primary: #F4F4F4;       /* Base background */
-      --bg-secondary: #FAFAFA;     /* Surface background */
-      --bg-tertiary: #E8E8E8;      /* Hover/active states */
+      /* Color Palette: Corporate Minimal */
+      --bg-primary: #F2F2F2;       /* Light grey - Main background */
+      --bg-secondary: #FAFAFA;     /* Off-white - Surface elements */
+      --bg-tertiary: #E8E8E8;      /* Concrete - Hover states */
       
-      --text-primary: #2B2B2B;     /* Primary text */
-      --text-secondary: #4B4B4B;   /* Secondary text */
-      --text-highlight: #FFFFFF;   /* Inverted text */
+      --surface-primary: #D9D9D9;  /* Silver */
+      --surface-secondary: #CAD5DB; /* Desaturated light blue-grey */
       
-      --accent-primary: #B0E0E6;   /* Desaturated cyan */
-      --accent-secondary: #8AAEC0; /* Grey-blue */
-      --accent-tertiary: #7C8B9A;  /* Muted steel */
+      --text-primary: #222222;     /* Charcoal black */
+      --text-secondary: #4B4B4B;   /* Slate grey */
+      --text-highlight: #FFFFFF;   /* White for contrast */
       
-      --border-color: #D0D0D0;     /* Divider lines */
+      --accent-primary: #A8CEDF;   /* Muted cyan */
+      --accent-secondary: #8899A7; /* Grey-blue */
+      
+      --border-color: #D0D0D0;     /* Subtle divider */
       --border-accent: var(--accent-secondary);
 
       /* Typography */
@@ -52,7 +54,7 @@
       background-image: 
         linear-gradient(var(--border-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-      background-size: 20px 20px;
+      background-size: 24px 24px;
       color: var(--text-primary);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
@@ -61,70 +63,69 @@
 
     header {
       background-color: var(--bg-secondary);
-      padding: var(--spacing-lg) var(--spacing-xl);
+      padding: var(--spacing-xl) var(--spacing-xxl);
       text-align: center;
       border-bottom: 1px solid var(--border-color);
       margin-bottom: var(--spacing-xxl);
+      position: relative;
     }
     
     .header-logo {
-      width: 180px;
+      width: 200px;
       height: auto;
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
     }
 
     .slogan {
       font-family: var(--font-mono);
       font-size: calc(var(--spacing-base) * 1.5);
       color: var(--text-secondary);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+      letter-spacing: 1px;
       margin-top: var(--spacing-xs);
+      opacity: 0.9;
     }
 
     .icon-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: var(--spacing-lg);
-      padding: 0 var(--spacing-xl);
-      max-width: 1500px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-xl);
+      padding: 0 var(--spacing-xxl);
+      max-width: 1600px;
       margin: var(--spacing-xxl) auto;
     }
 
     .icon-card, .text-block {
       background: var(--bg-secondary);
-      padding: var(--spacing-lg);
+      padding: var(--spacing-xl);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius);
       text-align: left;
-      transition: border-color 0.2s ease, background-color 0.2s ease;
+      transition: border-color 0.2s ease;
     }
 
     .icon-card:hover, .text-block:hover {
       border-color: var(--border-accent);
-      background-color: var(--bg-tertiary);
     }
 
     .icon-card img {
-      width: 40px;
-      height: 40px;
-      margin-bottom: var(--spacing-md);
+      width: 32px;
+      height: 32px;
+      margin-bottom: var(--spacing-lg);
       border: none;
       border-radius: 0;
       padding: 0;
       object-fit: contain;
       display: block;
-      filter: grayscale(100%) brightness(0.8);
+      filter: grayscale(100%) brightness(0.7);
     }
 
     .icon-card a, .text-block h2 {
-      font-family: var(--font-mono);
+      font-family: var(--font-heading);
       color: var(--text-primary);
       font-weight: 500;
       text-decoration: none;
-      font-size: calc(var(--spacing-base) * 1.75);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: calc(var(--spacing-base) * 2);
+      letter-spacing: 0.5px;
       display: block;
       transition: color 0.2s ease;
     }
@@ -135,10 +136,7 @@
     
     .text-block h2 {
       margin-bottom: var(--spacing-md);
-      font-family: var(--font-heading);
-      font-size: calc(var(--spacing-base) * 2.25);
-      color: var(--text-primary);
-      letter-spacing: 0.5px;
+      font-size: calc(var(--spacing-base) * 2.5);
     }
 
     .icon-card a:hover {
@@ -147,62 +145,61 @@
 
     main {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-lg);
-      padding: 0 var(--spacing-xl) var(--spacing-xxl) var(--spacing-xl);
-      max-width: 1500px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--spacing-xl);
+      padding: 0 var(--spacing-xxl) var(--spacing-xxl) var(--spacing-xxl);
+      max-width: 1600px;
       margin: 0 auto;
     }
 
     .text-block p {
       color: var(--text-secondary);
-      font-size: calc(var(--spacing-base) * 1.75);
-      line-height: 1.8;
-      margin-bottom: var(--spacing-lg);
+      font-size: calc(var(--spacing-base) * 2);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-xl);
     }
 
     .link-button, .profile-button {
       display: inline-block;
       background-color: transparent;
-      color: var(--accent-secondary);
-      padding: calc(var(--spacing-base)*1.25) calc(var(--spacing-base) * 2.5);
+      color: var(--text-primary);
+      padding: calc(var(--spacing-base)*1.5) calc(var(--spacing-base) * 3);
       border-radius: var(--border-radius);
-      border: 1px solid var(--accent-secondary);
+      border: 1px solid var(--border-color);
       text-decoration: none;
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-weight: 500;
-      font-size: calc(var(--spacing-base) * 1.5);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      font-size: calc(var(--spacing-base) * 1.75);
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
       text-align: center;
       cursor: pointer;
     }
 
     .link-button:hover, .profile-button:hover {
-      background-color: var(--accent-secondary);
-      color: var(--text-highlight);
+      background-color: var(--bg-tertiary);
+      border-color: var(--accent-secondary);
+      color: var(--accent-secondary);
     }
     
     .reaction-buttons {
       display: flex;
       gap: var(--spacing-md);
-      margin-top: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
       justify-content: flex-start;
     }
 
     .reaction-buttons button {
-      padding: var(--spacing-sm) var(--spacing-md);
+      padding: var(--spacing-sm) var(--spacing-lg);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius);
       background: transparent;
       color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: calc(var(--spacing-base) * 1.25);
+      font-family: var(--font-body);
+      font-size: calc(var(--spacing-base) * 1.5);
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      text-transform: uppercase;
     }
 
     .reaction-buttons button:hover {
@@ -214,59 +211,72 @@
     .hidden { display: none; }
     .top-right { 
       position: absolute; 
-      top: var(--spacing-lg); 
-      right: var(--spacing-lg); 
+      top: var(--spacing-xl); 
+      right: var(--spacing-xl); 
+    }
+
+    /* Subtle motto overlay */
+    .motto-overlay {
+      position: absolute;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-xl);
+      font-family: var(--font-mono);
+      font-size: calc(var(--spacing-base) * 1.25);
+      color: var(--text-secondary);
+      opacity: 0.6;
+      letter-spacing: 1px;
     }
   </style>
 </head>
 <body>
   <div id="main-content">
     <header>
-      <img src="/images/olzhtech.png" alt="SYSTEM LOGO" class="header-logo">
-      <p class="slogan">SYSTEM STATUS: OPERATIONAL // PRECISION BUILDS POTENTIAL</p>
+      <img src="/images/olzhtech.png" alt="Platform Logo" class="header-logo">
+      <p class="slogan">SYSTEM STATUS: OPERATIONAL</p>
+      <div class="motto-overlay">Shaping Minds. Structuring Futures.</div>
     </header>
 
     <div class="icon-row">
       <div class="icon-card">
-        <img src="/images/profile.webp" alt="Profile Module">
-        <a href="/profile builder/welcome.html">ACCESS PROFILE UNIT</a>
+        <img src="/images/profile.webp" alt="Profile">
+        <a href="/profile builder/welcome.html">Start Learning</a>
       </div>
       <div class="icon-card">
-        <img src="/images/pay.png" alt="Learning Module">
-        <a href="/courses/wlcm.html">INITIATE LEARNING MODULES</a>
+        <img src="/images/pay.png" alt="Courses">
+        <a href="/courses/wlcm.html">Explore Courses</a>
       </div>
       <div class="icon-card">
-        <img src="/images/other.webp" alt="Auxiliary Systems">
-        <a href="/other/welcome.html">ACCESS AUXILIARY SYSTEMS</a>
+        <img src="/images/other.webp" alt="Resources">
+        <a href="/other/welcome.html">View Resources</a>
       </div>
       <div class="icon-card">
-        <img src="/images/exam.webp" alt="Assessment Protocol">
-        <a href="/mock exams/welcome.html">INITIATE ASSESSMENT PROTOCOL</a>
+        <img src="/images/exam.webp" alt="Practice">
+        <a href="/mock exams/welcome.html">Practice Tests</a>
       </div>
       <div class="icon-card">
-        <img src="/images/think.webp" alt="Composition Interface">
-        <a href="/writing builder/welcome.html">ACCESS COMPOSITION INTERFACE</a>
+        <img src="/images/think.webp" alt="Writing">
+        <a href="/writing builder/welcome.html">Writing Center</a>
       </div>
     </div>
 
     <main>
       <div class="text-block">
-        <h2><span style="font-family: var(--font-mono); letter-spacing: 1px;">UNIT:</span> Questions Hub</h2>
-        <p>Daily Affirmations + SAT Challenges // SYSTEM PROCESSING...</p>
-        <a href="/questions/welcome.html" class="link-button">INITIATE CHALLENGE SEQUENCE</a>
+        <h2>Questions Hub</h2>
+        <p>Daily practice questions and SAT challenges to help you excel.</p>
+        <a href="/questions/welcome.html" class="link-button">Learn More</a>
         <div class="reaction-buttons">
-          <button>LOG POSITIVE: 248</button>
-          <button>LOG NEGATIVE: 12</button>
+          <button>Positive: 248</button>
+          <button>Negative: 12</button>
         </div>
       </div>
 
       <div class="text-block">
-        <h2><span style="font-family: var(--font-mono); letter-spacing: 1px;">UNIT:</span> Future Features</h2>
-        <p>Explore upcoming innovations // PROTOTYPE STAGING AREA</p>
-        <a href="/future/welcome.html" class="link-button">ACCESS PROTOTYPE FUNCTIONS</a>
+        <h2>Future Features</h2>
+        <p>Explore upcoming platform enhancements and new learning tools.</p>
+        <a href="/future/welcome.html" class="link-button">Learn More</a>
         <div class="reaction-buttons">
-          <button>LOG POSITIVE: 184</button>
-          <button>LOG NEGATIVE: 5</button>
+          <button>Positive: 184</button>
+          <button>Negative: 5</button>
         </div>
       </div>
     </main>

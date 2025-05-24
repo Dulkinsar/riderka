@@ -230,6 +230,56 @@
       display: none;
     }
 
+    .news-item {
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid #CCCCCC;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .news-item:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .news-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .news-item h3 {
+      font-size: 14px;
+      margin-bottom: var(--spacing-xs);
+      color: var(--text-primary);
+      transition: color 0.2s ease;
+    }
+
+    .news-item:hover h3 {
+      color: var(--border-accent);
+    }
+
+    .news-item p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .news-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-xs);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .news-meta .source {
+      font-weight: 500;
+    }
+
+    .news-meta .date {
+      opacity: 0.7;
+    }
+
     @media (max-width: 768px) {
       .main-content {
         grid-template-columns: 1fr;
@@ -374,12 +424,14 @@
 
       newsContent.innerHTML = articles.map(article => `
         <div class="news-item">
-          <h3>${article.title || 'No title available'}</h3>
-          <p>${article.description || 'No description available'}</p>
-          <div class="news-meta">
-            <span class="source">${article.source?.name || 'Unknown Source'}</span>
-            <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
-          </div>
+          <a href="${article.url || '#'}" target="_blank" rel="noopener noreferrer" title="Read full article">
+            <h3>${article.title || 'No title available'}</h3>
+            <p>${article.description || 'No description available'}</p>
+            <div class="news-meta">
+              <span class="source">${article.source?.name || 'Unknown Source'}</span>
+              <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+            </div>
+          </a>
         </div>
       `).join('');
     }

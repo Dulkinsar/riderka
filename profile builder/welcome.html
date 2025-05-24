@@ -367,7 +367,10 @@
   </div>
 
   <script>
-    const CNN_RSS_URL = 'http://rss.cnn.com/rss/edition.rss';
+    // Use a CORS proxy to access the RSS feed
+    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+    const CNN_RSS_URL = encodeURIComponent('http://rss.cnn.com/rss/edition.rss');
+    const FULL_RSS_URL = CORS_PROXY + CNN_RSS_URL;
 
     async function fetchNews() {
       const newsContent = document.getElementById('newsContent');
@@ -382,7 +385,7 @@
 
       try {
         console.log('Fetching CNN RSS feed...');
-        const response = await fetch(CNN_RSS_URL);
+        const response = await fetch(FULL_RSS_URL);
         console.log('CNN RSS Response Status:', response.status);
         
         if (!response.ok) {
@@ -399,31 +402,42 @@
         // Check for parsing errors
         const parserError = xmlDoc.querySelector('parsererror');
         if (parserError) {
+          console.error('XML Parse Error:', parserError.textContent);
           throw new Error('Failed to parse RSS feed');
         }
 
         // Extract items from RSS feed
         const items = xmlDoc.querySelectorAll('item');
+        console.log('Found RSS items:', items.length);
+
         if (!items || items.length === 0) {
           throw new Error('No news items found in feed');
         }
 
         // Convert RSS items to article format
         const articles = Array.from(items).slice(0, 10).map(item => {
-          const title = item.querySelector('title')?.textContent || '';
-          const description = item.querySelector('description')?.textContent || '';
-          const pubDate = item.querySelector('pubDate')?.textContent || '';
-          const link = item.querySelector('link')?.textContent || '';
+          // Extract and clean content
+          const title = item.querySelector('title')?.textContent?.trim() || '';
+          const description = item.querySelector('description')?.textContent?.trim() || '';
+          const pubDate = item.querySelector('pubDate')?.textContent?.trim() || '';
+          const link = item.querySelector('link')?.textContent?.trim() || '';
+          const category = item.querySelector('category')?.textContent?.trim() || 'General';
+
+          // Clean HTML and decode entities
+          const cleanTitle = decodeHTMLEntities(title.replace(/<[^>]*>/g, ''));
+          const cleanDescription = decodeHTMLEntities(description.replace(/<[^>]*>/g, ''));
 
           return {
-            title: title.replace(/<[^>]*>/g, ''), // Remove any HTML tags
-            description: description.replace(/<[^>]*>/g, ''),
+            title: cleanTitle,
+            description: cleanDescription,
             publishedAt: new Date(pubDate).toISOString(),
             source: { name: 'CNN' },
-            url: link
+            url: link,
+            category: category
           };
         });
 
+        console.log('Processed articles:', articles);
         renderNews(articles);
 
       } catch (error) {
@@ -452,6 +466,13 @@
       }
     }
 
+    // Helper function to decode HTML entities
+    function decodeHTMLEntities(text) {
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = text;
+      return textarea.value;
+    }
+
     function renderNews(articles) {
       const newsContent = document.getElementById('newsContent');
       
@@ -470,25 +491,61 @@
       }
 
       newsContent.innerHTML = articles.map((article, index) => {
-        // Sanitize and escape HTML in title and description
-        const title = article.title.replace(/[<>]/g, '');
-        const description = article.description.replace(/[<>]/g, '');
+        const title = article.title;
+        const description = article.description;
         const sourceName = article.source.name;
         const publishedDate = new Date(article.publishedAt).toLocaleDateString();
+        const category = article.category;
 
         return `
           <div class="news-item">
+            <div class="news-category">${category}</div>
             <h3>${title}</h3>
             <p id="article-${index}">${description}</p>
             <div class="news-meta">
               <span class="source">${sourceName}</span>
               <span class="date">${publishedDate}</span>
             </div>
-            <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
-            ${article.url ? `<a href="${article.url}" target="_blank" class="read-more" style="margin-left: 10px;">View on CNN</a>` : ''}
+            <div class="news-actions">
+              <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
+              ${article.url ? `<a href="${article.url}" target="_blank" class="read-more external-link">View on CNN</a>` : ''}
+            </div>
           </div>
         `;
       }).join('');
+
+      // Add styles for new elements
+      const style = document.createElement('style');
+      style.textContent = `
+        .news-category {
+          display: inline-block;
+          background: var(--bg-tertiary);
+          color: var(--text-secondary);
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+        }
+
+        .news-actions {
+          display: flex;
+          gap: 12px;
+          margin-top: 8px;
+        }
+
+        .external-link {
+          color: var(--text-primary);
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 13px;
+        }
+
+        .external-link:hover {
+          text-decoration: underline;
+        }
+      `;
+      document.head.appendChild(style);
     }
 
     function toggleArticle(index) {

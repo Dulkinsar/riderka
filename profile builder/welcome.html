@@ -347,19 +347,22 @@
         title: "Important Update: College Admissions Process",
         description: "Latest changes in university admission requirements for international students.",
         source: { name: "Education Times" },
-        publishedAt: new Date().toISOString()
+        publishedAt: new Date().toISOString(),
+        url: "https://www.educationtimes.com/admissions-update"
       },
       {
         title: "SAT Test Format Changes Announced",
         description: "College Board announces new digital format for SAT examinations.",
         source: { name: "Academic News" },
-        publishedAt: new Date().toISOString()
+        publishedAt: new Date().toISOString(),
+        url: "https://www.academicnews.com/sat-changes"
       },
       {
         title: "IELTS Preparation Tips",
         description: "Expert advice on preparing for IELTS examinations.",
         source: { name: "Study Abroad" },
-        publishedAt: new Date().toISOString()
+        publishedAt: new Date().toISOString(),
+        url: "https://www.studyabroad.com/ielts-tips"
       }
     ];
 
@@ -399,11 +402,18 @@
           throw new Error('No articles found');
         }
 
-        renderNews(data.articles);
+        // Filter out articles without valid URLs
+        const validArticles = data.articles.filter(article => 
+          article.url && 
+          article.url.startsWith('http') && 
+          article.url !== window.location.href
+        );
+
+        renderNews(validArticles);
 
       } catch (error) {
         console.error('Error fetching news:', error);
-        // If API fails, use fallback data
+        // If API fails, use fallback data with valid URLs
         renderNews(FALLBACK_NEWS);
       }
     }
@@ -422,18 +432,46 @@
         return;
       }
 
-      newsContent.innerHTML = articles.map(article => `
-        <div class="news-item">
-          <a href="${article.url || '#'}" target="_blank" rel="noopener noreferrer" title="Read full article">
-            <h3>${article.title || 'No title available'}</h3>
-            <p>${article.description || 'No description available'}</p>
-            <div class="news-meta">
-              <span class="source">${article.source?.name || 'Unknown Source'}</span>
-              <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+      newsContent.innerHTML = articles.map(article => {
+        // Ensure URL is valid and absolute
+        const articleUrl = article.url && article.url.startsWith('http') 
+          ? article.url 
+          : null;
+
+        // If no valid URL, render as non-clickable
+        if (!articleUrl) {
+          return `
+            <div class="news-item">
+              <div class="news-content">
+                <h3>${article.title || 'No title available'}</h3>
+                <p>${article.description || 'No description available'}</p>
+                <div class="news-meta">
+                  <span class="source">${article.source?.name || 'Unknown Source'}</span>
+                  <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+                </div>
+              </div>
             </div>
-          </a>
-        </div>
-      `).join('');
+          `;
+        }
+
+        // Render as clickable link
+        return `
+          <div class="news-item">
+            <a href="${articleUrl}" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               title="Read full article"
+               onclick="event.stopPropagation()">
+              <h3>${article.title || 'No title available'}</h3>
+              <p>${article.description || 'No description available'}</p>
+              <div class="news-meta">
+                <span class="source">${article.source?.name || 'Unknown Source'}</span>
+                <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+              </div>
+            </a>
+          </div>
+        `;
+      }).join('');
     }
 
     let expandTimeout;

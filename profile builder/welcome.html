@@ -272,40 +272,69 @@
     const NEWS_API_KEY = '3b6c4f2e991d4cce86615b5934fbd266';
     const NEWS_API_URL = 'https://newsapi.org/v2/everything?' +
       'q=admissions+college+university+SAT+IELTS&' +
-      'from=2024-05-24&' +
-      'sortBy=popularity&' +
       'language=en&' +
+      'sortBy=publishedAt&' +
       'apiKey=' + NEWS_API_KEY;
 
     async function fetchNews() {
+      const newsContent = document.getElementById('newsContent');
+      
+      // Show loading state
+      newsContent.innerHTML = `
+        <div class="news-item">
+          <h3>Loading News...</h3>
+          <p>Fetching latest education news...</p>
+        </div>
+      `;
+
       try {
-        const req = new Request(NEWS_API_URL);
-        const response = await fetch(req);
-        
+        const response = await fetch(NEWS_API_URL, {
+          method: 'GET',
+          headers: {
+            'X-Api-Key': NEWS_API_KEY,
+            'Accept': 'application/json'
+          }
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        const newsContent = document.getElementById('newsContent');
         
-        if (data.articles && data.articles.length > 0) {
-          newsContent.innerHTML = data.articles.map(article => `
-            <div class="news-item">
-              <h3>${article.title || 'No title available'}</h3>
-              <p>${article.description || 'No description available'}</p>
-              <div class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</div>
-            </div>
-          `).join('');
-        } else {
-          newsContent.innerHTML = '<div class="news-item">No news articles found.</div>';
+        if (data.status === 'error') {
+          throw new Error(data.message || 'API returned an error');
         }
+
+        if (!data.articles || data.articles.length === 0) {
+          newsContent.innerHTML = `
+            <div class="news-item">
+              <h3>No News Available</h3>
+              <p>No education-related news articles found at this time.</p>
+              <div class="date">${new Date().toLocaleDateString()}</div>
+            </div>
+          `;
+          return;
+        }
+
+        // Render news articles
+        newsContent.innerHTML = data.articles.map(article => `
+          <div class="news-item">
+            <h3>${article.title || 'No title available'}</h3>
+            <p>${article.description || 'No description available'}</p>
+            <div class="news-meta">
+              <span class="source">${article.source?.name || 'Unknown Source'}</span>
+              <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+            </div>
+          </div>
+        `).join('');
+
       } catch (error) {
         console.error('Error fetching news:', error);
-        document.getElementById('newsContent').innerHTML = `
+        newsContent.innerHTML = `
           <div class="news-item">
             <h3>Error Loading News</h3>
-            <p>Unable to fetch news articles. Please try again later.</p>
+            <p>${error.message || 'Unable to fetch news articles. Please try again later.'}</p>
             <div class="date">${new Date().toLocaleDateString()}</div>
           </div>
         `;
@@ -319,6 +348,28 @@
       newsPanel.classList.toggle('collapsed');
       toggleButton.textContent = newsPanel.classList.contains('collapsed') ? 'Expand News' : 'Collapse News';
     }
+
+    // Add styles for news meta information
+    const style = document.createElement('style');
+    style.textContent = `
+      .news-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: var(--spacing-xs);
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+      
+      .news-meta .source {
+        font-weight: 500;
+      }
+      
+      .news-meta .date {
+        opacity: 0.7;
+      }
+    `;
+    document.head.appendChild(style);
 
     // Fetch news when the page loads
     document.addEventListener('DOMContentLoaded', fetchNews);

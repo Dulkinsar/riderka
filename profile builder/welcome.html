@@ -156,7 +156,9 @@
       overflow: hidden;
       transition: all 0.3s ease;
       position: relative;
-      width: 320px;
+      width: 360px;
+      display: flex;
+      flex-direction: column;
     }
 
     .news-panel.collapsed {
@@ -164,18 +166,19 @@
     }
 
     .news-header {
-      padding: var(--spacing-md);
+      padding: 24px;
       background-color: var(--bg-secondary);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 48px;
+      flex-shrink: 0;
     }
 
     .news-title {
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
@@ -205,10 +208,11 @@
     }
 
     .news-content {
-      padding: var(--spacing-md);
-      max-height: calc(100vh - 300px);
+      padding: 24px;
+      max-height: 80vh;
       overflow-y: auto;
       transition: opacity 0.2s ease;
+      flex-grow: 1;
     }
 
     .news-panel.collapsed .news-content {
@@ -231,44 +235,44 @@
     }
 
     .news-item {
-      padding: var(--spacing-md) 0;
+      padding: 24px 0;
       border-bottom: 1px solid #CCCCCC;
       transition: background-color 0.2s ease;
-      cursor: pointer;
     }
 
-    .news-item:hover {
-      background-color: rgba(0, 0, 0, 0.02);
-    }
-
-    .news-item a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
+    .news-item:last-child {
+      border-bottom: none;
     }
 
     .news-item h3 {
-      font-size: 14px;
-      margin-bottom: var(--spacing-xs);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
       color: var(--text-primary);
-      transition: color 0.2s ease;
-    }
-
-    .news-item:hover h3 {
-      color: var(--border-accent);
+      line-height: 1.4;
     }
 
     .news-item p {
       font-size: 14px;
       color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .news-item p.expanded {
+      -webkit-line-clamp: unset;
     }
 
     .news-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: var(--spacing-xs);
-      font-size: 12px;
+      margin-top: 8px;
+      font-size: 13px;
       color: var(--text-secondary);
     }
 
@@ -278,6 +282,38 @@
 
     .news-meta .date {
       opacity: 0.7;
+    }
+
+    .read-more {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 0;
+    }
+
+    .read-more:hover {
+      text-decoration: underline;
+    }
+
+    /* Custom scrollbar */
+    .news-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .news-content::-webkit-scrollbar-track {
+      background: #F0F0F0;
+    }
+
+    .news-content::-webkit-scrollbar-thumb {
+      background: #CCCCCC;
+      border-radius: 3px;
+    }
+
+    .news-content::-webkit-scrollbar-thumb:hover {
+      background: #BBBBBB;
     }
 
     @media (max-width: 768px) {
@@ -345,24 +381,21 @@
     const FALLBACK_NEWS = [
       {
         title: "Important Update: College Admissions Process",
-        description: "Latest changes in university admission requirements for international students.",
+        description: "Latest changes in university admission requirements for international students. The new guidelines emphasize holistic review processes and updated testing requirements. Universities are adapting their admission criteria to better reflect student potential and achievements.",
         source: { name: "Education Times" },
-        publishedAt: new Date().toISOString(),
-        url: "https://www.educationtimes.com/admissions-update"
+        publishedAt: new Date().toISOString()
       },
       {
         title: "SAT Test Format Changes Announced",
-        description: "College Board announces new digital format for SAT examinations.",
+        description: "College Board announces new digital format for SAT examinations. The changes include adaptive testing, shorter duration, and enhanced security measures. Students will now take the test on digital devices with built-in calculators and other tools.",
         source: { name: "Academic News" },
-        publishedAt: new Date().toISOString(),
-        url: "https://www.academicnews.com/sat-changes"
+        publishedAt: new Date().toISOString()
       },
       {
         title: "IELTS Preparation Tips",
-        description: "Expert advice on preparing for IELTS examinations.",
+        description: "Expert advice on preparing for IELTS examinations. Learn effective strategies for each section, including reading, writing, speaking, and listening. Discover time management techniques and practice resources to improve your score.",
         source: { name: "Study Abroad" },
-        publishedAt: new Date().toISOString(),
-        url: "https://www.studyabroad.com/ielts-tips"
+        publishedAt: new Date().toISOString()
       }
     ];
 
@@ -378,7 +411,6 @@
       `;
 
       try {
-        // First try the API with CORS proxy
         const response = await fetch(NEWS_API_URL, {
           method: 'GET',
           headers: {
@@ -402,49 +434,13 @@
           throw new Error('No articles found');
         }
 
-        // Debug: Log raw article data
-        console.log('Raw API Response:', data.articles[0]);
-
-        // Process articles to ensure valid URLs
-        const validArticles = data.articles
-          .filter(article => {
-            // Debug: Log raw URL
-            console.log('Raw article URL:', article.url);
-            
-            // Validate URL format
-            try {
-              const url = new URL(article.url);
-              return url.protocol === 'http:' || url.protocol === 'https:';
-            } catch (e) {
-              console.warn('Invalid URL:', article.url);
-              return false;
-            }
-          })
-          .map(article => {
-            // Debug: Log URL before processing
-            console.log('URL before processing:', article.url);
-            
-            // Create a clean URL object
-            const url = new URL(article.url);
-            
-            // Debug: Log URL after processing
-            console.log('URL after processing:', url.toString());
-            
-            return {
-              ...article,
-              url: url.toString()
-            };
-          });
-
-        // Debug: Log processed articles
-        console.log('Processed Articles:', validArticles[0]);
-
-        renderNews(validArticles);
+        // Limit to 10 articles
+        const articles = data.articles.slice(0, 10);
+        renderNews(articles);
 
       } catch (error) {
         console.error('Error fetching news:', error);
-        // If API fails, use fallback data with valid URLs
-        renderNews(FALLBACK_NEWS);
+        renderNews(FALLBACK_NEWS.slice(0, 10));
       }
     }
 
@@ -462,59 +458,30 @@
         return;
       }
 
-      newsContent.innerHTML = articles.map(article => {
-        // Debug: Log URL before rendering
-        console.log('URL before rendering:', article.url);
-
-        // Ensure URL is valid and absolute
-        let articleUrl;
-        try {
-          const url = new URL(article.url);
-          articleUrl = url.toString();
-          // Debug: Log URL after validation
-          console.log('URL after validation:', articleUrl);
-        } catch (e) {
-          console.warn('Invalid URL in render:', article.url);
-          articleUrl = null;
-        }
-
-        // If no valid URL, render as non-clickable
-        if (!articleUrl) {
-          return `
-            <div class="news-item">
-              <div class="news-content">
-                <h3>${article.title || 'No title available'}</h3>
-                <p>${article.description || 'No description available'}</p>
-                <div class="news-meta">
-                  <span class="source">${article.source?.name || 'Unknown Source'}</span>
-                  <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
-                </div>
-              </div>
-            </div>
-          `;
-        }
-
-        // Render as clickable link with proper URL
-        return `
-          <div class="news-item">
-            <a href="${articleUrl}" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               title="Read full article"
-               onclick="event.stopPropagation()">
-              <h3>${article.title || 'No title available'}</h3>
-              <p>${article.description || 'No description available'}</p>
-              <div class="news-meta">
-                <span class="source">${article.source?.name || 'Unknown Source'}</span>
-                <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
-              </div>
-            </a>
+      newsContent.innerHTML = articles.map((article, index) => `
+        <div class="news-item">
+          <h3>${article.title || 'No title available'}</h3>
+          <p id="article-${index}">${article.description || 'No description available'}</p>
+          <div class="news-meta">
+            <span class="source">${article.source?.name || 'Unknown Source'}</span>
+            <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
           </div>
-        `;
-      }).join('');
+          <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
+        </div>
+      `).join('');
+    }
 
-      // Debug: Log rendered HTML
-      console.log('Rendered HTML:', newsContent.innerHTML);
+    function toggleArticle(index) {
+      const article = document.getElementById(`article-${index}`);
+      const readMore = article.nextElementSibling.nextElementSibling;
+      
+      if (article.classList.contains('expanded')) {
+        article.classList.remove('expanded');
+        readMore.textContent = 'Read More';
+      } else {
+        article.classList.add('expanded');
+        readMore.textContent = 'Collapse';
+      }
     }
 
     let expandTimeout;

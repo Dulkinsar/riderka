@@ -367,15 +367,7 @@
   </div>
 
   <script>
-    const NEWS_API_KEY = '3b6c4f2e991d4cce86615b5934fbd266';
-    
-    // Direct NewsAPI endpoint without CORS proxy
-    const NEWS_API_URL = 'https://newsapi.org/v2/everything?' +
-      'q=admissions+college+university+SAT+IELTS&' +
-      'language=en&' +
-      'sortBy=publishedAt&' +
-      'pageSize=10&' + // Limit to 10 articles as per API best practices
-      'apiKey=' + NEWS_API_KEY;
+    const CNN_RSS_URL = 'http://rss.cnn.com/rss/edition.rss';
 
     async function fetchNews() {
       const newsContent = document.getElementById('newsContent');
@@ -384,62 +376,67 @@
       newsContent.innerHTML = `
         <div class="news-item">
           <h3>Loading News...</h3>
-          <p>Fetching latest education news...</p>
+          <p>Fetching latest news from CNN...</p>
         </div>
       `;
 
       try {
-        console.log('Fetching news from NewsAPI...');
-        const response = await fetch(NEWS_API_URL, {
-          method: 'GET',
-          headers: {
-            'X-Api-Key': NEWS_API_KEY,
-            'Accept': 'application/json'
-          }
-        });
-
-        console.log('NewsAPI Response Status:', response.status);
-        const data = await response.json();
-        console.log('NewsAPI Response Data:', data);
-
+        console.log('Fetching CNN RSS feed...');
+        const response = await fetch(CNN_RSS_URL);
+        console.log('CNN RSS Response Status:', response.status);
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        if (data.status !== 'ok') {
-          throw new Error(data.message || 'API returned an error status');
+        const xmlText = await response.text();
+        console.log('CNN RSS Raw Response:', xmlText);
+
+        // Parse XML to DOM
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+        // Check for parsing errors
+        const parserError = xmlDoc.querySelector('parsererror');
+        if (parserError) {
+          throw new Error('Failed to parse RSS feed');
         }
 
-        if (!data.articles || !Array.isArray(data.articles) || data.articles.length === 0) {
-          throw new Error('No articles found in the response');
+        // Extract items from RSS feed
+        const items = xmlDoc.querySelectorAll('item');
+        if (!items || items.length === 0) {
+          throw new Error('No news items found in feed');
         }
 
-        // Validate and clean articles before rendering
-        const validArticles = data.articles.filter(article => {
-          const isValid = article.title && article.description && article.source?.name && article.publishedAt;
-          if (!isValid) {
-            console.warn('Invalid article found:', article);
-          }
-          return isValid;
+        // Convert RSS items to article format
+        const articles = Array.from(items).slice(0, 10).map(item => {
+          const title = item.querySelector('title')?.textContent || '';
+          const description = item.querySelector('description')?.textContent || '';
+          const pubDate = item.querySelector('pubDate')?.textContent || '';
+          const link = item.querySelector('link')?.textContent || '';
+
+          return {
+            title: title.replace(/<[^>]*>/g, ''), // Remove any HTML tags
+            description: description.replace(/<[^>]*>/g, ''),
+            publishedAt: new Date(pubDate).toISOString(),
+            source: { name: 'CNN' },
+            url: link
+          };
         });
 
-        if (validArticles.length === 0) {
-          throw new Error('No valid articles found after filtering');
-        }
-
-        renderNews(validArticles);
+        renderNews(articles);
 
       } catch (error) {
-        console.error('Error fetching news:', error);
+        console.error('Error fetching CNN RSS:', error);
         
         // Determine specific error message based on error type
-        let errorMessage = 'Unable to fetch news articles at this time.';
-        if (error.message.includes('429')) {
-          errorMessage = 'News API rate limit reached. Please try again later.';
-        } else if (error.message.includes('401')) {
-          errorMessage = 'News API authentication failed. Please contact support.';
+        let errorMessage = 'Unable to fetch news at this time.';
+        if (error.message.includes('404')) {
+          errorMessage = 'CNN RSS feed not found. Please try again later.';
         } else if (error.message.includes('403')) {
-          errorMessage = 'News API access forbidden. Please contact support.';
+          errorMessage = 'Access to CNN RSS feed forbidden. Please try again later.';
+        } else if (error.message.includes('parsererror')) {
+          errorMessage = 'Failed to parse CNN RSS feed. Please try again later.';
         }
 
         newsContent.innerHTML = `
@@ -462,7 +459,7 @@
         newsContent.innerHTML = `
           <div class="news-item">
             <h3>No News Available</h3>
-            <p>No education-related news articles found at this time.</p>
+            <p>No news articles found at this time.</p>
             <div class="news-meta">
               <span class="source">System</span>
               <span class="date">${new Date().toLocaleDateString()}</span>
@@ -476,7 +473,7 @@
         // Sanitize and escape HTML in title and description
         const title = article.title.replace(/[<>]/g, '');
         const description = article.description.replace(/[<>]/g, '');
-        const sourceName = article.source.name.replace(/[<>]/g, '');
+        const sourceName = article.source.name;
         const publishedDate = new Date(article.publishedAt).toLocaleDateString();
 
         return `
@@ -488,6 +485,7 @@
               <span class="date">${publishedDate}</span>
             </div>
             <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
+            ${article.url ? `<a href="${article.url}" target="_blank" class="read-more" style="margin-left: 10px;">View on CNN</a>` : ''}
           </div>
         `;
       }).join('');

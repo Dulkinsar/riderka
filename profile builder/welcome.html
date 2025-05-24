@@ -126,6 +126,7 @@
       display: grid;
       grid-template-columns: 1fr 320px;
       gap: var(--spacing-xl);
+      transition: grid-template-columns 0.3s ease;
     }
 
     .profile-card {
@@ -153,7 +154,13 @@
       background-color: #E0E0E0;
       border-radius: 6px;
       overflow: hidden;
-      transition: width 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      width: 320px;
+    }
+
+    .news-panel.collapsed {
+      width: 48px;
     }
 
     .news-header {
@@ -163,12 +170,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      height: 48px;
     }
 
     .news-title {
       font-size: 16px;
       font-weight: 500;
       color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .news-toggle {
@@ -178,47 +188,45 @@
       cursor: pointer;
       font-size: 14px;
       padding: var(--spacing-xs) var(--spacing-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      transition: transform 0.3s ease;
+    }
+
+    .news-toggle::after {
+      content: '›';
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .news-panel.collapsed .news-toggle::after {
+      transform: rotate(180deg);
     }
 
     .news-content {
       padding: var(--spacing-md);
       max-height: calc(100vh - 300px);
       overflow-y: auto;
+      transition: opacity 0.2s ease;
     }
 
-    .news-item {
-      padding: var(--spacing-md) 0;
-      border-bottom: 1px solid #CCCCCC;
+    .news-panel.collapsed .news-content {
+      opacity: 0;
+      visibility: hidden;
     }
 
-    .news-item:last-child {
-      border-bottom: none;
-    }
-
-    .news-item h3 {
-      font-size: 14px;
-      margin-bottom: var(--spacing-xs);
-      color: var(--text-primary);
-    }
-
-    .news-item p {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .news-item .date {
-      font-size: 12px;
-      color: var(--text-secondary);
-      opacity: 0.7;
-      margin-top: var(--spacing-xs);
-    }
-
-    .news-panel.collapsed {
-      width: 48px;
-    }
-
-    .news-panel.collapsed .news-content,
     .news-panel.collapsed .news-title {
+      display: none;
+    }
+
+    .news-panel.collapsed .news-toggle {
+      width: 48px;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .news-panel.collapsed .news-toggle span {
       display: none;
     }
 
@@ -233,6 +241,10 @@
         top: 50%;
         transform: translateY(-50%);
         z-index: 100;
+      }
+
+      .news-panel.collapsed {
+        transform: translateY(-50%) translateX(calc(100% - 48px));
       }
     }
   </style>
@@ -372,13 +384,55 @@
       `).join('');
     }
 
+    let expandTimeout;
+    const EXPAND_DELAY = 200;
+
     function toggleNews() {
       const newsPanel = document.querySelector('.news-panel');
+      const mainContent = document.querySelector('.main-content');
       const toggleButton = document.querySelector('.news-toggle');
       
       newsPanel.classList.toggle('collapsed');
-      toggleButton.textContent = newsPanel.classList.contains('collapsed') ? 'Expand News' : 'Collapse News';
+      mainContent.style.gridTemplateColumns = newsPanel.classList.contains('collapsed') 
+        ? '1fr 48px' 
+        : '1fr 320px';
+      
+      toggleButton.textContent = newsPanel.classList.contains('collapsed') ? '' : 'Collapse News';
     }
+
+    function handleNewsPanelHover(event) {
+      const newsPanel = document.querySelector('.news-panel');
+      const mainContent = document.querySelector('.main-content');
+      
+      if (event.type === 'mouseenter') {
+        clearTimeout(expandTimeout);
+        expandTimeout = setTimeout(() => {
+          if (newsPanel.classList.contains('collapsed')) {
+            newsPanel.classList.remove('collapsed');
+            mainContent.style.gridTemplateColumns = '1fr 320px';
+            document.querySelector('.news-toggle').textContent = 'Collapse News';
+          }
+        }, EXPAND_DELAY);
+      } else if (event.type === 'mouseleave') {
+        clearTimeout(expandTimeout);
+      }
+    }
+
+    // Add hover behavior to news panel
+    const newsPanel = document.querySelector('.news-panel');
+    newsPanel.addEventListener('mouseenter', handleNewsPanelHover);
+    newsPanel.addEventListener('mouseleave', handleNewsPanelHover);
+
+    // Initialize news panel state
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchNews();
+      const newsPanel = document.querySelector('.news-panel');
+      const mainContent = document.querySelector('.main-content');
+      
+      // Ensure initial state is expanded
+      newsPanel.classList.remove('collapsed');
+      mainContent.style.gridTemplateColumns = '1fr 320px';
+    });
 
     // Add styles for news meta information
     const style = document.createElement('style');
@@ -411,9 +465,6 @@
       }
     `;
     document.head.appendChild(style);
-
-    // Fetch news when the page loads
-    document.addEventListener('DOMContentLoaded', fetchNews);
   </script>
 </body>
 </html> 

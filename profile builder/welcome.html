@@ -402,12 +402,14 @@
           throw new Error('No articles found');
         }
 
-        // Filter out articles without valid URLs
-        const validArticles = data.articles.filter(article => 
-          article.url && 
-          article.url.startsWith('http') && 
-          article.url !== window.location.href
-        );
+        // Process articles to ensure valid URLs
+        const validArticles = data.articles
+          .filter(article => article.url && article.url.startsWith('http'))
+          .map(article => ({
+            ...article,
+            // Ensure URL is properly encoded and doesn't contain the CORS proxy
+            url: article.url.replace(CORS_PROXY, '')
+          }));
 
         renderNews(validArticles);
 
@@ -454,10 +456,10 @@
           `;
         }
 
-        // Render as clickable link
+        // Render as clickable link with proper URL encoding
         return `
           <div class="news-item">
-            <a href="${articleUrl}" 
+            <a href="${encodeURI(articleUrl)}" 
                target="_blank" 
                rel="noopener noreferrer" 
                title="Read full article"

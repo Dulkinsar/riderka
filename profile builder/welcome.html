@@ -367,10 +367,33 @@
   </div>
 
   <script>
-    // Use a CORS proxy to access the RSS feed
-    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-    const CNN_RSS_URL = encodeURIComponent('http://rss.cnn.com/rss/edition.rss');
-    const FULL_RSS_URL = CORS_PROXY + CNN_RSS_URL;
+    // Use multiple CORS proxies for redundancy
+    const CORS_PROXIES = [
+      'https://api.allorigins.win/raw?url=',
+      'https://cors-anywhere.herokuapp.com/',
+      'https://corsproxy.io/?'
+    ];
+    const CNN_RSS_URL = 'http://rss.cnn.com/rss/edition.rss';
+
+    async function fetchWithProxy(url, proxyIndex = 0) {
+      if (proxyIndex >= CORS_PROXIES.length) {
+        throw new Error('All proxies failed');
+      }
+
+      try {
+        const proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(url);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) {
+          throw new Error(`Proxy ${proxyIndex + 1} failed: ${response.status}`);
+        }
+
+        return await response.text();
+      } catch (error) {
+        console.error(`Proxy ${proxyIndex + 1} failed:`, error);
+        return fetchWithProxy(url, proxyIndex + 1);
+      }
+    }
 
     async function fetchNews() {
       const newsContent = document.getElementById('newsContent');
@@ -385,15 +408,11 @@
 
       try {
         console.log('Fetching CNN RSS feed...');
-        const response = await fetch(FULL_RSS_URL);
-        console.log('CNN RSS Response Status:', response.status);
+        const xmlText = await fetchWithProxy(CNN_RSS_URL);
         
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (!xmlText) {
+          throw new Error('Empty response from RSS feed');
         }
-
-        const xmlText = await response.text();
-        console.log('CNN RSS Raw Response:', xmlText);
 
         // Parse XML to DOM
         const parser = new DOMParser();
@@ -416,28 +435,43 @@
 
         // Convert RSS items to article format
         const articles = Array.from(items).slice(0, 10).map(item => {
-          // Extract and clean content
-          const title = item.querySelector('title')?.textContent?.trim() || '';
-          const description = item.querySelector('description')?.textContent?.trim() || '';
-          const pubDate = item.querySelector('pubDate')?.textContent?.trim() || '';
-          const link = item.querySelector('link')?.textContent?.trim() || '';
-          const category = item.querySelector('category')?.textContent?.trim() || 'General';
+          try {
+            // Extract and clean content
+            const title = item.querySelector('title')?.textContent?.trim() || '';
+            const description = item.querySelector('description')?.textContent?.trim() || '';
+            const pubDate = item.querySelector('pubDate')?.textContent?.trim() || '';
+            const link = item.querySelector('link')?.textContent?.trim() || '';
+            const category = item.querySelector('category')?.textContent?.trim() || 'General';
 
-          // Clean HTML and decode entities
-          const cleanTitle = decodeHTMLEntities(title.replace(/<[^>]*>/g, ''));
-          const cleanDescription = decodeHTMLEntities(description.replace(/<[^>]*>/g, ''));
+            // Clean HTML and decode entities
+            const cleanTitle = decodeHTMLEntities(title.replace(/<[^>]*>/g, ''));
+            const cleanDescription = decodeHTMLEntities(description.replace(/<[^>]*>/g, ''));
 
-          return {
-            title: cleanTitle,
-            description: cleanDescription,
-            publishedAt: new Date(pubDate).toISOString(),
-            source: { name: 'CNN' },
-            url: link,
-            category: category
-          };
-        });
+            // Validate required fields
+            if (!cleanTitle || !cleanDescription || !pubDate) {
+              console.warn('Invalid article data:', { title: cleanTitle, description: cleanDescription, pubDate });
+              return null;
+            }
 
-        console.log('Processed articles:', articles);
+            return {
+              title: cleanTitle,
+              description: cleanDescription,
+              publishedAt: new Date(pubDate).toISOString(),
+              source: { name: 'CNN' },
+              url: link,
+              category: category
+            };
+          } catch (error) {
+            console.error('Error processing article:', error);
+            return null;
+          }
+        }).filter(Boolean); // Remove null entries
+
+        if (articles.length === 0) {
+          throw new Error('No valid articles found after processing');
+        }
+
+        console.log('Successfully processed articles:', articles.length);
         renderNews(articles);
 
       } catch (error) {
@@ -451,6 +485,8 @@
           errorMessage = 'Access to CNN RSS feed forbidden. Please try again later.';
         } else if (error.message.includes('parsererror')) {
           errorMessage = 'Failed to parse CNN RSS feed. Please try again later.';
+        } else if (error.message.includes('All proxies failed')) {
+          errorMessage = 'Unable to access CNN RSS feed. Please try again later.';
         }
 
         newsContent.innerHTML = `
@@ -461,8 +497,28 @@
               <span class="source">System</span>
               <span class="date">${new Date().toLocaleDateString()}</span>
             </div>
+            <button onclick="fetchNews()" class="retry-button">Retry</button>
           </div>
         `;
+
+        // Add retry button styles
+        const style = document.createElement('style');
+        style.textContent = `
+          .retry-button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-primary);
+          }
+          .retry-button:hover {
+            background: var(--bg-secondary);
+          }
+        `;
+        document.head.appendChild(style);
       }
     }
 

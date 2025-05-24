@@ -402,14 +402,42 @@
           throw new Error('No articles found');
         }
 
+        // Debug: Log raw article data
+        console.log('Raw API Response:', data.articles[0]);
+
         // Process articles to ensure valid URLs
         const validArticles = data.articles
-          .filter(article => article.url && article.url.startsWith('http'))
-          .map(article => ({
-            ...article,
-            // Ensure URL is properly encoded and doesn't contain the CORS proxy
-            url: article.url.replace(CORS_PROXY, '')
-          }));
+          .filter(article => {
+            // Debug: Log raw URL
+            console.log('Raw article URL:', article.url);
+            
+            // Validate URL format
+            try {
+              const url = new URL(article.url);
+              return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (e) {
+              console.warn('Invalid URL:', article.url);
+              return false;
+            }
+          })
+          .map(article => {
+            // Debug: Log URL before processing
+            console.log('URL before processing:', article.url);
+            
+            // Create a clean URL object
+            const url = new URL(article.url);
+            
+            // Debug: Log URL after processing
+            console.log('URL after processing:', url.toString());
+            
+            return {
+              ...article,
+              url: url.toString()
+            };
+          });
+
+        // Debug: Log processed articles
+        console.log('Processed Articles:', validArticles[0]);
 
         renderNews(validArticles);
 
@@ -435,10 +463,20 @@
       }
 
       newsContent.innerHTML = articles.map(article => {
+        // Debug: Log URL before rendering
+        console.log('URL before rendering:', article.url);
+
         // Ensure URL is valid and absolute
-        const articleUrl = article.url && article.url.startsWith('http') 
-          ? article.url 
-          : null;
+        let articleUrl;
+        try {
+          const url = new URL(article.url);
+          articleUrl = url.toString();
+          // Debug: Log URL after validation
+          console.log('URL after validation:', articleUrl);
+        } catch (e) {
+          console.warn('Invalid URL in render:', article.url);
+          articleUrl = null;
+        }
 
         // If no valid URL, render as non-clickable
         if (!articleUrl) {
@@ -456,10 +494,10 @@
           `;
         }
 
-        // Render as clickable link with proper URL encoding
+        // Render as clickable link with proper URL
         return `
           <div class="news-item">
-            <a href="${encodeURI(articleUrl)}" 
+            <a href="${articleUrl}" 
                target="_blank" 
                rel="noopener noreferrer" 
                title="Read full article"
@@ -474,6 +512,9 @@
           </div>
         `;
       }).join('');
+
+      // Debug: Log rendered HTML
+      console.log('Rendered HTML:', newsContent.innerHTML);
     }
 
     let expandTimeout;

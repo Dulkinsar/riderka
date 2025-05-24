@@ -369,12 +369,12 @@
   <script>
     const NEWS_API_KEY = '3b6c4f2e991d4cce86615b5934fbd266';
     
-    // Using a CORS proxy to handle the API request
-    const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-    const NEWS_API_URL = CORS_PROXY + 'https://newsapi.org/v2/everything?' +
-      'q=tesla&' +
+    // Direct NewsAPI endpoint without CORS proxy
+    const NEWS_API_URL = 'https://newsapi.org/v2/everything?' +
+      'q=admissions+college+university+SAT+IELTS&' +
       'language=en&' +
       'sortBy=publishedAt&' +
+      'pageSize=10&' + // Limit to 10 articles as per API best practices
       'apiKey=' + NEWS_API_KEY;
 
     async function fetchNews() {
@@ -389,39 +389,63 @@
       `;
 
       try {
+        console.log('Fetching news from NewsAPI...');
         const response = await fetch(NEWS_API_URL, {
           method: 'GET',
           headers: {
             'X-Api-Key': NEWS_API_KEY,
-            'Accept': 'application/json',
-            'Origin': window.location.origin
+            'Accept': 'application/json'
           }
         });
+
+        console.log('NewsAPI Response Status:', response.status);
+        const data = await response.json();
+        console.log('NewsAPI Response Data:', data);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        
-        if (data.status === 'error') {
-          throw new Error(data.message || 'API returned an error');
+        if (data.status !== 'ok') {
+          throw new Error(data.message || 'API returned an error status');
         }
 
-        if (!data.articles || data.articles.length === 0) {
-          throw new Error('No articles found');
+        if (!data.articles || !Array.isArray(data.articles) || data.articles.length === 0) {
+          throw new Error('No articles found in the response');
         }
 
-        // Limit to 10 articles
-        const articles = data.articles.slice(0, 10);
-        renderNews(articles);
+        // Validate and clean articles before rendering
+        const validArticles = data.articles.filter(article => {
+          const isValid = article.title && article.description && article.source?.name && article.publishedAt;
+          if (!isValid) {
+            console.warn('Invalid article found:', article);
+          }
+          return isValid;
+        });
+
+        if (validArticles.length === 0) {
+          throw new Error('No valid articles found after filtering');
+        }
+
+        renderNews(validArticles);
 
       } catch (error) {
         console.error('Error fetching news:', error);
+        
+        // Determine specific error message based on error type
+        let errorMessage = 'Unable to fetch news articles at this time.';
+        if (error.message.includes('429')) {
+          errorMessage = 'News API rate limit reached. Please try again later.';
+        } else if (error.message.includes('401')) {
+          errorMessage = 'News API authentication failed. Please contact support.';
+        } else if (error.message.includes('403')) {
+          errorMessage = 'News API access forbidden. Please contact support.';
+        }
+
         newsContent.innerHTML = `
           <div class="news-item">
             <h3>Error Loading News</h3>
-            <p>Unable to fetch news articles at this time. Please try again later.</p>
+            <p>${errorMessage}</p>
             <div class="news-meta">
               <span class="source">System</span>
               <span class="date">${new Date().toLocaleDateString()}</span>
@@ -439,23 +463,34 @@
           <div class="news-item">
             <h3>No News Available</h3>
             <p>No education-related news articles found at this time.</p>
-            <div class="date">${new Date().toLocaleDateString()}</div>
+            <div class="news-meta">
+              <span class="source">System</span>
+              <span class="date">${new Date().toLocaleDateString()}</span>
+            </div>
           </div>
         `;
         return;
       }
 
-      newsContent.innerHTML = articles.map((article, index) => `
-        <div class="news-item">
-          <h3>${article.title || 'No title available'}</h3>
-          <p id="article-${index}">${article.description || 'No description available'}</p>
-          <div class="news-meta">
-            <span class="source">${article.source?.name || 'Unknown Source'}</span>
-            <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date not available'}</span>
+      newsContent.innerHTML = articles.map((article, index) => {
+        // Sanitize and escape HTML in title and description
+        const title = article.title.replace(/[<>]/g, '');
+        const description = article.description.replace(/[<>]/g, '');
+        const sourceName = article.source.name.replace(/[<>]/g, '');
+        const publishedDate = new Date(article.publishedAt).toLocaleDateString();
+
+        return `
+          <div class="news-item">
+            <h3>${title}</h3>
+            <p id="article-${index}">${description}</p>
+            <div class="news-meta">
+              <span class="source">${sourceName}</span>
+              <span class="date">${publishedDate}</span>
+            </div>
+            <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
           </div>
-          <div class="read-more" onclick="toggleArticle(${index})">Read More</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function toggleArticle(index) {
@@ -554,4 +589,4 @@
     document.head.appendChild(style);
   </script>
 </body>
-</html>  
+</html> 

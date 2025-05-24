@@ -372,32 +372,10 @@
     // Using a CORS proxy to handle the API request
     const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
     const NEWS_API_URL = CORS_PROXY + 'https://newsapi.org/v2/everything?' +
-      'q=admissions&' +
+      'q=admissions+college+university+SAT+IELTS&' +
       'language=en&' +
       'sortBy=publishedAt&' +
       'apiKey=' + NEWS_API_KEY;
-
-    // Fallback news data in case API fails
-    const FALLBACK_NEWS = [
-      {
-        title: "Important Update: College Admissions Process",
-        description: "Latest changes in university admission requirements for international students. The new guidelines emphasize holistic review processes and updated testing requirements. Universities are adapting their admission criteria to better reflect student potential and achievements.",
-        source: { name: "Education Times" },
-        publishedAt: new Date().toISOString()
-      },
-      {
-        title: "SAT Test Format Changes Announced",
-        description: "College Board announces new digital format for SAT examinations. The changes include adaptive testing, shorter duration, and enhanced security measures. Students will now take the test on digital devices with built-in calculators and other tools.",
-        source: { name: "Academic News" },
-        publishedAt: new Date().toISOString()
-      },
-      {
-        title: "IELTS Preparation Tips",
-        description: "Expert advice on preparing for IELTS examinations. Learn effective strategies for each section, including reading, writing, speaking, and listening. Discover time management techniques and practice resources to improve your score.",
-        source: { name: "Study Abroad" },
-        publishedAt: new Date().toISOString()
-      }
-    ];
 
     async function fetchNews() {
       const newsContent = document.getElementById('newsContent');
@@ -440,7 +418,16 @@
 
       } catch (error) {
         console.error('Error fetching news:', error);
-        renderNews(FALLBACK_NEWS.slice(0, 10));
+        newsContent.innerHTML = `
+          <div class="news-item">
+            <h3>Error Loading News</h3>
+            <p>Unable to fetch news articles at this time. Please try again later.</p>
+            <div class="news-meta">
+              <span class="source">System</span>
+              <span class="date">${new Date().toLocaleDateString()}</span>
+            </div>
+          </div>
+        `;
       }
     }
 
@@ -567,4 +554,4 @@
     document.head.appendChild(style);
   </script>
 </body>
-</html> 
+</html>  

@@ -367,40 +367,18 @@
   </div>
 
   <script>
-    // Use multiple CORS proxies for redundancy
-    const CORS_PROXIES = [
-      'https://api.allorigins.win/raw?url=',
-      'https://cors-anywhere.herokuapp.com/',
-      'https://corsproxy.io/?'
-    ];
-    const CNN_RSS_URL = 'http://rss.cnn.com/rss/edition.rss';
-
-    async function fetchWithProxy(url, proxyIndex = 0) {
-      if (proxyIndex >= CORS_PROXIES.length) {
-        throw new Error('All proxies failed');
-      }
-
-      try {
-        const proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(url);
-        const response = await fetch(proxyUrl);
-        
-        if (!response.ok) {
-          throw new Error(`Proxy ${proxyIndex + 1} failed: ${response.status}`);
-        }
-
-        return await response.text();
-      } catch (error) {
-        console.error(`Proxy ${proxyIndex + 1} failed:`, error);
-        return fetchWithProxy(url, proxyIndex + 1);
-      }
-    }
+    // Use a reliable serverless function proxy
+    const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+    const CNN_RSS_URL = encodeURIComponent('http://rss.cnn.com/rss/edition.rss');
+    const FULL_RSS_URL = RSS_PROXY + CNN_RSS_URL;
 
     async function fetchNews() {
       const newsContent = document.getElementById('newsContent');
       
-      // Show loading state
+      // Show loading state with animation
       newsContent.innerHTML = `
-        <div class="news-item">
+        <div class="news-item loading-state">
+          <div class="loading-spinner"></div>
           <h3>Loading News...</h3>
           <p>Fetching latest news from CNN...</p>
         </div>
@@ -408,64 +386,40 @@
 
       try {
         console.log('Fetching CNN RSS feed...');
-        const xmlText = await fetchWithProxy(CNN_RSS_URL);
+        const response = await fetch(FULL_RSS_URL);
         
-        if (!xmlText) {
-          throw new Error('Empty response from RSS feed');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Parse XML to DOM
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const data = await response.json();
+        console.log('RSS Response:', data);
 
-        // Check for parsing errors
-        const parserError = xmlDoc.querySelector('parsererror');
-        if (parserError) {
-          console.error('XML Parse Error:', parserError.textContent);
-          throw new Error('Failed to parse RSS feed');
+        if (!data.status || data.status !== 'ok') {
+          throw new Error(data.message || 'Invalid response from RSS service');
         }
 
-        // Extract items from RSS feed
-        const items = xmlDoc.querySelectorAll('item');
-        console.log('Found RSS items:', items.length);
-
-        if (!items || items.length === 0) {
+        if (!data.items || !Array.isArray(data.items) || data.items.length === 0) {
           throw new Error('No news items found in feed');
         }
 
-        // Convert RSS items to article format
-        const articles = Array.from(items).slice(0, 10).map(item => {
-          try {
-            // Extract and clean content
-            const title = item.querySelector('title')?.textContent?.trim() || '';
-            const description = item.querySelector('description')?.textContent?.trim() || '';
-            const pubDate = item.querySelector('pubDate')?.textContent?.trim() || '';
-            const link = item.querySelector('link')?.textContent?.trim() || '';
-            const category = item.querySelector('category')?.textContent?.trim() || 'General';
-
-            // Clean HTML and decode entities
-            const cleanTitle = decodeHTMLEntities(title.replace(/<[^>]*>/g, ''));
-            const cleanDescription = decodeHTMLEntities(description.replace(/<[^>]*>/g, ''));
-
-            // Validate required fields
-            if (!cleanTitle || !cleanDescription || !pubDate) {
-              console.warn('Invalid article data:', { title: cleanTitle, description: cleanDescription, pubDate });
-              return null;
-            }
-
-            return {
-              title: cleanTitle,
-              description: cleanDescription,
-              publishedAt: new Date(pubDate).toISOString(),
-              source: { name: 'CNN' },
-              url: link,
-              category: category
-            };
-          } catch (error) {
-            console.error('Error processing article:', error);
+        // Process and validate articles
+        const articles = data.items.slice(0, 10).map(item => {
+          // Ensure all required fields exist
+          if (!item.title || !item.description || !item.pubDate) {
+            console.warn('Invalid article data:', item);
             return null;
           }
-        }).filter(Boolean); // Remove null entries
+
+          return {
+            title: item.title,
+            description: item.description,
+            publishedAt: new Date(item.pubDate).toISOString(),
+            source: { name: 'CNN' },
+            url: item.link,
+            category: item.categories?.[0] || 'General'
+          };
+        }).filter(Boolean);
 
         if (articles.length === 0) {
           throw new Error('No valid articles found after processing');
@@ -475,59 +429,136 @@
         renderNews(articles);
 
       } catch (error) {
-        console.error('Error fetching CNN RSS:', error);
+        console.error('Error fetching news:', error);
         
-        // Determine specific error message based on error type
-        let errorMessage = 'Unable to fetch news at this time.';
-        if (error.message.includes('404')) {
-          errorMessage = 'CNN RSS feed not found. Please try again later.';
-        } else if (error.message.includes('403')) {
-          errorMessage = 'Access to CNN RSS feed forbidden. Please try again later.';
-        } else if (error.message.includes('parsererror')) {
-          errorMessage = 'Failed to parse CNN RSS feed. Please try again later.';
-        } else if (error.message.includes('All proxies failed')) {
-          errorMessage = 'Unable to access CNN RSS feed. Please try again later.';
-        }
-
+        // Show error state with retry button
         newsContent.innerHTML = `
-          <div class="news-item">
+          <div class="news-item error-state">
             <h3>Error Loading News</h3>
-            <p>${errorMessage}</p>
+            <p>${getErrorMessage(error)}</p>
             <div class="news-meta">
               <span class="source">System</span>
               <span class="date">${new Date().toLocaleDateString()}</span>
             </div>
-            <button onclick="fetchNews()" class="retry-button">Retry</button>
+            <button onclick="retryFetch()" class="retry-button">
+              <span class="retry-icon">↻</span>
+              Retry
+            </button>
           </div>
         `;
-
-        // Add retry button styles
-        const style = document.createElement('style');
-        style.textContent = `
-          .retry-button {
-            margin-top: 12px;
-            padding: 8px 16px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-primary);
-          }
-          .retry-button:hover {
-            background: var(--bg-secondary);
-          }
-        `;
-        document.head.appendChild(style);
       }
     }
 
-    // Helper function to decode HTML entities
-    function decodeHTMLEntities(text) {
-      const textarea = document.createElement('textarea');
-      textarea.innerHTML = text;
-      return textarea.value;
+    function getErrorMessage(error) {
+      if (error.message.includes('429')) {
+        return 'Rate limit reached. Please try again in a few minutes.';
+      }
+      if (error.message.includes('403')) {
+        return 'Access forbidden. Please try again later.';
+      }
+      if (error.message.includes('404')) {
+        return 'News feed not found. Please try again later.';
+      }
+      return 'Unable to fetch news. Please try again.';
     }
+
+    // Add retry functionality with exponential backoff
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    const BASE_DELAY = 1000;
+
+    async function retryFetch() {
+      if (retryCount >= MAX_RETRIES) {
+        alert('Maximum retry attempts reached. Please refresh the page.');
+        return;
+      }
+
+      const delay = BASE_DELAY * Math.pow(2, retryCount);
+      retryCount++;
+
+      const newsContent = document.getElementById('newsContent');
+      newsContent.innerHTML = `
+        <div class="news-item loading-state">
+          <div class="loading-spinner"></div>
+          <h3>Retrying...</h3>
+          <p>Attempt ${retryCount} of ${MAX_RETRIES}</p>
+        </div>
+      `;
+
+      await new Promise(resolve => setTimeout(resolve, delay));
+      await fetchNews();
+    }
+
+    // Add styles for loading and error states
+    const style = document.createElement('style');
+    style.textContent = `
+      .loading-state {
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 1rem;
+        border: 3px solid var(--bg-tertiary);
+        border-top-color: var(--text-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .error-state {
+        text-align: center;
+        padding: 2rem;
+        background: #fff5f5;
+        border: 1px solid #feb2b2;
+        border-radius: 8px;
+      }
+
+      .retry-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 1rem;
+        padding: 8px 16px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text-primary);
+        transition: all 0.2s ease;
+      }
+
+      .retry-button:hover {
+        background: var(--bg-secondary);
+        transform: translateY(-1px);
+      }
+
+      .retry-icon {
+        font-size: 16px;
+      }
+
+      .news-item {
+        transition: all 0.3s ease;
+      }
+
+      .news-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize news panel
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchNews();
+      retryCount = 0; // Reset retry count on page load
+    });
 
     function renderNews(articles) {
       const newsContent = document.getElementById('newsContent');
@@ -655,17 +686,6 @@
     const newsPanel = document.querySelector('.news-panel');
     newsPanel.addEventListener('mouseenter', handleNewsPanelHover);
     newsPanel.addEventListener('mouseleave', handleNewsPanelHover);
-
-    // Initialize news panel state
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchNews();
-      const newsPanel = document.querySelector('.news-panel');
-      const mainContent = document.querySelector('.main-content');
-      
-      // Ensure initial state is expanded
-      newsPanel.classList.remove('collapsed');
-      mainContent.style.gridTemplateColumns = '1fr 320px';
-    });
 
     // Add styles for news meta information
     const style = document.createElement('style');

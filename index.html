@@ -57,6 +57,34 @@
       position: relative;
     }
     
+    .profile-button {
+      position: absolute;
+      top: var(--spacing-xl);
+      right: var(--spacing-xl);
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .profile-button:hover {
+      background-color: #E0E0E0;
+      border-color: var(--border-color);
+    }
+
     .header-logo {
       width: 200px;
       height: auto;
@@ -199,6 +227,9 @@
 <body>
   <div id="main-content">
     <header>
+      <button class="profile-button" aria-label="User Profile">
+        <img src="/images/basketball.png" alt="Profile">
+      </button>
       <img src="/images/olzhtech.png" alt="Platform Logo" class="header-logo">
       <p class="slogan">SYSTEM STATUS: OPERATIONAL</p>
       <div class="motto-overlay">Shaping Minds. Structuring Futures.</div>

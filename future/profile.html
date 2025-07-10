@@ -262,6 +262,52 @@
        min-width: 32px;
      }
 
+     /* First Place Special Styling */
+     .first-place-section {
+       background: #000000;
+       border-color: #333333;
+       color: #ffffff;
+     }
+
+     .first-place-section .section-title {
+       color: #ffffff;
+     }
+
+     .first-place-section .student-item {
+       background: rgba(255, 255, 255, 0.1);
+       border-color: #444444;
+     }
+
+     .first-place-section .student-item:hover {
+       background: rgba(255, 255, 255, 0.15);
+       border-color: #666666;
+     }
+
+     .first-place-section .student-name {
+       color: #ffffff;
+       font-weight: 700;
+       font-size: 20px;
+     }
+
+     .first-place-section .student-score {
+       color: #ffffff;
+       font-weight: 800;
+       font-size: 24px;
+     }
+
+     .first-place-section .rank-badge {
+       font-size: 28px;
+     }
+
+     .first-place-section .section-note {
+       background: rgba(255, 255, 255, 0.1);
+       border-color: #444444;
+     }
+
+     .first-place-section .section-note p {
+       color: #cccccc;
+     }
+
     .student-note {
       font-family: var(--font-primary);
       font-size: 14px;
@@ -351,31 +397,31 @@
   </header>
 
   <main>
-    <div class="summary-stats">
-      <div class="stat-card">
-        <div class="stat-number">8</div>
-        <div class="stat-label">Single-Sitting Scores</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Superscores/Non-Bluebook</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Incomplete Tests</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">1440</div>
-        <div class="stat-label">Highest Score</div>
-      </div>
-    </div>
+         <div class="summary-stats">
+       <div class="stat-card">
+         <div class="stat-number">9</div>
+         <div class="stat-label">Single-Sitting Scores</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-number">2</div>
+         <div class="stat-label">Superscores/Non-Bluebook</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-number">2</div>
+         <div class="stat-label">Incomplete Tests</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-number">1440</div>
+         <div class="stat-label">Highest Score</div>
+       </div>
+     </div>
 
-    <div class="performance-section success">
-      <div class="section-header">
-        <span class="section-icon">✅</span>
-        <h2 class="section-title">Single-Sitting Bluebook Scores</h2>
-      </div>
-             <div class="student-list">
+         <div class="performance-section first-place-section">
+       <div class="section-header">
+         <span class="section-icon">🏆</span>
+         <h2 class="section-title">First Place (Single-Sitting Bluebook)</h2>
+       </div>
+       <div class="student-list">
          <div class="student-item rank-1st">
            <div style="display: flex; align-items: center;">
              <span class="rank-badge">🥇</span>
@@ -383,6 +429,18 @@
            </div>
            <span class="student-score">1440</span>
          </div>
+       </div>
+       <div class="section-note">
+         <p>This student achieved the highest score completing <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
+       </div>
+     </div>
+
+     <div class="performance-section success">
+       <div class="section-header">
+         <span class="section-icon">🎖️</span>
+         <h2 class="section-title">Ranked Scores (Single Sitting – Bluebook)</h2>
+       </div>
+       <div class="student-list">
          <div class="student-item rank-2nd">
            <div style="display: flex; align-items: center;">
              <span class="rank-badge">🥈</span>
@@ -440,10 +498,10 @@
            <span class="student-score">1210</span>
          </div>
        </div>
-      <div class="section-note">
-        <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
-      </div>
-    </div>
+       <div class="section-note">
+         <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
+       </div>
+     </div>
 
     <div class="performance-section warning">
       <div class="section-header">

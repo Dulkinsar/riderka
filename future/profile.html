@@ -206,19 +206,61 @@
       transform: translateY(-2px);
     }
 
-    .student-name {
-      font-family: var(--font-primary);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
+         .student-name {
+       font-family: var(--font-primary);
+       font-size: 18px;
+       font-weight: 600;
+       color: var(--text-primary);
+     }
 
-    .student-score {
-      font-family: var(--font-primary);
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
+     .student-score {
+       font-family: var(--font-primary);
+       font-size: 20px;
+       font-weight: 700;
+       color: var(--text-primary);
+     }
+
+     /* Ranking Colors */
+     .rank-1st .student-name {
+       color: #000000;
+       font-weight: 700;
+     }
+
+     .rank-1st .student-score {
+       color: #000000;
+       font-weight: 800;
+     }
+
+     .rank-2nd .student-name {
+       color: #FFD700;
+       font-weight: 700;
+       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+     }
+
+     .rank-2nd .student-score {
+       color: #FFD700;
+       font-weight: 800;
+       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+     }
+
+     .rank-3rd .student-name {
+       color: #C0C0C0;
+       font-weight: 700;
+       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+     }
+
+     .rank-3rd .student-score {
+       color: #C0C0C0;
+       font-weight: 800;
+       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+     }
+
+     .rank-badge {
+       font-size: 24px;
+       margin-right: var(--spacing-sm);
+       display: inline-block;
+       min-width: 32px;
+     }
 
     .student-note {
       font-family: var(--font-primary);
@@ -333,44 +375,71 @@
         <span class="section-icon">✅</span>
         <h2 class="section-title">Single-Sitting Bluebook Scores</h2>
       </div>
-      <div class="student-list">
-        <div class="student-item">
-          <span class="student-name">Laura</span>
-          <span class="student-score">1440</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Shakh</span>
-          <span class="student-score">1430</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Rayimbek</span>
-          <span class="student-score">1390</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Temirlan</span>
-          <span class="student-score">1360</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Kamila</span>
-          <span class="student-score">1360</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Arystan</span>
-          <span class="student-score">1320</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Nurtilek</span>
-          <span class="student-score">1300</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Dalen</span>
-          <span class="student-score">1240</span>
-        </div>
-        <div class="student-item">
-          <span class="student-name">Arnur</span>
-          <span class="student-score">1210</span>
-        </div>
-      </div>
+             <div class="student-list">
+         <div class="student-item rank-1st">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">🥇</span>
+             <span class="student-name">Laura</span>
+           </div>
+           <span class="student-score">1440</span>
+         </div>
+         <div class="student-item rank-2nd">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">🥈</span>
+             <span class="student-name">Shakh</span>
+           </div>
+           <span class="student-score">1430</span>
+         </div>
+         <div class="student-item rank-3rd">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">🥉</span>
+             <span class="student-name">Rayimbek</span>
+           </div>
+           <span class="student-score">1390</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">4</span>
+             <span class="student-name">Temirlan</span>
+           </div>
+           <span class="student-score">1360</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">4</span>
+             <span class="student-name">Kamila</span>
+           </div>
+           <span class="student-score">1360</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">6</span>
+             <span class="student-name">Arystan</span>
+           </div>
+           <span class="student-score">1320</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">7</span>
+             <span class="student-name">Nurtilek</span>
+           </div>
+           <span class="student-score">1300</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">8</span>
+             <span class="student-name">Dalen</span>
+           </div>
+           <span class="student-score">1240</span>
+         </div>
+         <div class="student-item">
+           <div style="display: flex; align-items: center;">
+             <span class="rank-badge">9</span>
+             <span class="student-name">Arnur</span>
+           </div>
+           <span class="student-score">1210</span>
+         </div>
+       </div>
       <div class="section-note">
         <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
       </div>

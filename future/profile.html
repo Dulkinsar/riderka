@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Performance Summary</title>
+  <title>SUBJECT REGISTRY :: PERFORMANCE EVALUATION</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #F2F2F2;
-      --bg-secondary: #FAFAFA;
-      --bg-tertiary: #E8E8E8;
-      --text-primary: #222222;
-      --text-secondary: #4B4B4B;
-      --border-color: #D0D0D0;
-      --border-accent: #4B4B4B;
+      --bg-primary: #2A2A2A;
+      --bg-secondary: #3C3C3C;
+      --bg-tertiary: #4A4A4A;
+      --text-primary: #E0E0E0;
+      --text-secondary: #A0A0A0;
+      --border-color: #555555;
+      --border-accent: #666666;
       --font-primary: 'Inter', sans-serif;
       --spacing-sm: 8px;
       --spacing-md: 16px;
@@ -92,40 +92,41 @@
 
     /* First Place Special Section */
     .first-place {
-      background: #000000;
-      border-color: #333333;
-      color: #ffffff;
+      background: #1A1A1A;
+      border-color: #222222;
+      color: #F0F0F0;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     }
 
     .first-place .section-title {
-      color: #ffffff;
+      color: #F0F0F0;
     }
 
     .first-place .student-item {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: #444444;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #333333;
     }
 
     .first-place .student-item:hover {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .first-place .student-name {
-      color: #ffffff;
+      color: #F0F0F0;
       font-size: 1.2rem;
       font-weight: 700;
     }
 
     .first-place .student-score {
-      color: #ffffff;
+      color: #F0F0F0;
       font-size: 1.5rem;
       font-weight: 800;
     }
 
     .first-place .section-note {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: #444444;
-      color: #cccccc;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #333333;
+      color: #BBBBBB;
     }
 
     /* Student List */
@@ -183,7 +184,7 @@
     }
 
     .section-note {
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.03);
       padding: var(--spacing-md);
       border: 1px solid var(--border-color);
       color: var(--text-secondary);
@@ -193,16 +194,7 @@
       margin: 0;
     }
 
-    /* Warning and Info Sections */
-    .warning {
-      background: #FFF3CD;
-      border-color: #FF9800;
-    }
 
-    .info {
-      background: #E3F2FD;
-      border-color: #2196F3;
-    }
 
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
@@ -241,159 +233,124 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1 class="header-title">Student Performance Summary</h1>
-      <p class="header-subtitle">Test scores and Bluebook completion status</p>
-    </header>
+         <header>
+       <h1 class="header-title">SUBJECT PERFORMANCE REGISTRY</h1>
+       <p class="header-subtitle">EVALUATION PROTOCOL :: STATUS_ACTIVE</p>
+     </header>
 
-    <!-- FIRST PLACE SECTION -->
-    <div class="section first-place">
-      <div class="section-header">
-        <span class="section-icon">🏆</span>
-        <h2 class="section-title">First Place (Single-Sitting Bluebook)</h2>
-      </div>
-      <div class="student-list">
-        <!-- TO EDIT: Change name and score below -->
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">🥇</span>
-            <span class="student-name">Laura</span>
-          </div>
-          <span class="student-score">1440</span>
-        </div>
-      </div>
-      <div class="section-note">
-        <p>This student achieved the highest score completing <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
-      </div>
-    </div>
+         <!-- FIRST PLACE SECTION -->
+     <div class="section first-place">
+       <div class="section-header">
+         <span class="section-icon">■</span>
+         <h2 class="section-title">RANK 01</h2>
+       </div>
+       <div class="student-list">
+         <!-- TO EDIT: Change name and score below -->
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">01</span>
+             <span class="student-name">[Rayimbek]</span>
+           </div>
+           <span class="student-score">1480</span>
+         </div>
+       </div>
+       <div class="section-note">
+         <p>PRIMARY DESIGNATION: HIGHEST PERFORMANCE METRIC</p>
+       </div>
+     </div>
 
-    <!-- RANKED SCORES SECTION -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-icon">🎖️</span>
-        <h2 class="section-title">Ranked Scores (Single Sitting – Bluebook)</h2>
-      </div>
-      <div class="student-list">
-        <!-- TO EDIT: Copy/paste student-item blocks and update names/scores -->
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">🥈</span>
-            <span class="student-name">Shakh</span>
-          </div>
-          <span class="student-score">1430</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">🥉</span>
-            <span class="student-name">Rayimbek</span>
-          </div>
-          <span class="student-score">1390</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">4</span>
-            <span class="student-name">Temirlan</span>
-          </div>
-          <span class="student-score">1360</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">4</span>
-            <span class="student-name">Kamila</span>
-          </div>
-          <span class="student-score">1360</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">6</span>
-            <span class="student-name">Arystan</span>
-          </div>
-          <span class="student-score">1320</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">7</span>
-            <span class="student-name">Nurtilek</span>
-          </div>
-          <span class="student-score">1300</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">8</span>
-            <span class="student-name">Dalen</span>
-          </div>
-          <span class="student-score">1240</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="rank-badge">9</span>
-            <span class="student-name">Arnur</span>
-          </div>
-          <span class="student-score">1210</span>
-        </div>
-      </div>
-      <div class="section-note">
-        <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
-      </div>
-    </div>
+         <!-- RANKED SCORES SECTION -->
+     <div class="section">
+       <div class="section-header">
+         <span class="section-icon">□</span>
+         <h2 class="section-title">PERFORMANCE REGISTRY</h2>
+       </div>
+       <div class="student-list">
+         <!-- TO EDIT: Copy/paste student-item blocks and update names/scores -->
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">02</span>
+             <span class="student-name">[Arystan]</span>
+           </div>
+           <span class="student-score">1440</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">03</span>
+             <span class="student-name">[Shakhnazar]</span>
+           </div>
+           <span class="student-score">1440</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">04</span>
+             <span class="student-name">[Laura]</span>
+           </div>
+           <span class="student-score">1440</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">05</span>
+             <span class="student-name">[Kamila]</span>
+           </div>
+           <span class="student-score">1390</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">06</span>
+             <span class="student-name">[Asyl]</span>
+           </div>
+           <span class="student-score">1390</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">07</span>
+             <span class="student-name">[Dalen]</span>
+           </div>
+           <span class="student-score">1360</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">08</span>
+             <span class="student-name">[Arnur]</span>
+           </div>
+           <span class="student-score">1340</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">09</span>
+             <span class="student-name">[Sholpan]</span>
+           </div>
+           <span class="student-score">1340</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">10</span>
+             <span class="student-name">[Temirlan]</span>
+           </div>
+           <span class="student-score">1300</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">11</span>
+             <span class="student-name">[Nurtilek]</span>
+           </div>
+           <span class="student-score">1300</span>
+         </div>
+         <div class="student-item">
+           <div class="student-info">
+             <span class="rank-badge">12</span>
+             <span class="student-name">[Dulat]</span>
+           </div>
+           <span class="student-score">1440</span>
+         </div>
+       </div>
+       <div class="section-note">
+         <p>SECONDARY DESIGNATIONS: PERFORMANCE EVALUATION MATRIX</p>
+       </div>
+     </div>
 
-    <!-- WARNING SECTION -->
-    <div class="section warning">
-      <div class="section-header">
-        <span class="section-icon">❗</span>
-        <h2 class="section-title">Not Single-Sitting or Not Bluebook</h2>
-      </div>
-      <div class="student-list">
-        <!-- TO EDIT: Add/remove student blocks as needed -->
-        <div class="student-item">
-          <div class="student-info">
-            <div>
-              <div class="student-name">Sholpan</div>
-              <div class="student-note">superscore</div>
-            </div>
-          </div>
-          <span class="student-score">1380</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <div>
-              <div class="student-name">Asyl</div>
-              <div class="student-note">PDF test, not Bluebook</div>
-            </div>
-          </div>
-          <span class="student-score">1290</span>
-        </div>
-      </div>
-      <div class="section-note">
-        <p><strong>Superscore</strong> means the highest Math and Verbal scores were taken from different test sessions.</p>
-      </div>
-    </div>
-
-    <!-- INFO SECTION -->
-    <div class="section info">
-      <div class="section-header">
-        <span class="section-icon">🚧</span>
-        <h2 class="section-title">Incomplete Practice Tests</h2>
-      </div>
-      <div class="student-list">
-        <!-- TO EDIT: Add/remove student blocks as needed -->
-        <div class="student-item">
-          <div class="student-info">
-            <span class="student-name">Yernur</span>
-          </div>
-          <span class="student-score">0</span>
-        </div>
-        <div class="student-item">
-          <div class="student-info">
-            <span class="student-name">Adiya</span>
-          </div>
-          <span class="student-score">0</span>
-        </div>
-      </div>
-      <div class="section-note">
-        <p>The following students have <strong>not completed a full official practice test</strong> yet.</p>
-      </div>
-    </div>
+    
   </div>
 </body>
 </html> 

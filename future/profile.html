@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUBJECT REGISTRY :: PERFORMANCE EVALUATION</title>
+  <title>SAT Mock Test Scores - Performance Comparison</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #2A2A2A;
-      --bg-secondary: #3C3C3C;
-      --bg-tertiary: #4A4A4A;
-      --text-primary: #E0E0E0;
-      --text-secondary: #A0A0A0;
-      --border-color: #555555;
-      --border-accent: #666666;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8F9FA;
+      --bg-tertiary: #F1F3F4;
+      --text-primary: #1A1A1A;
+      --text-secondary: #666666;
+      --border-color: #E0E0E0;
+      --border-accent: #CCCCCC;
+      --bar-color: #4285F4;
       --font-primary: 'Inter', sans-serif;
       --spacing-sm: 8px;
       --spacing-md: 16px;
@@ -90,143 +91,31 @@
       color: var(--text-primary);
     }
 
-    /* First Place Special Section */
-    .first-place {
-      background: #1A1A1A;
-      border-color: #222222;
-      color: #F0F0F0;
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-    }
 
-    .first-place .section-title {
-      color: #F0F0F0;
-    }
-
-    .first-place .student-item {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: #333333;
-    }
-
-    .first-place .student-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .first-place .student-name {
-      color: #F0F0F0;
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .first-place .student-score {
-      color: #F0F0F0;
-      font-size: 1.5rem;
-      font-weight: 800;
-    }
-
-    .first-place .section-note {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: #333333;
-      color: #BBBBBB;
-    }
-
-    .first-place .progress {
-      color: #CCCCCC;
-    }
-
-    .first-place .progress-high {
-      color: #F0F0F0;
-      font-weight: 700;
-    }
 
     /* Student List */
     .student-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
       margin-bottom: var(--spacing-lg);
     }
 
     .student-item {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--spacing-md);
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-lg);
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
+      border-radius: 8px;
     }
 
-    .student-item:hover {
-      border-color: var(--border-accent);
-      background: var(--bg-tertiary);
-    }
-
-    .student-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, rgba(224, 224, 224, 0.1), rgba(224, 224, 224, 0.05));
-      z-index: 0;
-      transition: width 0.3s ease;
-    }
-
-    .student-info {
+    .student-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: var(--spacing-sm);
-      position: relative;
-      z-index: 1;
-    }
-
-    .student-details {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .progress {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    /* Progress-based visual emphasis */
-    .progress-low { 
-      font-size: 0.8rem; 
-      margin-left: 5px;
-    }
-    .progress-medium { 
-      font-size: 0.9rem; 
-      margin-left: 15px;
-      color: #C0C0C0;
-    }
-    .progress-high { 
-      font-size: 1rem; 
-      margin-left: 25px;
-      color: #E0E0E0;
-    }
-    .progress-exceptional { 
-      font-size: 1.1rem; 
-      margin-left: 35px;
-      color: #F0F0F0;
-      font-weight: 700;
-    }
-
-    /* Progress bars */
-    .student-item.bar-low::before { width: 15%; }
-    .student-item.bar-medium::before { width: 35%; }
-    .student-item.bar-high::before { width: 55%; }
-    .student-item.bar-exceptional::before { width: 75%; }
-
-    .rank-badge {
-      font-size: 1.5rem;
-      min-width: 2rem;
-      text-align: center;
+      margin-bottom: var(--spacing-sm);
     }
 
     .student-name {
@@ -236,23 +125,63 @@
     }
 
     .student-score {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--text-primary);
     }
 
-    .student-note {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      font-style: italic;
-      margin-top: 2px;
+    .score-bar-container {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
     }
 
+    .score-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-bar {
+      height: 100%;
+      background: var(--bar-color);
+      border-radius: 12px;
+      transition: width 0.6s ease;
+    }
+
+    .delta-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      white-space: nowrap;
+      min-width: 120px;
+      text-align: right;
+    }
+
+    .delta-label.top-scorer {
+      color: var(--bar-color);
+      font-weight: 600;
+    }
+
+    /* Score bar widths (based on scale 800-1600) */
+    .score-1480 { width: 85%; }    /* (1480-800)/800 = 85% */
+    .score-1440 { width: 80%; }    /* (1440-800)/800 = 80% */
+    .score-1390 { width: 73.75%; } /* (1390-800)/800 = 73.75% */
+    .score-1360 { width: 70%; }    /* (1360-800)/800 = 70% */
+    .score-1340 { width: 67.5%; }  /* (1340-800)/800 = 67.5% */
+    .score-1300 { width: 62.5%; }  /* (1300-800)/800 = 62.5% */
+    .score-incomplete { width: 5%; background: var(--border-color); }
+
     .section-note {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-tertiary);
       padding: var(--spacing-md);
       border: 1px solid var(--border-color);
+      border-radius: 8px;
       color: var(--text-secondary);
+      font-size: 0.9rem;
     }
 
     .section-note p {
@@ -271,36 +200,27 @@
         font-size: 2rem;
       }
 
-      .student-list {
-        grid-template-columns: 1fr;
-      }
-
       .section {
         padding: var(--spacing-lg);
       }
 
       .student-item {
+        padding: var(--spacing-md);
+      }
+
+      .score-bar-container {
         flex-direction: column;
-        align-items: flex-start;
         gap: var(--spacing-sm);
+        align-items: stretch;
       }
 
-      .student-info {
-        width: 100%;
+      .delta-label {
+        text-align: left;
+        min-width: auto;
       }
 
-      .student-score {
-        font-size: 1.5rem;
-        align-self: flex-end;
-      }
-
-      .progress-low, .progress-medium, .progress-high, .progress-exceptional {
-        margin-left: 0px;
-        font-size: 0.8rem;
-      }
-
-      .student-item::before {
-        display: none;
+      .score-bar-track {
+        height: 20px;
       }
     }
   </style>
@@ -308,155 +228,187 @@
 <body>
   <div class="container">
          <header>
-       <h1 class="header-title">SUBJECT PERFORMANCE REGISTRY</h1>
-       <p class="header-subtitle">EVALUATION PROTOCOL :: STATUS_ACTIVE</p>
+       <h1 class="header-title">SAT Mock Test Scores</h1>
+       <p class="header-subtitle">Performance comparison with score gaps</p>
      </header>
 
-         <!-- FIRST PLACE SECTION -->
-     <div class="section first-place">
-       <div class="section-header">
-         <span class="section-icon">■</span>
-         <h2 class="section-title">RANK 01</h2>
-       </div>
-       <div class="student-list">
-         <!-- TO EDIT: Change name and score below -->
-         <div class="student-item bar-high">
-           <div class="student-info">
-             <span class="rank-badge">01</span>
-             <div class="student-details">
-               <span class="student-name">[Rayimbek]</span>
-               <span class="progress progress-high">+280</span>
-             </div>
-           </div>
-           <span class="student-score">1480</span>
-         </div>
-       </div>
-       <div class="section-note">
-         <p>PRIMARY DESIGNATION: HIGHEST PERFORMANCE METRIC</p>
-       </div>
-     </div>
-
-         <!-- RANKED SCORES SECTION -->
+              <!-- STUDENT SCORES SECTION -->
      <div class="section">
        <div class="section-header">
-         <span class="section-icon">□</span>
-         <h2 class="section-title">PERFORMANCE REGISTRY</h2>
+         <span class="section-icon">📊</span>
+         <h2 class="section-title">Student Performance (Scale: 800-1600)</h2>
        </div>
        <div class="student-list">
-         <!-- TO EDIT: Copy/paste student-item blocks and update names/scores -->
-         <div class="student-item bar-medium">
-           <div class="student-info">
-             <span class="rank-badge">02</span>
-             <div class="student-details">
-               <span class="student-name">[Arystan]</span>
-               <span class="progress progress-medium">+240</span>
-             </div>
-           </div>
-           <span class="student-score">1440</span>
-         </div>
-         <div class="student-item bar-medium">
-           <div class="student-info">
-             <span class="rank-badge">03</span>
-             <div class="student-details">
-               <span class="student-name">[Shakhnazar]</span>
-               <span class="progress progress-medium">+240</span>
-             </div>
-           </div>
-           <span class="student-score">1440</span>
-         </div>
-         <div class="student-item bar-medium">
-           <div class="student-info">
-             <span class="rank-badge">04</span>
-             <div class="student-details">
-               <span class="student-name">[Laura]</span>
-               <span class="progress progress-medium">+240</span>
-             </div>
-           </div>
-           <span class="student-score">1440</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">05</span>
-             <div class="student-details">
-               <span class="student-name">[Kamila]</span>
-               <span class="progress progress-low">+190</span>
-             </div>
-           </div>
-           <span class="student-score">1390</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">06</span>
-             <div class="student-details">
-               <span class="student-name">[Asyl]</span>
-               <span class="progress progress-low">+190</span>
-             </div>
-           </div>
-           <span class="student-score">1390</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">07</span>
-             <div class="student-details">
-               <span class="student-name">[Dalen]</span>
-               <span class="progress progress-low">+160</span>
-             </div>
-           </div>
-           <span class="student-score">1360</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">08</span>
-             <div class="student-details">
-               <span class="student-name">[Arnur]</span>
-               <span class="progress progress-low">+140</span>
-             </div>
-           </div>
-           <span class="student-score">1340</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">09</span>
-             <div class="student-details">
-               <span class="student-name">[Sholpan]</span>
-               <span class="progress progress-low">+140</span>
-             </div>
-           </div>
-           <span class="student-score">1340</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">10</span>
-             <div class="student-details">
-               <span class="student-name">[Temirlan]</span>
-               <span class="progress progress-low">+100</span>
-             </div>
-           </div>
-           <span class="student-score">1300</span>
-         </div>
-         <div class="student-item bar-low">
-           <div class="student-info">
-             <span class="rank-badge">11</span>
-             <div class="student-details">
-               <span class="student-name">[Nurtilek]</span>
-               <span class="progress progress-low">+100</span>
-             </div>
-           </div>
-           <span class="student-score">1300</span>
-         </div>
+         <!-- Rayimbek - Top Scorer -->
          <div class="student-item">
-           <div class="student-info">
-             <span class="rank-badge">12</span>
-             <div class="student-details">
-               <span class="student-name">[Adiya / Yernur]</span>
-               <span class="progress" style="color: #666; font-size: 0.75rem;">INCOMPLETE</span>
-             </div>
+           <div class="student-header">
+             <span class="student-name">Rayimbek</span>
+             <span class="student-score">1480</span>
            </div>
-           <span class="student-score">1</span>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1480"></div>
+             </div>
+             <span class="delta-label top-scorer">Top scorer</span>
+           </div>
+         </div>
+
+         <!-- Arystan -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Arystan</span>
+             <span class="student-score">1440</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1440"></div>
+             </div>
+             <span class="delta-label">−40 from top</span>
+           </div>
+         </div>
+
+         <!-- Shakhnazar -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Shakhnazar</span>
+             <span class="student-score">1440</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1440"></div>
+             </div>
+             <span class="delta-label">−40 from top</span>
+           </div>
+         </div>
+
+         <!-- Laura -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Laura</span>
+             <span class="student-score">1440</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1440"></div>
+             </div>
+             <span class="delta-label">−40 from top</span>
+           </div>
+         </div>
+
+         <!-- Kamila -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Kamila</span>
+             <span class="student-score">1390</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1390"></div>
+             </div>
+             <span class="delta-label">−90 from top</span>
+           </div>
+         </div>
+
+         <!-- Asyl -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Asyl</span>
+             <span class="student-score">1390</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1390"></div>
+             </div>
+             <span class="delta-label">−90 from top</span>
+           </div>
+         </div>
+
+         <!-- Dalen -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Dalen</span>
+             <span class="student-score">1360</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1360"></div>
+             </div>
+             <span class="delta-label">−120 from top</span>
+           </div>
+         </div>
+
+         <!-- Arnur -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Arnur</span>
+             <span class="student-score">1340</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1340"></div>
+             </div>
+             <span class="delta-label">−140 from top</span>
+           </div>
+         </div>
+
+         <!-- Sholpan -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Sholpan</span>
+             <span class="student-score">1340</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1340"></div>
+             </div>
+             <span class="delta-label">−140 from top</span>
+           </div>
+         </div>
+
+         <!-- Temirlan -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Temirlan</span>
+             <span class="student-score">1300</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1300"></div>
+             </div>
+             <span class="delta-label">−180 from top</span>
+           </div>
+         </div>
+
+         <!-- Nurtilek -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Nurtilek</span>
+             <span class="student-score">1300</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-1300"></div>
+             </div>
+             <span class="delta-label">−180 from top</span>
+           </div>
+         </div>
+
+         <!-- Incomplete Students -->
+         <div class="student-item">
+           <div class="student-header">
+             <span class="student-name">Adiya / Yernur</span>
+             <span class="student-score">Incomplete</span>
+           </div>
+           <div class="score-bar-container">
+             <div class="score-bar-track">
+               <div class="score-bar score-incomplete"></div>
+             </div>
+             <span class="delta-label">Test not completed</span>
+           </div>
          </div>
        </div>
        <div class="section-note">
-         <p>SECONDARY DESIGNATIONS: PERFORMANCE EVALUATION MATRIX</p>
+         <p>Horizontal bars represent current SAT scores on a scale from 800 to 1600 points. Delta values show point differences from the top scorer.</p>
        </div>
      </div>
 

@@ -3,42 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Performance Summary - Platform OS Interface</title>
+  <title>Student Performance Summary</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Color Palette: Corporate Minimal */
-      --bg-primary: #F2F2F2;       /* Light grey - Main background */
-      --bg-secondary: #FAFAFA;     /* Off-white - Surface elements */
-      --bg-tertiary: #E8E8E8;      /* Concrete - Hover states */
-      
-      --text-primary: #222222;     /* Charcoal black */
-      --text-secondary: #4B4B4B;   /* Slate grey */
-      
-      --border-color: #D0D0D0;     /* Subtle divider */
+      --bg-primary: #F2F2F2;
+      --bg-secondary: #FAFAFA;
+      --bg-tertiary: #E8E8E8;
+      --text-primary: #222222;
+      --text-secondary: #4B4B4B;
+      --border-color: #D0D0D0;
       --border-accent: #4B4B4B;
-
-      /* Success/Warning/Info Colors */
-      --success-bg: #E8F5E8;
-      --success-border: #4CAF50;
-      --warning-bg: #FFF3CD;
-      --warning-border: #FF9800;
-      --info-bg: #E3F2FD;
-      --info-border: #2196F3;
-
-      /* Typography */
       --font-primary: 'Inter', sans-serif;
-
-      /* Spacing & Sizing */
-      --spacing-base: 8px;
-      --spacing-xs: calc(var(--spacing-base) * 0.5);
-      --spacing-sm: var(--spacing-base);
-      --spacing-md: calc(var(--spacing-base) * 2);
-      --spacing-lg: calc(var(--spacing-base) * 3);
-      --spacing-xl: calc(var(--spacing-base) * 4);
-      --spacing-xxl: calc(var(--spacing-base) * 6);
-
-      --border-radius: 0px; /* Sharp corners */
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --spacing-xxl: 48px;
     }
 
     * {
@@ -51,102 +32,43 @@
       font-family: var(--font-primary);
       background-color: var(--bg-primary);
       color: var(--text-primary);
-      line-height: 1.7;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-xl) var(--spacing-lg);
     }
 
     header {
-      background-color: var(--bg-secondary);
-      padding: var(--spacing-xl) var(--spacing-xxl);
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: var(--spacing-xxl);
-      position: relative;
-      min-height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .header-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      position: relative;
-      z-index: 1;
+      margin-bottom: var(--spacing-xxl);
+      background: var(--bg-secondary);
+      padding: var(--spacing-xl);
+      border: 1px solid var(--border-color);
+      border-radius: 0;
     }
 
     .header-title {
-      font-family: var(--font-primary);
-      font-size: 48px;
+      font-size: 2.5rem;
       font-weight: 600;
       color: var(--text-primary);
-      letter-spacing: 0.5px;
       margin-bottom: var(--spacing-md);
     }
 
     .header-subtitle {
-      font-family: var(--font-primary);
-      font-size: 18px;
+      font-size: 1.1rem;
       color: var(--text-secondary);
-      letter-spacing: 0.5px;
-      opacity: 0.8;
     }
 
-    .back-button {
-      position: absolute;
-      top: var(--spacing-xl);
-      left: var(--spacing-xl);
-      background: transparent;
-      border: 1px solid var(--border-color);
-      padding: calc(var(--spacing-base)*1.5) calc(var(--spacing-base) * 3);
-      border-radius: var(--border-radius);
-      color: var(--text-primary);
-      font-family: var(--font-primary);
-      font-weight: 500;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-    }
-
-    .back-button:hover {
-      background-color: var(--bg-tertiary);
-      border-color: var(--border-accent);
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--spacing-xxl) var(--spacing-xxl) var(--spacing-xxl);
-    }
-
-    .performance-section {
+    .section {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
       padding: var(--spacing-xl);
       margin-bottom: var(--spacing-xl);
-    }
-
-    .performance-section.success {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-    }
-
-    .performance-section.warning {
-      background: var(--warning-bg);
-      border-color: var(--warning-border);
-    }
-
-    .performance-section.info {
-      background: var(--info-bg);
-      border-color: var(--info-border);
+      border-radius: 0;
     }
 
     .section-header {
@@ -159,18 +81,54 @@
     }
 
     .section-icon {
-      font-size: 28px;
-      line-height: 1;
+      font-size: 1.8rem;
     }
 
     .section-title {
-      font-family: var(--font-primary);
-      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: 600;
       color: var(--text-primary);
-      letter-spacing: 0.5px;
     }
 
+    /* First Place Special Section */
+    .first-place {
+      background: #000000;
+      border-color: #333333;
+      color: #ffffff;
+    }
+
+    .first-place .section-title {
+      color: #ffffff;
+    }
+
+    .first-place .student-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #444444;
+    }
+
+    .first-place .student-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .first-place .student-name {
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .first-place .student-score {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .first-place .section-note {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #444444;
+      color: #cccccc;
+    }
+
+    /* Student List */
     .student-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -185,319 +143,223 @@
       padding: var(--spacing-md);
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
       transition: all 0.2s ease;
-    }
-
-    .performance-section.success .student-item {
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    .performance-section.warning .student-item {
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    .performance-section.info .student-item {
-      background: rgba(255, 255, 255, 0.6);
     }
 
     .student-item:hover {
       border-color: var(--border-accent);
-      transform: translateY(-2px);
+      background: var(--bg-tertiary);
     }
 
-         .student-name {
-       font-family: var(--font-primary);
-       font-size: 18px;
-       font-weight: 600;
-       color: var(--text-primary);
-     }
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
 
-     .student-score {
-       font-family: var(--font-primary);
-       font-size: 20px;
-       font-weight: 700;
-       color: var(--text-primary);
-     }
+    .rank-badge {
+      font-size: 1.5rem;
+      min-width: 2rem;
+      text-align: center;
+    }
 
-     /* Ranking Colors */
-     .rank-1st .student-name {
-       color: #000000;
-       font-weight: 700;
-     }
+    .student-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
 
-     .rank-1st .student-score {
-       color: #000000;
-       font-weight: 800;
-     }
-
-
-
-     .rank-badge {
-       font-size: 24px;
-       margin-right: var(--spacing-sm);
-       display: inline-block;
-       min-width: 32px;
-     }
-
-     /* First Place Special Styling */
-     .first-place-section {
-       background: #000000;
-       border-color: #333333;
-       color: #ffffff;
-     }
-
-     .first-place-section .section-title {
-       color: #ffffff;
-     }
-
-     .first-place-section .student-item {
-       background: rgba(255, 255, 255, 0.1);
-       border-color: #444444;
-     }
-
-     .first-place-section .student-item:hover {
-       background: rgba(255, 255, 255, 0.15);
-       border-color: #666666;
-     }
-
-     .first-place-section .student-name {
-       color: #ffffff;
-       font-weight: 700;
-       font-size: 20px;
-     }
-
-     .first-place-section .student-score {
-       color: #ffffff;
-       font-weight: 800;
-       font-size: 24px;
-     }
-
-     .first-place-section .rank-badge {
-       font-size: 28px;
-     }
-
-     .first-place-section .section-note {
-       background: rgba(255, 255, 255, 0.1);
-       border-color: #444444;
-     }
-
-     .first-place-section .section-note p {
-       color: #cccccc;
-     }
+    .student-score {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
 
     .student-note {
-      font-family: var(--font-primary);
-      font-size: 14px;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       font-style: italic;
+      margin-top: 2px;
     }
 
     .section-note {
       background: rgba(255, 255, 255, 0.6);
       padding: var(--spacing-md);
-      border-radius: var(--border-radius);
       border: 1px solid var(--border-color);
-      margin-top: var(--spacing-lg);
+      color: var(--text-secondary);
     }
 
     .section-note p {
-      color: var(--text-secondary);
-      font-size: 16px;
-      line-height: 1.6;
       margin: 0;
     }
 
-    .summary-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-xxl);
+    /* Warning and Info Sections */
+    .warning {
+      background: #FFF3CD;
+      border-color: #FF9800;
     }
 
-    .stat-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      padding: var(--spacing-xl);
-      text-align: center;
+    .info {
+      background: #E3F2FD;
+      border-color: #2196F3;
     }
 
-    .stat-number {
-      font-family: var(--font-primary);
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .stat-label {
-      font-family: var(--font-primary);
-      font-size: 16px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
+    /* Mobile Responsiveness */
     @media (max-width: 768px) {
-      header {
-        padding: var(--spacing-xl) var(--spacing-lg);
-      }
-
-      .back-button {
-        left: var(--spacing-lg);
+      .container {
+        padding: var(--spacing-lg) var(--spacing-md);
       }
 
       .header-title {
-        font-size: 36px;
-      }
-
-      main {
-        padding: 0 var(--spacing-lg) var(--spacing-xxl) var(--spacing-lg);
+        font-size: 2rem;
       }
 
       .student-list {
         grid-template-columns: 1fr;
       }
 
-      .summary-stats {
-        grid-template-columns: repeat(2, 1fr);
+      .section {
+        padding: var(--spacing-lg);
+      }
+
+      .student-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+      }
+
+      .student-info {
+        width: 100%;
+      }
+
+      .student-score {
+        font-size: 1.5rem;
+        align-self: flex-end;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="/index.html" class="back-button">← Back to Home</a>
-    <div class="header-content">
+  <div class="container">
+    <header>
       <h1 class="header-title">Student Performance Summary</h1>
       <p class="header-subtitle">Test scores and Bluebook completion status</p>
+    </header>
+
+    <!-- FIRST PLACE SECTION -->
+    <div class="section first-place">
+      <div class="section-header">
+        <span class="section-icon">🏆</span>
+        <h2 class="section-title">First Place (Single-Sitting Bluebook)</h2>
+      </div>
+      <div class="student-list">
+        <!-- TO EDIT: Change name and score below -->
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">🥇</span>
+            <span class="student-name">Laura</span>
+          </div>
+          <span class="student-score">1440</span>
+        </div>
+      </div>
+      <div class="section-note">
+        <p>This student achieved the highest score completing <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
+      </div>
     </div>
-  </header>
 
-  <main>
-         <div class="summary-stats">
-       <div class="stat-card">
-         <div class="stat-number">9</div>
-         <div class="stat-label">Single-Sitting Scores</div>
-       </div>
-       <div class="stat-card">
-         <div class="stat-number">2</div>
-         <div class="stat-label">Superscores/Non-Bluebook</div>
-       </div>
-       <div class="stat-card">
-         <div class="stat-number">2</div>
-         <div class="stat-label">Incomplete Tests</div>
-       </div>
-       <div class="stat-card">
-         <div class="stat-number">1440</div>
-         <div class="stat-label">Highest Score</div>
-       </div>
-     </div>
+    <!-- RANKED SCORES SECTION -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🎖️</span>
+        <h2 class="section-title">Ranked Scores (Single Sitting – Bluebook)</h2>
+      </div>
+      <div class="student-list">
+        <!-- TO EDIT: Copy/paste student-item blocks and update names/scores -->
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">🥈</span>
+            <span class="student-name">Shakh</span>
+          </div>
+          <span class="student-score">1430</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">🥉</span>
+            <span class="student-name">Rayimbek</span>
+          </div>
+          <span class="student-score">1390</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">4</span>
+            <span class="student-name">Temirlan</span>
+          </div>
+          <span class="student-score">1360</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">4</span>
+            <span class="student-name">Kamila</span>
+          </div>
+          <span class="student-score">1360</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">6</span>
+            <span class="student-name">Arystan</span>
+          </div>
+          <span class="student-score">1320</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">7</span>
+            <span class="student-name">Nurtilek</span>
+          </div>
+          <span class="student-score">1300</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">8</span>
+            <span class="student-name">Dalen</span>
+          </div>
+          <span class="student-score">1240</span>
+        </div>
+        <div class="student-item">
+          <div class="student-info">
+            <span class="rank-badge">9</span>
+            <span class="student-name">Arnur</span>
+          </div>
+          <span class="student-score">1210</span>
+        </div>
+      </div>
+      <div class="section-note">
+        <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
+      </div>
+    </div>
 
-         <div class="performance-section first-place-section">
-       <div class="section-header">
-         <span class="section-icon">🏆</span>
-         <h2 class="section-title">First Place (Single-Sitting Bluebook)</h2>
-       </div>
-       <div class="student-list">
-         <div class="student-item rank-1st">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">🥇</span>
-             <span class="student-name">Laura</span>
-           </div>
-           <span class="student-score">1440</span>
-         </div>
-       </div>
-       <div class="section-note">
-         <p>This student achieved the highest score completing <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
-       </div>
-     </div>
-
-     <div class="performance-section success">
-       <div class="section-header">
-         <span class="section-icon">🎖️</span>
-         <h2 class="section-title">Ranked Scores (Single Sitting – Bluebook)</h2>
-       </div>
-       <div class="student-list">
-         <div class="student-item rank-2nd">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">🥈</span>
-             <span class="student-name">Shakh</span>
-           </div>
-           <span class="student-score">1430</span>
-         </div>
-         <div class="student-item rank-3rd">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">🥉</span>
-             <span class="student-name">Rayimbek</span>
-           </div>
-           <span class="student-score">1390</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">4</span>
-             <span class="student-name">Temirlan</span>
-           </div>
-           <span class="student-score">1360</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">4</span>
-             <span class="student-name">Kamila</span>
-           </div>
-           <span class="student-score">1360</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">6</span>
-             <span class="student-name">Arystan</span>
-           </div>
-           <span class="student-score">1320</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">7</span>
-             <span class="student-name">Nurtilek</span>
-           </div>
-           <span class="student-score">1300</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">8</span>
-             <span class="student-name">Dalen</span>
-           </div>
-           <span class="student-score">1290</span>
-         </div>
-         <div class="student-item">
-           <div style="display: flex; align-items: center;">
-             <span class="rank-badge">9</span>
-             <span class="student-name">Arnur</span>
-           </div>
-           <span class="student-score">1210</span>
-         </div>
-       </div>
-       <div class="section-note">
-         <p>These students completed <strong>both Math and Verbal</strong> sections in a single Bluebook test session.</p>
-       </div>
-     </div>
-
-    <div class="performance-section warning">
+    <!-- WARNING SECTION -->
+    <div class="section warning">
       <div class="section-header">
         <span class="section-icon">❗</span>
         <h2 class="section-title">Not Single-Sitting or Not Bluebook</h2>
       </div>
       <div class="student-list">
+        <!-- TO EDIT: Add/remove student blocks as needed -->
         <div class="student-item">
-          <div>
-            <div class="student-name">Sholpan</div>
-            <div class="student-note">superscore</div>
+          <div class="student-info">
+            <div>
+              <div class="student-name">Sholpan</div>
+              <div class="student-note">superscore</div>
+            </div>
           </div>
           <span class="student-score">1380</span>
         </div>
         <div class="student-item">
-          <div>
-            <div class="student-name">Asyl</div>
-            <div class="student-note">PDF test, not Bluebook</div>
+          <div class="student-info">
+            <div>
+              <div class="student-name">Asyl</div>
+              <div class="student-note">PDF test, not Bluebook</div>
+            </div>
           </div>
           <span class="student-score">1290</span>
         </div>
@@ -507,18 +369,24 @@
       </div>
     </div>
 
-    <div class="performance-section info">
+    <!-- INFO SECTION -->
+    <div class="section info">
       <div class="section-header">
         <span class="section-icon">🚧</span>
         <h2 class="section-title">Incomplete Practice Tests</h2>
       </div>
       <div class="student-list">
+        <!-- TO EDIT: Add/remove student blocks as needed -->
         <div class="student-item">
-          <span class="student-name">Yernur</span>
+          <div class="student-info">
+            <span class="student-name">Yernur</span>
+          </div>
           <span class="student-score">0</span>
         </div>
         <div class="student-item">
-          <span class="student-name">Adiya</span>
+          <div class="student-info">
+            <span class="student-name">Adiya</span>
+          </div>
           <span class="student-score">0</span>
         </div>
       </div>
@@ -526,6 +394,6 @@
         <p>The following students have <strong>not completed a full official practice test</strong> yet.</p>
       </div>
     </div>
-  </main>
+  </div>
 </body>
 </html> 

@@ -129,6 +129,15 @@
       color: #BBBBBB;
     }
 
+    .first-place .progress {
+      color: #CCCCCC;
+    }
+
+    .first-place .progress-high {
+      color: #F0F0F0;
+      font-weight: 700;
+    }
+
     /* Student List */
     .student-list {
       display: grid;
@@ -145,6 +154,8 @@
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .student-item:hover {
@@ -152,11 +163,65 @@
       background: var(--bg-tertiary);
     }
 
+    .student-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(224, 224, 224, 0.1), rgba(224, 224, 224, 0.05));
+      z-index: 0;
+      transition: width 0.3s ease;
+    }
+
     .student-info {
       display: flex;
       align-items: center;
       gap: var(--spacing-sm);
+      position: relative;
+      z-index: 1;
     }
+
+    .student-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .progress {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Progress-based visual emphasis */
+    .progress-low { 
+      font-size: 0.8rem; 
+      margin-left: 5px;
+    }
+    .progress-medium { 
+      font-size: 0.9rem; 
+      margin-left: 15px;
+      color: #C0C0C0;
+    }
+    .progress-high { 
+      font-size: 1rem; 
+      margin-left: 25px;
+      color: #E0E0E0;
+    }
+    .progress-exceptional { 
+      font-size: 1.1rem; 
+      margin-left: 35px;
+      color: #F0F0F0;
+      font-weight: 700;
+    }
+
+    /* Progress bars */
+    .student-item.bar-low::before { width: 15%; }
+    .student-item.bar-medium::before { width: 35%; }
+    .student-item.bar-high::before { width: 55%; }
+    .student-item.bar-exceptional::before { width: 75%; }
 
     .rank-badge {
       font-size: 1.5rem;
@@ -228,6 +293,15 @@
         font-size: 1.5rem;
         align-self: flex-end;
       }
+
+      .progress-low, .progress-medium, .progress-high, .progress-exceptional {
+        margin-left: 0px;
+        font-size: 0.8rem;
+      }
+
+      .student-item::before {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -246,10 +320,13 @@
        </div>
        <div class="student-list">
          <!-- TO EDIT: Change name and score below -->
-         <div class="student-item">
+         <div class="student-item bar-high">
            <div class="student-info">
              <span class="rank-badge">01</span>
-             <span class="student-name">[Rayimbek]</span>
+             <div class="student-details">
+               <span class="student-name">[Rayimbek]</span>
+               <span class="progress progress-high">+280</span>
+             </div>
            </div>
            <span class="student-score">1480</span>
          </div>
@@ -267,80 +344,113 @@
        </div>
        <div class="student-list">
          <!-- TO EDIT: Copy/paste student-item blocks and update names/scores -->
-         <div class="student-item">
+         <div class="student-item bar-medium">
            <div class="student-info">
              <span class="rank-badge">02</span>
-             <span class="student-name">[Arystan]</span>
+             <div class="student-details">
+               <span class="student-name">[Arystan]</span>
+               <span class="progress progress-medium">+240</span>
+             </div>
            </div>
            <span class="student-score">1440</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-medium">
            <div class="student-info">
              <span class="rank-badge">03</span>
-             <span class="student-name">[Shakhnazar]</span>
+             <div class="student-details">
+               <span class="student-name">[Shakhnazar]</span>
+               <span class="progress progress-medium">+240</span>
+             </div>
            </div>
            <span class="student-score">1440</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-medium">
            <div class="student-info">
              <span class="rank-badge">04</span>
-             <span class="student-name">[Laura]</span>
+             <div class="student-details">
+               <span class="student-name">[Laura]</span>
+               <span class="progress progress-medium">+240</span>
+             </div>
            </div>
            <span class="student-score">1440</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">05</span>
-             <span class="student-name">[Kamila]</span>
+             <div class="student-details">
+               <span class="student-name">[Kamila]</span>
+               <span class="progress progress-low">+190</span>
+             </div>
            </div>
            <span class="student-score">1390</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">06</span>
-             <span class="student-name">[Asyl]</span>
+             <div class="student-details">
+               <span class="student-name">[Asyl]</span>
+               <span class="progress progress-low">+190</span>
+             </div>
            </div>
            <span class="student-score">1390</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">07</span>
-             <span class="student-name">[Dalen]</span>
+             <div class="student-details">
+               <span class="student-name">[Dalen]</span>
+               <span class="progress progress-low">+160</span>
+             </div>
            </div>
            <span class="student-score">1360</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">08</span>
-             <span class="student-name">[Arnur]</span>
+             <div class="student-details">
+               <span class="student-name">[Arnur]</span>
+               <span class="progress progress-low">+140</span>
+             </div>
            </div>
            <span class="student-score">1340</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">09</span>
-             <span class="student-name">[Sholpan]</span>
+             <div class="student-details">
+               <span class="student-name">[Sholpan]</span>
+               <span class="progress progress-low">+140</span>
+             </div>
            </div>
            <span class="student-score">1340</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">10</span>
-             <span class="student-name">[Temirlan]</span>
+             <div class="student-details">
+               <span class="student-name">[Temirlan]</span>
+               <span class="progress progress-low">+100</span>
+             </div>
            </div>
            <span class="student-score">1300</span>
          </div>
-         <div class="student-item">
+         <div class="student-item bar-low">
            <div class="student-info">
              <span class="rank-badge">11</span>
-             <span class="student-name">[Nurtilek]</span>
+             <div class="student-details">
+               <span class="student-name">[Nurtilek]</span>
+               <span class="progress progress-low">+100</span>
+             </div>
            </div>
            <span class="student-score">1300</span>
          </div>
          <div class="student-item">
            <div class="student-info">
              <span class="rank-badge">12</span>
-             <span class="student-name">[Adiya / Yernur]</span>
+             <div class="student-details">
+               <span class="student-name">[Adiya / Yernur]</span>
+               <span class="progress" style="color: #666; font-size: 0.75rem;">INCOMPLETE</span>
+             </div>
            </div>
            <span class="student-score">1</span>
          </div>
